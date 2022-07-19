@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TV Maze Client</string>
+    <string name="login_button">LOGIN</string>
+    <string name="pin_placeholder">PIN</string>
+    <string name="search_placeholder">Search</string>
 </resources>

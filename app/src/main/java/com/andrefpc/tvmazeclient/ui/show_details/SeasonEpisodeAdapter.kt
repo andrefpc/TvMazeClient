@@ -14,13 +14,19 @@ import com.andrefpc.tvmazeclient.databinding.LayoutEpisodeBinding
 import com.andrefpc.tvmazeclient.databinding.LayoutSeasonBinding
 import com.andrefpc.tvmazeclient.databinding.LayoutShowBinding
 import com.andrefpc.tvmazeclient.extensions.ImageViewExtensions.loadImage
+import com.andrefpc.tvmazeclient.widget.AnimatedArrow
 
 class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
-    private var clickListener: (SeasonEpisode) -> Unit = { }
+    private var episodeClickListener: (Episode) -> Unit = { }
+    private var seasonClickListener: (Season) -> Unit = { }
 
-    fun onClick(clickListener: (SeasonEpisode) -> Unit) {
-        this.clickListener = clickListener
+    fun onEpisodeClick(episodeClickListener: (Episode) -> Unit) {
+        this.episodeClickListener = episodeClickListener
+    }
+
+    fun onSeasonCLick(seasonClickListener: (Season) -> Unit) {
+        this.seasonClickListener = seasonClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -60,17 +66,29 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
             val seasonName = "Season ${season.number}"
             this.season.text = seasonName
             this.totalEpisodes.text = season.episodeOrder.toString()
+            if(season.opened){
+                this.arrow.setState(AnimatedArrow.MORE, false)
+            }else{
+                this.arrow.setState(AnimatedArrow.LESS, false)
+            }
+            this.root.setOnClickListener {
+                this.arrow.switchState()
+                seasonClickListener(season)
+            }
         }
     }
 
     private fun bindEpisodeViewHolder(binding: LayoutEpisodeBinding, episode: Episode){
         binding.apply {
             val seasonName = if(episode.season > 9) "S${episode.season}" else "S0${episode.season}"
-            val episodeNumber = if(episode.number > 9) "S${episode.number}" else "S0${episode.number}"
+            val episodeNumber = if(episode.number > 9) "E${episode.number}" else "E0${episode.number}"
             val episodeFinalNumber = "$seasonName | $episodeNumber"
             this.image.loadImage(episode.image.medium)
             this.episode.text = episodeFinalNumber
             this.name.text = episode.name
+            this.root.setOnClickListener {
+                episodeClickListener(episode)
+            }
         }
     }
 

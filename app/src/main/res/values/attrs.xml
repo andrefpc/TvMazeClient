@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AnimatedArrow">
+        <attr name="animated_arrow_rounded_corners" format="boolean" />
+        <attr name="animated_arrow_switch_color" format="boolean" />
+        <attr name="animated_arrow_color" format="color" />
+        <attr name="animated_arrow_color_more" format="color" />
+        <attr name="animated_arrow_color_less" format="color" />
+        <attr name="animated_arrow_color_intermediate" format="color" />
+        <attr name="animated_arrow_animation_duration" format="integer" />
+        <attr name="animated_arrow_padding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchField">
+        <attr name="search_field_hint" format="string"/>
+        <attr name="search_field_text" format="string"/>
+    </declare-styleable>
+</resources>

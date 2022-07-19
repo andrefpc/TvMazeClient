@@ -1,5 +1,7 @@
 package com.andrefpc.tvmazeclient.data
 
+import java.io.Serializable
+
 data class Episode(
     var id: Int,
     var name: String,
@@ -7,7 +9,7 @@ data class Episode(
     var season: Int,
     val summary: String,
     var image: Image,
-    var airDate: String,
-    var airTime: String,
+    var airdate: String,
+    var airtime: String,
     var runtime: Int
-)
+): Serializable

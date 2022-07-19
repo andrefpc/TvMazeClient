@@ -3,11 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_clear_gray.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable-v24/ic_search.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable-v24/search_bg.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_clear_gray.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/search_bg.xml" value="0.179" />
+        <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.1609375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/activity_show_details.xml" value="0.18161094224924013" />
+        <entry key="app/src/main/res/layout/activity_shows.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_episode.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/layout_header_show.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_item_show.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/layout_season.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/layout_show.xml" value="0.1" />
         <entry key="app/src/main/res/layout/modal_episode.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/search_field.xml" value="0.19791666666666666" />
       </map>
     </option>
   </component>

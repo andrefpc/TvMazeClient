@@ -30,11 +30,14 @@ class ShowAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCallback(
         val holder = viewHolder as MyViewHolder
         val show: Show = getItem(position)
         holder.binding.apply {
-            image.loadImage(show.image.medium)
+            image.loadImage(show.image?.medium)
             name.text = show.name
             genres.text = show.genres.joinToString()
             days.text = show.schedule.days.joinToString()
             time.text = show.schedule.time
+            root.setOnClickListener {
+                clickListener(show)
+            }
         }
     }
 

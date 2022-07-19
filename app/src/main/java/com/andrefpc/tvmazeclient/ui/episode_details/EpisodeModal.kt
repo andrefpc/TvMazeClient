@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.andrefpc.tvmazeclient.data.Episode
 import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
 import com.andrefpc.tvmazeclient.extensions.ImageViewExtensions.loadImage
+import com.andrefpc.tvmazeclient.extensions.StringExtensions.removeHtmlTags
+import com.andrefpc.tvmazeclient.util.ScreenUtil
 
 /**
  * Modal for episode info
@@ -47,6 +50,10 @@ class EpisodeModal : DialogFragment() {
             null,
             false
         )
+        activity?.let {
+            val width = ScreenUtil.getScreenWidth(it) - ScreenUtil.dpToPX(40, it)
+            binding.card.layoutParams = LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT)
+        }
         return binding.root
     }
 
@@ -66,14 +73,20 @@ class EpisodeModal : DialogFragment() {
         val seasonName = if (episode.season > 9) "S${episode.season}" else "S0${episode.season}"
         val episodeNumber = if (episode.number > 9) "S${episode.number}" else "S0${episode.number}"
         val episodeFinalNumber = "$seasonName | $episodeNumber"
-        val timeValue = "${episode.airTime} (${episode.runtime})"
+        val timeValue = "${episode.airtime} (${episode.runtime} minutes)"
 
         binding.apply {
             this.image.loadImage(episode.image.original)
             this.name.text = episode.name
             this.episode.text = episodeFinalNumber
-            this.date.text = episode.airDate
+            this.date.text = episode.airdate
             this.time.text = timeValue
+            this.summary.text = episode.summary.removeHtmlTags()
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

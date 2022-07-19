@@ -4,5 +4,5 @@ import java.io.Serializable
 
 data class Schedule(
     var time: String,
-    var days: List<String>
+    var days: ArrayList<String>
 ): Serializable

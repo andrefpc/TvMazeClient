@@ -1,6 +1,7 @@
 package com.andrefpc.tvmazeclient.api
 
 import com.andrefpc.tvmazeclient.data.Episode
+import com.andrefpc.tvmazeclient.data.Search
 import com.andrefpc.tvmazeclient.data.Season
 import com.andrefpc.tvmazeclient.data.Show
 import retrofit2.Response
@@ -14,6 +15,12 @@ interface TvMazeApi {
      */
     @GET("shows")
     suspend fun getShows(@QueryMap params: HashMap<String, String>): Response<List<Show>>
+
+    /**
+     * Search Shows
+     */
+    @GET("search/shows")
+    suspend fun search(@QueryMap params: HashMap<String, String>): Response<List<Search>>
 
     /**
      * Get Seasons

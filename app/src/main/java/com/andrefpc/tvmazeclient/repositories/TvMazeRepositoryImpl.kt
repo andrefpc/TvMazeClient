@@ -1,10 +1,8 @@
 package com.andrefpc.tvmazeclient.repositories
 
 import com.andrefpc.tvmazeclient.api.TvMazeApi
-import com.andrefpc.tvmazeclient.data.ApiResult
-import com.andrefpc.tvmazeclient.data.Episode
-import com.andrefpc.tvmazeclient.data.Season
-import com.andrefpc.tvmazeclient.data.Show
+import com.andrefpc.tvmazeclient.data.*
+import com.google.gson.Gson
 import retrofit2.Response
 
 class TvMazeRepositoryImpl(
@@ -15,16 +13,38 @@ class TvMazeRepositoryImpl(
             val params = hashMapOf("page" to page.toString())
             val response: Response<List<Show>> = tvMazeApi.getShows(params)
             if (!response.isSuccessful) {
-                return ApiResult.Error
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
             }
 
             response.body()?.let {
                 return ApiResult.Success(it)
             } ?: kotlin.run {
-                return ApiResult.Error
+                return ApiResult.Error(ApiError())
             }
         } catch (e: Exception) {
-            return ApiResult.Error
+            return ApiResult.Error(ApiError())
+        }
+    }
+
+    override suspend fun searchShows(term: String): ApiResult<List<Show>> {
+        try {
+            val params = hashMapOf("q" to term)
+            val response: Response<List<Search>> = tvMazeApi.search(params)
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
+            }
+
+            response.body()?.let { list ->
+                return ApiResult.Success(list.map { it.show })
+            } ?: kotlin.run {
+                return ApiResult.Error(ApiError())
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(ApiError())
         }
     }
 
@@ -32,33 +52,37 @@ class TvMazeRepositoryImpl(
         try {
             val response: Response<List<Season>> = tvMazeApi.getSeasons(id)
             if (!response.isSuccessful) {
-                return ApiResult.Error
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
             }
 
             response.body()?.let {
                 return ApiResult.Success(it)
             } ?: kotlin.run {
-                return ApiResult.Error
+                return ApiResult.Error(ApiError())
             }
         } catch (e: Exception) {
-            return ApiResult.Error
+            return ApiResult.Error(ApiError())
         }
     }
 
-    override suspend fun getEpisode(id: Int): ApiResult<List<Episode>> {
+    override suspend fun getEpisodes(id: Int): ApiResult<List<Episode>> {
         try {
             val response: Response<List<Episode>> = tvMazeApi.getEpisodes(id)
             if (!response.isSuccessful) {
-                return ApiResult.Error
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
             }
 
             response.body()?.let {
                 return ApiResult.Success(it)
             } ?: kotlin.run {
-                return ApiResult.Error
+                return ApiResult.Error(ApiError())
             }
         } catch (e: Exception) {
-            return ApiResult.Error
+            return ApiResult.Error(ApiError())
         }
     }
 }

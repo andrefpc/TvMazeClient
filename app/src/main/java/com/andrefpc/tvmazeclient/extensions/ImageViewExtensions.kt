@@ -14,8 +14,8 @@ object ImageViewExtensions {
      * @param url The url of the remote image
      * @param returnError Callback with the image receive error when try to loading
      */
-    fun AppCompatImageView.loadImage(url: String, returnError: () -> Unit = {}) {
-        if (url.isNotEmpty()) {
+    fun AppCompatImageView.loadImage(url: String?, returnError: () -> Unit = {}) {
+        if (!url.isNullOrEmpty()) {
             Glide.with(this).load(url).listener(
                 object : RequestListener<Drawable?> {
                     override fun onLoadFailed(
