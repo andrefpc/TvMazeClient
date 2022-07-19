@@ -16,6 +16,9 @@ import com.andrefpc.tvmazeclient.ui.show_details.ShowDetailsActivity
 import com.andrefpc.tvmazeclient.ui.show_details.ShowHeaderAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * Shows screen of the application
+ */
 class ShowsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShowsBinding
     private val viewModel: ShowsViewModel by viewModel()
@@ -23,6 +26,9 @@ class ShowsActivity : AppCompatActivity() {
     private var onScrollListener: RecyclerView.OnScrollListener? = null
     private var showsLayoutManager: LinearLayoutManager? = null
 
+    /**
+     * Lifecycle method that run when the activity is created
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShowsBinding.inflate(layoutInflater)
@@ -35,6 +41,9 @@ class ShowsActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Init the list of favorite shows
+     */
     private fun initList() {
         showsLayoutManager = LinearLayoutManager(this@ShowsActivity)
         binding.shows.apply {
@@ -45,6 +54,9 @@ class ShowsActivity : AppCompatActivity() {
         viewModel.getShows()
     }
 
+    /**
+     * Init the listeners
+     */
     private fun initListeners() {
         adapterShow.onClick {
             val intent = Intent(this, ShowDetailsActivity::class.java)
@@ -96,11 +108,17 @@ class ShowsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Lifecycle method that run when the activity is destroyed
+     */
     override fun onDestroy() {
         removeScrollListener()
         super.onDestroy()
     }
 
+    /**
+     * Listen scroll positions for pagination
+     */
     private fun listenScroll() {
         onScrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -120,6 +138,9 @@ class ShowsActivity : AppCompatActivity() {
         onScrollListener?.let { binding.shows.addOnScrollListener(it) }
     }
 
+    /**
+     * Remove the scroll listener
+     */
     private fun removeScrollListener() {
         onScrollListener?.let {
             binding.shows.removeOnScrollListener(it)

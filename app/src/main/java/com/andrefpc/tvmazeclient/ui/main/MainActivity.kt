@@ -11,11 +11,16 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.ActivityMainBinding
+import com.andrefpc.tvmazeclient.session.PinSession
 import com.andrefpc.tvmazeclient.ui.shows.ShowsActivity
+import org.koin.android.ext.android.inject
 import java.util.concurrent.Executor
 
-
+/**
+ * Main screen of the application
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
@@ -23,58 +28,92 @@ class MainActivity : AppCompatActivity() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
+    private val pinSession: PinSession by inject()
+
+    /**
+     * Lifecycle method that run when the activity is created
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (pinSession.getPin().isNullOrEmpty()) {
+            binding.enter.text = getString(R.string.create_button)
+        } else {
+            binding.enter.text = getString(R.string.login_button)
+        }
 
         val canUseBiometrics = checkBiometrics()
         if (canUseBiometrics) {
             initBiometrics()
         }
 
-        binding.enter.setOnClickListener {
+        initListeners(canUseBiometrics)
+    }
+
+    /**
+     * Init the listeners of the screen
+     */
+    private fun initListeners(canUseBiometrics: Boolean) {
+        binding.phoneSecurity.setOnClickListener {
             if (canUseBiometrics) {
                 biometricPrompt.authenticate(promptInfo)
             } else {
-                showRegularLoginActivity()
+                showRegularLogin()
             }
         }
 
-        if (checkBiometrics()) {
-            initBiometrics()
+        binding.enter.setOnClickListener {
+            val pin = pinSession.getPin()
+            if (pin.isNullOrEmpty()) {
+                pinSession.savePin(binding.pin.text.toString())
+                binding.enter.text = getString(R.string.login_button)
+                openShows()
+            } else {
+                if (binding.pin.text.toString() == pin) {
+                    openShows()
+                } else {
+                    notifyUser(getString(R.string.incorrect_pin))
+                }
+            }
         }
     }
 
+    /**
+     * Result launcher for the regular phone authentication
+     */
     private var regularLoginLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                notifyUser("Authentication succeeded!")
-                val intent = Intent(this, ShowsActivity::class.java)
-                startActivity(intent)
+                notifyUser(getString(R.string.authentication_succeeded))
+                openShows()
             } else {
-                notifyUser("Login cancelled by the user")
+                notifyUser(getString(R.string.login_canceled))
             }
         }
 
 
     /**
-     * Show regular Confirmation dialog.
+     * Show regular Authentication
      */
-    private fun showRegularLoginActivity() {
+    private fun showRegularLogin() {
         val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
 
         if (km.isKeyguardSecure) {
             val authIntent = km.createConfirmDeviceCredentialIntent(
-                "Regular login",
-                "Log in using your preferred credential"
+                getString(R.string.authentication),
+                getString(R.string.login_preferred_credential)
             )
             regularLoginLauncher.launch(authIntent)
         } else {
-            notifyUser("Your phone don't have any security login")
+            notifyUser(getString(R.string.phone_dont_have_sercurity_login))
         }
     }
 
+    /**
+     * Init the biometrics features
+     */
     private fun initBiometrics() {
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
@@ -84,31 +123,40 @@ class MainActivity : AppCompatActivity() {
                     errString: CharSequence
                 ) {
                     super.onAuthenticationError(errorCode, errString)
-                    notifyUser("Authentication error: $errString")
+                    notifyUser(getString(R.string.authentication_error) + errString)
                 }
 
                 override fun onAuthenticationSucceeded(
                     result: BiometricPrompt.AuthenticationResult
                 ) {
                     super.onAuthenticationSucceeded(result)
-                    notifyUser("Authentication succeeded!")
-                    val intent = Intent(this@MainActivity, ShowsActivity::class.java)
-                    startActivity(intent)
+                    notifyUser(getString(R.string.authentication_succeeded))
+                    openShows()
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    notifyUser("Authentication failed")
+                    notifyUser(getString(R.string.authentication_failed))
                 }
             })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login for my app")
-            .setSubtitle("Log in using your biometric credential")
-            .setNegativeButtonText("Use account password")
+            .setTitle(getString(R.string.authentication))
+            .setSubtitle(getString(R.string.login_biometric))
             .build()
     }
 
+    /**
+     * Open the ShowsActivity
+     */
+    private fun openShows() {
+        val intent = Intent(this@MainActivity, ShowsActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * Check the biometrics status
+     */
     private fun checkBiometrics(): Boolean {
         val biometricManager = BiometricManager.from(this)
         return when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
@@ -117,33 +165,36 @@ class MainActivity : AppCompatActivity() {
             }
 
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                notifyUser("No biometric or device credential is enrolled.")
+                notifyUser(getString(R.string.biometric_enrolled))
                 false
             }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                notifyUser("No biometric features available on this device.")
+                notifyUser(getString(R.string.no_biometric_available))
                 false
             }
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                notifyUser("Biometric features are currently unavailable.")
+                notifyUser(getString(R.string.biometric_unavailable))
                 false
             }
             BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
-                notifyUser("No biometric features available on this device.")
+                notifyUser(getString(R.string.no_biometric_available))
                 false
             }
             BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
-                notifyUser("Biometric is unsupported on this device.")
+                notifyUser(getString(R.string.biometric_unsupported))
                 false
             }
             BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
-                notifyUser("Tha app can't authenticate with biometrics")
+                notifyUser(getString(R.string.cant_authenticate_with_biometrics))
                 false
             }
             else -> false
         }
     }
 
+    /**
+     * Send toasts messages to the user
+     */
     private fun notifyUser(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }

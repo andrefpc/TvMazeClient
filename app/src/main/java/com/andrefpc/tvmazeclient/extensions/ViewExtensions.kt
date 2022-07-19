@@ -9,6 +9,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
 object ViewExtensions {
+    /**
+     * Fade In animation
+     */
     fun View.fadeIn(duration: Long = 300L) {
         this@fadeIn.visibility = View.VISIBLE
         val anim = AlphaAnimation(0f, 1f)
@@ -24,6 +27,9 @@ object ViewExtensions {
         this@fadeIn.startAnimation(anim)
     }
 
+    /**
+     * Fade Out animation
+     */
     fun View.fadeOut(duration: Long = 300L, visibilityToGone: Boolean = true) {
         val anim = AlphaAnimation(1f, 0f)
         anim.duration = duration
@@ -40,6 +46,9 @@ object ViewExtensions {
         this@fadeOut.startAnimation(anim)
     }
 
+    /**
+     * Hide the keyboard
+     */
     fun View.hideKeyboard() {
         val imm =
             context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager

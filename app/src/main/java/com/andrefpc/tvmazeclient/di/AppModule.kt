@@ -5,6 +5,8 @@ import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.repositories.TvMazeRepositoryImpl
 import com.andrefpc.tvmazeclient.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.room.ShowRoomRepositoryImpl
+import com.andrefpc.tvmazeclient.session.PinSession
+import com.andrefpc.tvmazeclient.session.PinSessionImpl
 import com.andrefpc.tvmazeclient.ui.favorites.FavoritesViewModel
 import com.andrefpc.tvmazeclient.ui.people.PeopleViewModel
 import com.andrefpc.tvmazeclient.ui.person_details.PersonDetailsViewModel
@@ -24,6 +26,12 @@ val repositoryModule = module {
     }
     single<ShowRoomRepository> {
         ShowRoomRepositoryImpl(context = get())
+    }
+}
+
+val sessionModule = module {
+    single<PinSession> {
+        PinSessionImpl(context = get())
     }
 }
 

@@ -209,14 +209,6 @@ class AnimatedArrow(
         updateArrow(animate)
     }
 
-    /**
-     * Set duration of icon animation from state [.MORE] to state [.LESS]
-     *
-     * @param animationDuration
-     */
-    fun setAnimationDuration(animationDuration: Long) {
-        animationSpeed = DELTA_ALPHA / animationDuration
-    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

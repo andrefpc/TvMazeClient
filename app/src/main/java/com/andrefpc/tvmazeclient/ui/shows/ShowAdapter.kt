@@ -9,6 +9,9 @@ import com.andrefpc.tvmazeclient.data.Show
 import com.andrefpc.tvmazeclient.databinding.LayoutShowBinding
 import com.andrefpc.tvmazeclient.extensions.ImageViewExtensions.loadImage
 
+/**
+ * Adapter used to populate the shows list
+ */
 class ShowAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
     private var clickListener: (Show) -> Unit = { }
@@ -17,6 +20,9 @@ class ShowAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCallback(
         this.clickListener = clickListener
     }
 
+    /**
+     * Override method used to inflate the view of the adapter items
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = LayoutShowBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -26,6 +32,9 @@ class ShowAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCallback(
         return MyViewHolder(binding)
     }
 
+    /**
+     * Override method to set the values for the adapter items widgets
+     */
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as MyViewHolder
         val show: Show = getItem(position)
@@ -41,10 +50,16 @@ class ShowAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCallback(
         }
     }
 
+    /**
+     * Override method to get the total items the adapter
+     */
     override fun getItemCount(): Int {
         return currentList.size
     }
 
+    /**
+     * View holder used to populate the item views
+     */
     class MyViewHolder(val binding: LayoutShowBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {

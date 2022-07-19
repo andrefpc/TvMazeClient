@@ -15,6 +15,9 @@ import com.andrefpc.tvmazeclient.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.extensions.StringExtensions.removeHtmlTags
 import org.koin.core.component.KoinComponent
 
+/**
+ * Adapter used to populate header of the show details screen
+ */
 class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Boolean ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var favoriteClickListener: (Show) -> Unit = { }
@@ -23,6 +26,9 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
         this.favoriteClickListener = favoriteClickListener
     }
 
+    /**
+     * Override method used to inflate the view of the adapter items
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = LayoutHeaderShowBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -32,6 +38,9 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
         return HeaderViewHolder(binding)
     }
 
+    /**
+     * Override method to set the values for the adapter items widgets
+     */
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as HeaderViewHolder
         holder.binding.apply {
@@ -50,6 +59,9 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
 
     }
 
+    /**
+     * Method to change the favorite icon tint regarding the status
+     */
     private fun LayoutHeaderShowBinding.changeFavorite(isFavorite: Boolean) {
         if (isFavorite) {
             favorite.setColorFilter(context.getColor(R.color.teal_700), PorterDuff.Mode.SRC_IN)
@@ -58,8 +70,13 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
         }
     }
 
+    /**
+     * Override method to get the total items the adapter
+     */
     override fun getItemCount() = 1
 
-
+    /**
+     * View holder used to populate the item views
+     */
     class HeaderViewHolder(val binding: LayoutHeaderShowBinding) : RecyclerView.ViewHolder(binding.root)
 }

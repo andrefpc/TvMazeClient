@@ -11,6 +11,9 @@ import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel used by the ShowsActivity
+ */
 class ShowsViewModel(
     private val dispatcher: CoroutineContextProvider,
     private val tvMazeRepository: TvMazeRepository
@@ -30,6 +33,9 @@ class ShowsViewModel(
     var currentPage = 0
     var searching = false
 
+    /**
+     * Get the shows list from the server
+     */
     fun getShows() {
         searching = false
         if(currentPage == 0) _loading.value = true
@@ -52,6 +58,10 @@ class ShowsViewModel(
         }
     }
 
+    /**
+     * Search the shows list from the server
+     * @param [term] to be searched
+     */
     fun searchShows(term: String) {
         searching = true
         _loading.value = true

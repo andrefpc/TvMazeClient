@@ -85,6 +85,9 @@ class EpisodeModal : DialogFragment() {
         }
     }
 
+    /**
+     * Lifecycle method called when the fragment is destroyed
+     */
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

@@ -10,6 +10,9 @@ import com.andrefpc.tvmazeclient.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel used by the ShowDetailsActivity
+ */
 class ShowDetailsViewModel(
     private val dispatcher: CoroutineContextProvider,
     private val tvMazeRepository: TvMazeRepository,
@@ -30,6 +33,9 @@ class ShowDetailsViewModel(
 
     val seasonStatusList: MutableList<SeasonStatus> = arrayListOf()
 
+    /**
+    * Get the cast of a show from the server
+    */
     fun getCast(id: Int) {
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getCast(id)) {
@@ -47,6 +53,9 @@ class ShowDetailsViewModel(
         }
     }
 
+    /**
+     * Get the seasons of a show from the server
+     */
     fun getSeasons(id: Int) {
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getSeasons(id)) {
@@ -64,6 +73,9 @@ class ShowDetailsViewModel(
         }
     }
 
+    /**
+     * Get the episodes of a show from the server
+     */
     private suspend fun getEpisodes(seasons: List<Season>, id: Int) {
         when (val result = tvMazeRepository.getEpisodes(id)) {
             is ApiResult.Success -> {
@@ -79,6 +91,9 @@ class ShowDetailsViewModel(
         }
     }
 
+    /**
+     * Join Seasons and episodes to be used in the list
+     */
     private fun joinSeasonsAndEpisodes(seasons: List<Season>, episodes: List<Episode>) {
         val seasonEpisodeList: MutableList<SeasonEpisode> = arrayListOf()
         for (season in seasons) {
@@ -90,24 +105,36 @@ class ShowDetailsViewModel(
         _listSeasonEpisodes.postValue(seasonEpisodeList)
     }
 
+    /**
+     * Change the status of a season (Opened or not)
+     */
     fun changeSeason(id: Int) {
         val index = seasonStatusList.indexOfFirst { it.season.id == id }
         seasonStatusList[index].opened = !seasonStatusList[index].opened
         updateList()
     }
 
+    /**
+     * Add show to the favorites list
+     */
     fun addToFavorites(show: Show) {
         viewModelScope.launch(dispatcher.IO) {
             showRoomRepository.insert(show)
         }
     }
 
+    /**
+     * Check if the show is in the favorites list
+     */
     fun checkFavorite(show: Show) {
         viewModelScope.launch(dispatcher.IO) {
             _verifyFavorite.postValue(showRoomRepository.isFavorite(show.id))
         }
     }
 
+    /**
+     * Update the list in the activity
+     */
     private fun updateList() {
         val seasonEpisodeList: MutableList<SeasonEpisode> = arrayListOf()
         for (seasonStatus in seasonStatusList) {

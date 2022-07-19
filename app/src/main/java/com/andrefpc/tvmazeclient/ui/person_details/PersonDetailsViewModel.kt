@@ -11,6 +11,9 @@ import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel used by the PersonActivity
+ */
 class PersonDetailsViewModel(
     private val dispatcher: CoroutineContextProvider,
     private val tvMazeRepository: TvMazeRepository,
@@ -22,6 +25,9 @@ class PersonDetailsViewModel(
     private val _error = MutableLiveData<ApiError>()
     val error: LiveData<ApiError> get() = _error
 
+    /**
+     * Get the shows casted by a person in the server
+     */
     fun getShows(id: Int) {
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getPersonShows(id)) {
@@ -38,5 +44,4 @@ class PersonDetailsViewModel(
             }
         }
     }
-
 }

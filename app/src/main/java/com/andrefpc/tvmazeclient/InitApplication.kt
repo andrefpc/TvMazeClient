@@ -14,6 +14,7 @@ class InitApplication: Application() {
                 listOf(
                     apiModule,
                     repositoryModule,
+                    sessionModule,
                     viewModelModule,
                     remoteModule,
                     coroutineContextProviderModule

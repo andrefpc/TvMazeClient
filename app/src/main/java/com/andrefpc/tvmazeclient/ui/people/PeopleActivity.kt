@@ -12,6 +12,9 @@ import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
 import com.andrefpc.tvmazeclient.ui.person_details.PersonDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * People screen of the application
+ */
 class PeopleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPeopleBinding
     private val viewModel: PeopleViewModel by viewModel()
@@ -19,6 +22,9 @@ class PeopleActivity : AppCompatActivity() {
     private var onScrollListener: RecyclerView.OnScrollListener? = null
     private var showsLayoutManager: GridLayoutManager? = null
 
+    /**
+     * Lifecycle method that run when the activity is created
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPeopleBinding.inflate(layoutInflater)
@@ -30,6 +36,9 @@ class PeopleActivity : AppCompatActivity() {
         initListeners()
     }
 
+    /**
+     * Init the list of favorite shows
+     */
     private fun initList() {
         showsLayoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         binding.people.apply {
@@ -40,6 +49,9 @@ class PeopleActivity : AppCompatActivity() {
         viewModel.getPeople()
     }
 
+    /**
+     * Init the listeners
+     */
     private fun initListeners() {
         adapterPerson.onClick {
             val intent = Intent(this, PersonDetailsActivity::class.java)
@@ -83,11 +95,17 @@ class PeopleActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Lifecycle method that run when the activity is destroyed
+     */
     override fun onDestroy() {
         removeScrollListener()
         super.onDestroy()
     }
 
+    /**
+     * Listen scroll positions for pagination
+     */
     private fun listenScroll() {
         onScrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -107,6 +125,9 @@ class PeopleActivity : AppCompatActivity() {
         onScrollListener?.let { binding.people.addOnScrollListener(it) }
     }
 
+    /**
+     * Remove the scroll listener
+     */
     private fun removeScrollListener() {
         onScrollListener?.let {
             binding.people.removeOnScrollListener(it)

@@ -14,6 +14,9 @@ import com.andrefpc.tvmazeclient.databinding.LayoutShowBinding
 import com.andrefpc.tvmazeclient.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.widget.AnimatedArrow
 
+/**
+ * Adapter used to populate the cast list
+ */
 class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()) {
     private var castClickListener: (Cast) -> Unit = { }
 
@@ -21,6 +24,9 @@ class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()
         this.castClickListener = castClickListener
     }
 
+    /**
+     * Override method used to inflate the view of the adapter items
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = LayoutCastBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -30,6 +36,9 @@ class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()
         return CastViewHolder(binding)
     }
 
+    /**
+     * Override method to set the values for the adapter items widgets
+     */
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder) {
             is CastViewHolder -> {
@@ -38,6 +47,9 @@ class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()
         }
     }
 
+    /**
+     * Method used to set the values for the adapter items widgets
+     */
     private fun bindCastViewHolder(binding: LayoutCastBinding, cast: Cast){
         binding.apply {
             this.image.loadImage(cast.person.image?.medium)
@@ -48,10 +60,16 @@ class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()
         }
     }
 
+    /**
+     * Override method to get the total items the adapter
+     */
     override fun getItemCount(): Int {
         return currentList.size
     }
 
+    /**
+     * View holder used to populate the item views
+     */
     class CastViewHolder(val binding: LayoutCastBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {

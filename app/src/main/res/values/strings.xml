@@ -1,9 +1,27 @@
 <resources>
     <string name="app_name">TV Maze Client</string>
     <string name="login_button">LOGIN</string>
+    <string name="create_button">CREATE PIN</string>
     <string name="pin_placeholder">PIN</string>
     <string name="search_placeholder">Search</string>
     <string name="all_episodes_label">ALL EPISODES</string>
     <string name="cast">CAST</string>
     <string name="all_shows_label">ALL SHOWS</string>
+    <string name="pin">PIN</string>
+    <string name="or">OR</string>
+    <string name="phone_authentication">PHONE AUTHENTICATION</string>
+    <string name="incorrect_pin">Incorrect pin</string>
+    <string name="authentication_succeeded">Authentication succeeded!</string>
+    <string name="login_canceled">Login cancelled by the user</string>
+    <string name="authentication">Authentication</string>
+    <string name="login_biometric">Log in using your biometric credential</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="biometric_enrolled">No biometric or device credential is enrolled.</string>
+    <string name="no_biometric_available">No biometric features available on this device.</string>
+    <string name="biometric_unavailable">Biometric features are currently unavailable.</string>
+    <string name="biometric_unsupported">Biometric is unsupported on this device.</string>
+    <string name="cant_authenticate_with_biometrics">The app can\'t authenticate with biometrics</string>
+    <string name="login_preferred_credential">Log in using your preferred credential</string>
+    <string name="phone_dont_have_sercurity_login">Your phone don\'t have any security login</string>
+    <string name="authentication_error">\"Authentication error: \"</string>
 </resources>

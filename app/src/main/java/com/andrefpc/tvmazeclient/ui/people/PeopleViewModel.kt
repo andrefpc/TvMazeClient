@@ -11,6 +11,9 @@ import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel used by the PeopleActivity
+ */
 class PeopleViewModel(
     private val dispatcher: CoroutineContextProvider,
     private val tvMazeRepository: TvMazeRepository
@@ -31,6 +34,9 @@ class PeopleViewModel(
     var currentPage = 0
     var searching = false
 
+    /**
+    * Get the people list from the server
+    */
     fun getPeople() {
         searching = false
         if (currentPage == 0) _loading.value = true
@@ -53,6 +59,10 @@ class PeopleViewModel(
         }
     }
 
+    /**
+     * Search the people list from the server
+     * @param [term] to be searched
+     */
     fun searchPeople(term: String) {
         searching = true
         _loading.value = true

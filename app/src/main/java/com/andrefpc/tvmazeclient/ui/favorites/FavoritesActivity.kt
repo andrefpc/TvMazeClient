@@ -12,11 +12,17 @@ import com.andrefpc.tvmazeclient.ui.shows.ShowAdapter
 import com.andrefpc.tvmazeclient.ui.shows.ShowsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * Favorites screen of the application
+ */
 class FavoritesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoritesBinding
     private val viewModel: FavoritesViewModel by viewModel()
     private val adapterShow by lazy { ShowAdapter() }
 
+    /**
+     * Lifecycle method that run when the activity is created
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoritesBinding.inflate(layoutInflater)
@@ -27,6 +33,9 @@ class FavoritesActivity : AppCompatActivity() {
         initListeners()
     }
 
+    /**
+     * Init the list of favorite shows
+     */
     private fun initList() {
         binding.shows.apply {
             layoutManager = LinearLayoutManager(this@FavoritesActivity)
@@ -35,6 +44,9 @@ class FavoritesActivity : AppCompatActivity() {
         viewModel.getShows()
     }
 
+    /**
+     * Init the listeners
+     */
     private fun initListeners() {
         adapterShow.onClick {
             val intent = Intent(this, ShowDetailsActivity::class.java)

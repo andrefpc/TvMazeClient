@@ -13,6 +13,9 @@ import com.andrefpc.tvmazeclient.ui.episode_details.EpisodeModal
 import com.andrefpc.tvmazeclient.ui.person_details.PersonDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * Show details screen of the application
+ */
 class ShowDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShowDetailsBinding
     private val viewModel: ShowDetailsViewModel by viewModel()
@@ -24,6 +27,9 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     private lateinit var show: Show
 
+    /**
+     * Lifecycle method that run when the activity is created
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShowDetailsBinding.inflate(layoutInflater)
@@ -35,8 +41,10 @@ class ShowDetailsActivity : AppCompatActivity() {
         viewModel.checkFavorite(show)
     }
 
+    /**
+     * Init the list of favorite shows
+     */
     private fun initList() {
-
         headerAdapter?.onFavoriteClick {
             viewModel.addToFavorites(it)
         }

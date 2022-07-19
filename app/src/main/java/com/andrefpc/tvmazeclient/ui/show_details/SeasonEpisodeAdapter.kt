@@ -16,6 +16,9 @@ import com.andrefpc.tvmazeclient.databinding.LayoutShowBinding
 import com.andrefpc.tvmazeclient.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.widget.AnimatedArrow
 
+/**
+ * Adapter used to populate the episodes/seasons list
+ */
 class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
     private var episodeClickListener: (Episode) -> Unit = { }
@@ -29,6 +32,9 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
         this.seasonClickListener = seasonClickListener
     }
 
+    /**
+     * Override method used to inflate the view of the adapter items
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             SEASON -> {
@@ -50,6 +56,9 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
         }
     }
 
+    /**
+     * Override method to set the values for the adapter items widgets
+     */
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder) {
             is SeasonViewHolder -> {
@@ -61,6 +70,9 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
         }
     }
 
+    /**
+     * Method used to set the values for the season items
+     */
     private fun bindSeasonViewHolder(binding: LayoutSeasonBinding, season: Season){
         binding.apply {
             val seasonName = "Season ${season.number}"
@@ -78,6 +90,9 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
         }
     }
 
+    /**
+     * Method used to set the values for the episodes items
+     */
     private fun bindEpisodeViewHolder(binding: LayoutEpisodeBinding, episode: Episode){
         binding.apply {
             val seasonName = if(episode.season > 9) "S${episode.season}" else "S0${episode.season}"
@@ -92,15 +107,24 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
         }
     }
 
+    /**
+     * Override method to get the total items the adapter
+     */
     override fun getItemCount(): Int {
         return currentList.size
     }
 
+    /**
+     * Override method to set the view type
+     */
     override fun getItemViewType(position: Int): Int {
         val item = currentList[position]
         return if (item.season != null) SEASON else EPISODE
     }
 
+    /**
+     * View holders used to populate the item views
+     */
     class SeasonViewHolder(val binding: LayoutSeasonBinding) : RecyclerView.ViewHolder(binding.root)
     class EpisodeViewHolder(val binding: LayoutEpisodeBinding) : RecyclerView.ViewHolder(binding.root)
 
