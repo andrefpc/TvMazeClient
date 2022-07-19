@@ -101,7 +101,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="ALL EPISODES"
+        android:text="@string/all_episodes_label"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

@@ -3,4 +3,6 @@
     <string name="login_button">LOGIN</string>
     <string name="pin_placeholder">PIN</string>
     <string name="search_placeholder">Search</string>
+    <string name="all_episodes_label">ALL EPISODES</string>
+    <string name="cast">CAST</string>
 </resources>

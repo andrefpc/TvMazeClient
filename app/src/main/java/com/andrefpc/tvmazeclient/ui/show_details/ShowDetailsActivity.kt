@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.data.Show
 import com.andrefpc.tvmazeclient.databinding.ActivityShowDetailsBinding
 import com.andrefpc.tvmazeclient.ui.episode_details.EpisodeModal
@@ -14,6 +15,7 @@ class ShowDetailsActivity : AppCompatActivity() {
     private val viewModel: ShowDetailsViewModel by viewModel()
 
     private val seasonEpisodeAdapter by lazy { SeasonEpisodeAdapter() }
+    private val castAdapter by lazy { CastAdapter() }
     private var headerAdapter: ShowHeaderAdapter? = null
     private val concatAdapter by lazy { ConcatAdapter(headerAdapter, seasonEpisodeAdapter) }
 
@@ -27,7 +29,6 @@ class ShowDetailsActivity : AppCompatActivity() {
 
         show = intent.getSerializableExtra("show") as Show
         viewModel.checkFavorite(show)
-
     }
 
     private fun initList() {
@@ -49,7 +50,14 @@ class ShowDetailsActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@ShowDetailsActivity)
             adapter = concatAdapter
         }
+
+        binding.cast.apply {
+            layoutManager =
+                LinearLayoutManager(this@ShowDetailsActivity, RecyclerView.HORIZONTAL, false)
+            adapter = castAdapter
+        }
         viewModel.getSeasons(show.id)
+        viewModel.getCast(show.id)
     }
 
     /**
@@ -58,6 +66,10 @@ class ShowDetailsActivity : AppCompatActivity() {
     private fun initObservers() {
         viewModel.listSeasonEpisodes.observe(this) {
             seasonEpisodeAdapter.submitList(it)
+        }
+
+        viewModel.listCast.observe(this) {
+            castAdapter.submitList(it)
         }
 
         viewModel.verifyFavorite.observe(this) {

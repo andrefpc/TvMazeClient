@@ -19,6 +19,9 @@ class ShowDetailsViewModel(
     private val _listSeasonEpisodes = MutableLiveData<List<SeasonEpisode>>()
     val listSeasonEpisodes: LiveData<List<SeasonEpisode>> get() = _listSeasonEpisodes
 
+    private val _listCast = MutableLiveData<List<Cast>>()
+    val listCast: LiveData<List<Cast>> get() = _listCast
+
     private val _error = MutableLiveData<ApiError>()
     val error: LiveData<ApiError> get() = _error
 
@@ -30,6 +33,25 @@ class ShowDetailsViewModel(
 
     val seasonStatusList: MutableList<SeasonStatus> = arrayListOf()
 
+    fun getCast(id: Int) {
+        _loading.value = true
+        viewModelScope.launch(dispatcher.IO) {
+            when (val result = tvMazeRepository.getCast(id)) {
+                is ApiResult.Success -> {
+                    _loading.postValue(false)
+                    result.result?.let {
+                        _listCast.postValue(it)
+                    } ?: kotlin.run {
+                        _error.postValue(ApiError())
+                    }
+                }
+                is ApiResult.Error -> {
+                    _loading.postValue(false)
+                    _error.postValue(result.apiError)
+                }
+            }
+        }
+    }
 
     fun getSeasons(id: Int) {
         _loading.value = true

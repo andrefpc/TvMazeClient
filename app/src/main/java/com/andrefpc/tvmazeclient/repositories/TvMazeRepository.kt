@@ -1,9 +1,6 @@
 package com.andrefpc.tvmazeclient.repositories
 
-import com.andrefpc.tvmazeclient.data.ApiResult
-import com.andrefpc.tvmazeclient.data.Episode
-import com.andrefpc.tvmazeclient.data.Season
-import com.andrefpc.tvmazeclient.data.Show
+import com.andrefpc.tvmazeclient.data.*
 
 interface TvMazeRepository {
     /**
@@ -33,4 +30,18 @@ interface TvMazeRepository {
      * @return List of [Episode]
      */
     suspend fun getEpisodes(id: Int): ApiResult<List<Episode>>
+
+    /**
+     * Get the cast of a specific show
+     * @param id Identifier of the show
+     * @return List of [Cast]
+     */
+    suspend fun getCast(id: Int): ApiResult<List<Cast>>
+
+    /**
+     * Get the shows of a person
+     * @param id Identifier of the person
+     * @return List of [Show]
+     */
+    suspend fun getPersonShows(id: Int): ApiResult<List<Show>>
 }

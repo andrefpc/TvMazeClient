@@ -85,4 +85,42 @@ class TvMazeRepositoryImpl(
             return ApiResult.Error(ApiError())
         }
     }
+
+    override suspend fun getCast(id: Int): ApiResult<List<Cast>> {
+        try {
+            val response: Response<List<Cast>> = tvMazeApi.getCast(id)
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
+            }
+
+            response.body()?.let {
+                return ApiResult.Success(it)
+            } ?: kotlin.run {
+                return ApiResult.Error(ApiError())
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(ApiError())
+        }
+    }
+
+    override suspend fun getPersonShows(id: Int): ApiResult<List<Show>> {
+        try {
+            val response: Response<List<PersonShow>> = tvMazeApi.getPersonShows(id)
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
+            }
+
+            response.body()?.let { personShow ->
+                return ApiResult.Success(personShow.map { it.embedded.show })
+            } ?: kotlin.run {
+                return ApiResult.Error(ApiError())
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(ApiError())
+        }
+    }
 }

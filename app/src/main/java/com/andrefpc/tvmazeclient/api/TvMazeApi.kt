@@ -1,9 +1,6 @@
 package com.andrefpc.tvmazeclient.api
 
-import com.andrefpc.tvmazeclient.data.Episode
-import com.andrefpc.tvmazeclient.data.Search
-import com.andrefpc.tvmazeclient.data.Season
-import com.andrefpc.tvmazeclient.data.Show
+import com.andrefpc.tvmazeclient.data.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -33,4 +30,16 @@ interface TvMazeApi {
      */
     @GET("shows/{id}/episodes")
     suspend fun getEpisodes(@Path(value = "id") id: Int): Response<List<Episode>>
+
+    /**
+     * Get Cast
+     */
+    @GET("shows/{id}/cast")
+    suspend fun getCast(@Path(value = "id") id: Int): Response<List<Cast>>
+
+    /**
+     * Get Person Shows
+     */
+    @GET("people/{id}/castcredits?embed=show")
+    suspend fun getPersonShows(@Path(value = "id") id: Int): Response<List<PersonShow>>
 }
