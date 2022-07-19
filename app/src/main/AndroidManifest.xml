@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVMazeClient">
         <activity
+            android:name=".ui.person_details.PersonDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.people.PeopleActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.favorites.FavoritesActivity"
             android:exported="false" />
         <activity

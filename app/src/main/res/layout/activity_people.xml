@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.shows.ShowsActivity">
+    tools:context=".ui.people.PeopleActivity">
 
     <com.andrefpc.tvmazeclient.widget.SearchField
         android:id="@+id/search"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.andrefpc.tvmazeclient.widget.ShimmerLayout
-        android:id="@+id/shows_shimmer"
+        android:id="@+id/people_shimmer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
@@ -24,33 +24,12 @@
         app:layout_constraintTop_toBottomOf="@+id/search">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shows"
+            android:id="@+id/people"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.andrefpc.tvmazeclient.widget.ShimmerLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/favorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_favorite"
-        app:backgroundTint="@color/purple_700"
-        app:tint="@color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_people"
-        app:backgroundTint="@color/purple_700"
-        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,8 @@
 package com.andrefpc.tvmazeclient.data
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class PersonShow(
-    var embedded: PersonShowEmbedded
+    @SerializedName("_embedded") var embedded: PersonShowEmbedded
 ): Serializable

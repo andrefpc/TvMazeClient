@@ -20,6 +20,7 @@ class FavoritesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoritesBinding.inflate(layoutInflater)
+        title = "Favorites"
         setContentView(binding.root)
         initObservers()
         initList()

@@ -1,0 +1,116 @@
+package com.andrefpc.tvmazeclient.ui.people
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.andrefpc.tvmazeclient.data.Person
+import com.andrefpc.tvmazeclient.databinding.ActivityPeopleBinding
+import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
+import com.andrefpc.tvmazeclient.ui.person_details.PersonDetailsActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+class PeopleActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPeopleBinding
+    private val viewModel: PeopleViewModel by viewModel()
+    private val adapterPerson by lazy { PersonAdapter() }
+    private var onScrollListener: RecyclerView.OnScrollListener? = null
+    private var showsLayoutManager: GridLayoutManager? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPeopleBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        title = "People"
+
+        initObservers()
+        initList()
+        initListeners()
+    }
+
+    private fun initList() {
+        showsLayoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
+        binding.people.apply {
+            layoutManager = showsLayoutManager
+            adapter = adapterPerson
+        }
+        listenScroll()
+        viewModel.getPeople()
+    }
+
+    private fun initListeners() {
+        adapterPerson.onClick {
+            val intent = Intent(this, PersonDetailsActivity::class.java)
+            intent.putExtra("person", it)
+            startActivity(intent)
+        }
+
+        binding.search.onTextChange {
+            if (it.length > 2) {
+                viewModel.searchPeople(it)
+            }
+            if (it.isEmpty()) {
+                viewModel.getPeople()
+                binding.search.hideKeyboard()
+            }
+        }
+    }
+
+    /**
+     * Init the ViewModel observers
+     */
+    private fun initObservers() {
+        viewModel.listPeople.observe(this) {
+            adapterPerson.submitList(it)
+        }
+
+        viewModel.addToListPeople.observe(this) {
+            val currentList: MutableList<Person> = arrayListOf()
+            currentList.addAll(adapterPerson.currentList)
+            currentList.addAll(it)
+            adapterPerson.submitList(currentList)
+        }
+
+        viewModel.error.observe(this) {
+            Toast.makeText(this, "Error getting shows: ${it.message}", Toast.LENGTH_LONG).show()
+        }
+
+        viewModel.loading.observe(this) {
+            if (it) binding.peopleShimmer.startProgress()
+            else binding.peopleShimmer.stopProgress()
+        }
+    }
+
+    override fun onDestroy() {
+        removeScrollListener()
+        super.onDestroy()
+    }
+
+    private fun listenScroll() {
+        onScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!viewModel.searching) {
+                    showsLayoutManager?.let { manager ->
+                        val visibleItemCount: Int = manager.childCount
+                        val totalItemCount: Int = manager.itemCount
+                        val pastVisibleItems: Int = manager.findFirstVisibleItemPosition()
+                        if (pastVisibleItems + visibleItemCount >= totalItemCount - 10) {
+                            viewModel.currentPage++
+                            viewModel.getPeople()
+                        }
+                    }
+                }
+            }
+        }
+        onScrollListener?.let { binding.people.addOnScrollListener(it) }
+    }
+
+    private fun removeScrollListener() {
+        onScrollListener?.let {
+            binding.people.removeOnScrollListener(it)
+            onScrollListener = null
+        }
+    }
+}

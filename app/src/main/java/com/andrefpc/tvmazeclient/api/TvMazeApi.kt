@@ -42,4 +42,16 @@ interface TvMazeApi {
      */
     @GET("people/{id}/castcredits?embed=show")
     suspend fun getPersonShows(@Path(value = "id") id: Int): Response<List<PersonShow>>
+
+    /**
+     * Get People
+     */
+    @GET("people")
+    suspend fun getPeople(@QueryMap params: HashMap<String, String>): Response<List<Person>>
+
+    /**
+     * Search People
+     */
+    @GET("search/people")
+    suspend fun searchPeople(@QueryMap params: HashMap<String, String>): Response<List<SearchPeople>>
 }

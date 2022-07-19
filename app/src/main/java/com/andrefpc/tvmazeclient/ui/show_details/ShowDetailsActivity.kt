@@ -1,6 +1,8 @@
 package com.andrefpc.tvmazeclient.ui.show_details
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.data.Show
 import com.andrefpc.tvmazeclient.databinding.ActivityShowDetailsBinding
 import com.andrefpc.tvmazeclient.ui.episode_details.EpisodeModal
+import com.andrefpc.tvmazeclient.ui.person_details.PersonDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShowDetailsActivity : AppCompatActivity() {
@@ -28,6 +31,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         initObservers()
 
         show = intent.getSerializableExtra("show") as Show
+        title = show.name
         viewModel.checkFavorite(show)
     }
 
@@ -56,6 +60,13 @@ class ShowDetailsActivity : AppCompatActivity() {
                 LinearLayoutManager(this@ShowDetailsActivity, RecyclerView.HORIZONTAL, false)
             adapter = castAdapter
         }
+
+        castAdapter.onCastClick {
+            val intent = Intent(this, PersonDetailsActivity::class.java)
+            intent.putExtra("person", it.person)
+            startActivity(intent)
+        }
+
         viewModel.getSeasons(show.id)
         viewModel.getCast(show.id)
     }
@@ -79,10 +90,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         }
 
         viewModel.error.observe(this) {
-
-        }
-
-        viewModel.loading.observe(this) {
+            Toast.makeText(this, "Error getting shows: ${it.message}", Toast.LENGTH_LONG).show()
         }
     }
 }

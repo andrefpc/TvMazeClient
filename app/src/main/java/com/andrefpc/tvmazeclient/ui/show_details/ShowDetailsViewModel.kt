@@ -25,20 +25,15 @@ class ShowDetailsViewModel(
     private val _error = MutableLiveData<ApiError>()
     val error: LiveData<ApiError> get() = _error
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> get() = _loading
-
     private val _verifyFavorite = MutableLiveData<Boolean>()
     val verifyFavorite: LiveData<Boolean> get() = _verifyFavorite
 
     val seasonStatusList: MutableList<SeasonStatus> = arrayListOf()
 
     fun getCast(id: Int) {
-        _loading.value = true
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getCast(id)) {
                 is ApiResult.Success -> {
-                    _loading.postValue(false)
                     result.result?.let {
                         _listCast.postValue(it)
                     } ?: kotlin.run {
@@ -46,7 +41,6 @@ class ShowDetailsViewModel(
                     }
                 }
                 is ApiResult.Error -> {
-                    _loading.postValue(false)
                     _error.postValue(result.apiError)
                 }
             }
@@ -54,11 +48,9 @@ class ShowDetailsViewModel(
     }
 
     fun getSeasons(id: Int) {
-        _loading.value = true
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getSeasons(id)) {
                 is ApiResult.Success -> {
-                    _loading.postValue(false)
                     result.result?.let {
                         getEpisodes(it, id)
                     } ?: kotlin.run {
@@ -66,7 +58,6 @@ class ShowDetailsViewModel(
                     }
                 }
                 is ApiResult.Error -> {
-                    _loading.postValue(false)
                     _error.postValue(result.apiError)
                 }
             }
@@ -76,7 +67,6 @@ class ShowDetailsViewModel(
     private suspend fun getEpisodes(seasons: List<Season>, id: Int) {
         when (val result = tvMazeRepository.getEpisodes(id)) {
             is ApiResult.Success -> {
-                _loading.postValue(false)
                 result.result?.let {
                     joinSeasonsAndEpisodes(seasons, it)
                 } ?: kotlin.run {
@@ -84,7 +74,6 @@ class ShowDetailsViewModel(
                 }
             }
             is ApiResult.Error -> {
-                _loading.postValue(false)
                 _error.postValue(result.apiError)
             }
         }

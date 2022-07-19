@@ -11,7 +11,7 @@ interface TvMazeRepository {
     suspend fun getShows(page: Int): ApiResult<List<Show>>
 
     /**
-     * Search shows Shows from the api
+     * Search Shows from the api
      * @param term Search term
      * @return List of [Show]
      */
@@ -44,4 +44,18 @@ interface TvMazeRepository {
      * @return List of [Show]
      */
     suspend fun getPersonShows(id: Int): ApiResult<List<Show>>
+
+    /**
+     * Get People from the api
+     * @param page Page of the api
+     * @return List of [Person]
+     */
+    suspend fun getPeople(page: Int): ApiResult<List<Person>>
+
+    /**
+     * Search People from the api
+     * @param term Search term
+     * @return List of [Person]
+     */
+    suspend fun searchPeople(term: String): ApiResult<List<Person>>
 }

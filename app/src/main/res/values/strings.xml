@@ -5,4 +5,5 @@
     <string name="search_placeholder">Search</string>
     <string name="all_episodes_label">ALL EPISODES</string>
     <string name="cast">CAST</string>
+    <string name="all_shows_label">ALL SHOWS</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.ui.shows
+package com.andrefpc.tvmazeclient.ui.people
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,20 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.data.ApiError
 import com.andrefpc.tvmazeclient.data.ApiResult
-import com.andrefpc.tvmazeclient.data.Show
+import com.andrefpc.tvmazeclient.data.Person
 import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 
-class ShowsViewModel(
+class PeopleViewModel(
     private val dispatcher: CoroutineContextProvider,
     private val tvMazeRepository: TvMazeRepository
 ) : ViewModel() {
-    private val _listShows = MutableLiveData<List<Show>>()
-    val listShows: LiveData<List<Show>> get() = _listShows
 
-    private val _addToListShows = MutableLiveData<List<Show>>()
-    val addToListShows: LiveData<List<Show>> get() = _addToListShows
+    private val _listPeople = MutableLiveData<List<Person>>()
+    val listPeople: LiveData<List<Person>> get() = _listPeople
+
+    private val _addToListPeople = MutableLiveData<List<Person>>()
+    val addToListPeople: LiveData<List<Person>> get() = _addToListPeople
 
     private val _error = MutableLiveData<ApiError>()
     val error: LiveData<ApiError> get() = _error
@@ -30,37 +31,37 @@ class ShowsViewModel(
     var currentPage = 0
     var searching = false
 
-    fun getShows() {
+    fun getPeople() {
         searching = false
-        if(currentPage == 0) _loading.value = true
+        if (currentPage == 0) _loading.value = true
         viewModelScope.launch(dispatcher.IO) {
-            when (val result = tvMazeRepository.getShows(currentPage)) {
+            when (val result = tvMazeRepository.getPeople(currentPage)) {
                 is ApiResult.Success -> {
-                    if(currentPage == 0) _loading.postValue(false)
+                    if (currentPage == 0) _loading.postValue(false)
                     result.result?.let {
-                        if(currentPage == 0) _listShows.postValue(it)
-                        else _addToListShows.postValue(it)
+                        if (currentPage == 0) _listPeople.postValue(it)
+                        else _addToListPeople.postValue(it)
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
                     }
                 }
                 is ApiResult.Error -> {
-                    if(currentPage == 0) _loading.postValue(false)
+                    if (currentPage == 0) _loading.postValue(false)
                     _error.postValue(result.apiError)
                 }
             }
         }
     }
 
-    fun searchShows(term: String) {
+    fun searchPeople(term: String) {
         searching = true
         _loading.value = true
         viewModelScope.launch(dispatcher.IO) {
-            when (val result = tvMazeRepository.searchShows(term)) {
+            when (val result = tvMazeRepository.searchPeople(term)) {
                 is ApiResult.Success -> {
                     _loading.postValue(false)
                     result.result?.let {
-                        _listShows.postValue(it)
+                        _listPeople.postValue(it)
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
                     }
@@ -72,4 +73,5 @@ class ShowsViewModel(
             }
         }
     }
+
 }

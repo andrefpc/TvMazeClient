@@ -6,6 +6,8 @@ import com.andrefpc.tvmazeclient.repositories.TvMazeRepositoryImpl
 import com.andrefpc.tvmazeclient.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.room.ShowRoomRepositoryImpl
 import com.andrefpc.tvmazeclient.ui.favorites.FavoritesViewModel
+import com.andrefpc.tvmazeclient.ui.people.PeopleViewModel
+import com.andrefpc.tvmazeclient.ui.person_details.PersonDetailsViewModel
 import com.andrefpc.tvmazeclient.ui.show_details.ShowDetailsViewModel
 import com.andrefpc.tvmazeclient.ui.shows.ShowsViewModel
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
@@ -43,6 +45,18 @@ val viewModelModule = module {
         FavoritesViewModel(
             dispatcher = get(),
             showRoomRepository = get()
+        )
+    }
+    viewModel {
+        PeopleViewModel(
+            dispatcher = get(),
+            tvMazeRepository = get()
+        )
+    }
+    viewModel {
+        PersonDetailsViewModel(
+            dispatcher = get(),
+            tvMazeRepository = get()
         )
     }
 }

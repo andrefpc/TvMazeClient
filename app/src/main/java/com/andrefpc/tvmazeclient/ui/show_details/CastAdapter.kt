@@ -40,7 +40,7 @@ class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()
 
     private fun bindCastViewHolder(binding: LayoutCastBinding, cast: Cast){
         binding.apply {
-            this.image.loadImage(cast.person.image.medium)
+            this.image.loadImage(cast.person.image?.medium)
             this.name.text = cast.person.name
             this.root.setOnClickListener {
                 castClickListener(cast)

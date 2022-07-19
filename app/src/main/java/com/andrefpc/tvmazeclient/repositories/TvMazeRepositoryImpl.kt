@@ -123,4 +123,44 @@ class TvMazeRepositoryImpl(
             return ApiResult.Error(ApiError())
         }
     }
+
+    override suspend fun getPeople(page: Int): ApiResult<List<Person>> {
+        try {
+            val params = hashMapOf("page" to page.toString())
+            val response: Response<List<Person>> = tvMazeApi.getPeople(params)
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
+            }
+
+            response.body()?.let {
+                return ApiResult.Success(it)
+            } ?: kotlin.run {
+                return ApiResult.Error(ApiError())
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(ApiError())
+        }
+    }
+
+    override suspend fun searchPeople(term: String): ApiResult<List<Person>> {
+        try {
+            val params = hashMapOf("q" to term)
+            val response: Response<List<SearchPeople>> = tvMazeApi.searchPeople(params)
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)
+                return ApiResult.Error(apiError)
+            }
+
+            response.body()?.let { list ->
+                return ApiResult.Success(list.map { it.person })
+            } ?: kotlin.run {
+                return ApiResult.Error(ApiError())
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(ApiError())
+        }
+    }
 }
