@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/activity_shows.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_cast.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_episode.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/layout_favorite.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_header_person.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_header_show.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_item_show.xml" value="0.2078125" />

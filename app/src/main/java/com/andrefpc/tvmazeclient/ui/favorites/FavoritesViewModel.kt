@@ -22,7 +22,7 @@ class FavoritesViewModel(
     /**
      * Get the favorite shows saved in the database
      */
-    fun getShows() {
+    fun getFavorites() {
         viewModelScope.launch(dispatcher.IO) {
             _listShows.postValue(showRoomRepository.getAll())
         }
@@ -31,9 +31,19 @@ class FavoritesViewModel(
     /**
      * Search into the favorite shows saved in the database
      */
-    fun searchShows(term: String) {
+    fun searchFavorites(term: String) {
         viewModelScope.launch(dispatcher.IO) {
             _listShows.postValue(showRoomRepository.search(term))
+        }
+    }
+
+    /**
+     * Delete a favorite show in the database
+     */
+    fun deleteFavorite(show: Show) {
+        viewModelScope.launch(dispatcher.IO) {
+            showRoomRepository.delete(show.id)
+            _listShows.postValue(showRoomRepository.getAll())
         }
     }
 

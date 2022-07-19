@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andrefpc.tvmazeclient.databinding.ActivityFavoritesBinding
-import com.andrefpc.tvmazeclient.databinding.ActivityShowsBinding
 import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
 import com.andrefpc.tvmazeclient.ui.show_details.ShowDetailsActivity
-import com.andrefpc.tvmazeclient.ui.shows.ShowAdapter
-import com.andrefpc.tvmazeclient.ui.shows.ShowsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -18,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class FavoritesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoritesBinding
     private val viewModel: FavoritesViewModel by viewModel()
-    private val adapterShow by lazy { ShowAdapter() }
+    private val adapterFavorites by lazy { FavoritesAdapter() }
 
     /**
      * Lifecycle method that run when the activity is created
@@ -39,27 +36,31 @@ class FavoritesActivity : AppCompatActivity() {
     private fun initList() {
         binding.shows.apply {
             layoutManager = LinearLayoutManager(this@FavoritesActivity)
-            adapter = adapterShow
+            adapter = adapterFavorites
         }
-        viewModel.getShows()
+        viewModel.getFavorites()
     }
 
     /**
      * Init the listeners
      */
     private fun initListeners() {
-        adapterShow.onClick {
+        adapterFavorites.onClick {
             val intent = Intent(this, ShowDetailsActivity::class.java)
             intent.putExtra("show", it)
             startActivity(intent)
         }
 
+        adapterFavorites.onDelete {
+            viewModel.deleteFavorite(it)
+        }
+
         binding.search.onTextChange {
             if(it.length > 2){
-                viewModel.searchShows(it)
+                viewModel.searchFavorites(it)
             }
             if(it.isEmpty()){
-                viewModel.getShows()
+                viewModel.getFavorites()
                 binding.search.hideKeyboard()
             }
         }
@@ -70,7 +71,7 @@ class FavoritesActivity : AppCompatActivity() {
      */
     private fun initObservers() {
         viewModel.listShows.observe(this) {
-            adapterShow.submitList(it)
+            adapterFavorites.submitList(it)
         }
     }
 }
