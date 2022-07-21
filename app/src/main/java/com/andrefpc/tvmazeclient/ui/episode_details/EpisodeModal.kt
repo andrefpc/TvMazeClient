@@ -71,7 +71,7 @@ class EpisodeModal : DialogFragment() {
     private fun initViews() {
         val episode = arguments?.get(EPISODE) as Episode
         val seasonName = if (episode.season > 9) "S${episode.season}" else "S0${episode.season}"
-        val episodeNumber = if (episode.number > 9) "S${episode.number}" else "S0${episode.number}"
+        val episodeNumber = if (episode.number > 9) "E${episode.number}" else "E0${episode.number}"
         val episodeFinalNumber = "$seasonName | $episodeNumber"
         val timeValue = "${episode.airtime} (${episode.runtime} minutes)"
 
