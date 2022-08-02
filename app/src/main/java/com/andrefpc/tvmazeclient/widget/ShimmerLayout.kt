@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ViewFlipper
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.LayoutEmptyBinding
+import com.andrefpc.tvmazeclient.databinding.LayoutEmptyImageBinding
 import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
 
 
@@ -26,6 +27,13 @@ class ShimmerLayout @JvmOverloads constructor(
             false
         )
         addView(emptyBinding.root)
+
+        val emptyImageBinding = LayoutEmptyImageBinding.inflate(
+            LayoutInflater.from(context),
+            null,
+            false
+        )
+        addView(emptyImageBinding.root)
         inAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         outAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
     }
@@ -40,8 +48,13 @@ class ShimmerLayout @JvmOverloads constructor(
         displayedChild = 1
     }
 
-    fun stopProgress() {
+    fun showEmptyImage() {
         shimmer?.stopProgress()
         displayedChild = 2
+    }
+
+    fun stopProgress() {
+        shimmer?.stopProgress()
+        displayedChild = 3
     }
 }

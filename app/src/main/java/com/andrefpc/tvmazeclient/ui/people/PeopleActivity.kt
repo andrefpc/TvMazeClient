@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.data.Person
 import com.andrefpc.tvmazeclient.databinding.ActivityPeopleBinding
 import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
@@ -85,9 +86,13 @@ class PeopleActivity : AppCompatActivity() {
      */
     private fun initListeners() {
         adapterPerson.onClick {
-            val intent = Intent(this, PersonDetailsActivity::class.java)
-            intent.putExtra("person", it)
-            startActivity(intent)
+            if(it.image != null) {
+                val intent = Intent(this, PersonDetailsActivity::class.java)
+                intent.putExtra("person", it)
+                startActivity(intent)
+            }else{
+                Toast.makeText(this, getString(R.string.enough_info_about_person, it.name), Toast.LENGTH_SHORT).show()
+            }
         }
 
         adapterPerson.registerAdapterDataObserver(listObserver)

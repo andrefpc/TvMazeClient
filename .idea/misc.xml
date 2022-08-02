@@ -4,10 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_clear_gray.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable-v24/ic_empty_image.xml" value="0.179" />
         <entry key="app/src/main/res/drawable-v24/ic_search.xml" value="0.179" />
         <entry key="app/src/main/res/drawable-v24/search_bg.xml" value="0.179" />
         <entry key="app/src/main/res/drawable-v24/shimmer_bg.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/ic_clear_gray.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_empty_image.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_favorite.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_frame_14.xml" value="0.144" />
+        <entry key="app/src/main/res/drawable/ic_no_image.xml" value="0.144" />
+        <entry key="app/src/main/res/drawable/ic_people.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/search_bg.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.179" />
@@ -21,6 +28,7 @@
         <entry key="app/src/main/res/layout/activity_shows.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_cast.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_empty.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/layout/layout_empty_image.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_episode.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/layout_favorite.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/layout_header_person.xml" value="0.19791666666666666" />

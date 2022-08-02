@@ -68,11 +68,16 @@ class PersonDetailsActivity : AppCompatActivity() {
      */
     private fun initObservers() {
         viewModel.listShows.observe(this) {
-            showAdapter.submitList(it)
+            if(it.isEmpty()){
+                headerAdapter?.hideLabel()
+                Toast.makeText(this, getString(R.string.person_without_shows, person.name), Toast.LENGTH_SHORT).show()
+            }else{
+                showAdapter.submitList(it)
+            }
         }
 
         viewModel.error.observe(this) {
-            Toast.makeText(this, "Error getting shows: ${it.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.error_getting_shows, it.message), Toast.LENGTH_LONG).show()
         }
     }
 }
