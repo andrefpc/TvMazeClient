@@ -19,12 +19,20 @@ class FavoritesViewModel(
     private val _listShows = MutableLiveData<List<Show>>()
     val listShows: LiveData<List<Show>> get() = _listShows
 
+    private val _showEmpty = MutableLiveData<Boolean>()
+    val showEmpty: LiveData<Boolean> get() = _showEmpty
+
     /**
      * Get the favorite shows saved in the database
      */
     fun getFavorites() {
         viewModelScope.launch(dispatcher.IO) {
-            _listShows.postValue(showRoomRepository.getAll())
+            val list = showRoomRepository.getAll()
+            if(list.isEmpty()) {
+                _showEmpty.postValue(true)
+            }else{
+                _listShows.postValue(list)
+            }
         }
     }
 
@@ -33,7 +41,12 @@ class FavoritesViewModel(
      */
     fun searchFavorites(term: String) {
         viewModelScope.launch(dispatcher.IO) {
-            _listShows.postValue(showRoomRepository.search(term))
+            val list = showRoomRepository.search(term)
+            if(list.isEmpty()) {
+                _showEmpty.postValue(true)
+            }else{
+                _listShows.postValue(list)
+            }
         }
     }
 
@@ -43,7 +56,12 @@ class FavoritesViewModel(
     fun deleteFavorite(show: Show) {
         viewModelScope.launch(dispatcher.IO) {
             showRoomRepository.delete(show.id)
-            _listShows.postValue(showRoomRepository.getAll())
+            val list = showRoomRepository.getAll()
+            if(list.isEmpty()) {
+                _showEmpty.postValue(true)
+            }else{
+                _listShows.postValue(list)
+            }
         }
     }
 

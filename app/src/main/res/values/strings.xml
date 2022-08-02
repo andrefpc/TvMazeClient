@@ -25,4 +25,6 @@
     <string name="login_preferred_credential">Log in using your preferred credential</string>
     <string name="phone_dont_have_sercurity_login">Your phone don\'t have any security login</string>
     <string name="authentication_error">\"Authentication error: \"</string>
+    <string name="delete_favorite_feedback">%1$s was deleted from favorites successfully</string>
+    <string name="add_favorite_feedback">%1$s was added to favorites successfully</string>
 </resources>

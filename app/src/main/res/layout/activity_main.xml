@@ -12,7 +12,6 @@
         android:orientation="vertical">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/splash_bouncing"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

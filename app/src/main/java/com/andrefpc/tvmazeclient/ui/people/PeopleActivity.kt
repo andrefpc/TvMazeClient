@@ -97,6 +97,11 @@ class PeopleActivity : AppCompatActivity() {
                 needScroll = true
                 viewModel.searchPeople(it)
             }
+            if(it.isEmpty()){
+                needScroll = true
+                viewModel.getPeople()
+                binding.search.hideKeyboard()
+            }
         }
 
         binding.search.onClear {
@@ -110,6 +115,10 @@ class PeopleActivity : AppCompatActivity() {
      * Init the ViewModel observers
      */
     private fun initObservers() {
+        viewModel.showEmpty.observe(this) {
+            binding.peopleShimmer.showEmpty()
+        }
+
         viewModel.listPeople.observe(this) {
             adapterPerson.submitList(it)
         }

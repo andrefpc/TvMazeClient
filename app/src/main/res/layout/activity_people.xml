@@ -30,6 +30,7 @@
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </com.andrefpc.tvmazeclient.widget.ShimmerLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

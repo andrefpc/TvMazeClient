@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.data.Show
 import com.andrefpc.tvmazeclient.databinding.ActivityShowDetailsBinding
 import com.andrefpc.tvmazeclient.ui.episode_details.EpisodeModal
@@ -47,6 +48,7 @@ class ShowDetailsActivity : AppCompatActivity() {
     private fun initList() {
         headerAdapter?.onFavoriteClick {
             viewModel.addToFavorites(it)
+            Toast.makeText(this, getString(R.string.add_favorite_feedback, it.name), Toast.LENGTH_SHORT ).show()
         }
 
         seasonEpisodeAdapter.onEpisodeClick { episode ->

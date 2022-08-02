@@ -115,7 +115,8 @@ class TvMazeRepositoryImpl(
             }
 
             response.body()?.let { personShow ->
-                return ApiResult.Success(personShow.map { it.embedded.show })
+                return if (personShow.isEmpty()) ApiResult.Success(emptyList())
+                else ApiResult.Success(personShow.map { it.embedded.show })
             } ?: kotlin.run {
                 return ApiResult.Error(ApiError())
             }

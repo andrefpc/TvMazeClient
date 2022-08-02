@@ -3,8 +3,10 @@ package com.andrefpc.tvmazeclient.ui.favorites
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.ActivityFavoritesBinding
 import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
 import com.andrefpc.tvmazeclient.ui.show_details.ShowDetailsActivity
@@ -83,13 +85,17 @@ class FavoritesActivity : AppCompatActivity() {
 
         adapterFavorites.onDelete {
             viewModel.deleteFavorite(it)
+            Toast.makeText(this, getString(R.string.delete_favorite_feedback, it.name), Toast.LENGTH_SHORT ).show()
         }
 
         binding.search.onTextChange {
             if(it.length > 2){
                 viewModel.searchFavorites(it)
             }
-
+            if(it.isEmpty()){
+                viewModel.getFavorites()
+                binding.search.hideKeyboard()
+            }
         }
 
         binding.search.onClear {
@@ -102,8 +108,13 @@ class FavoritesActivity : AppCompatActivity() {
      * Init the ViewModel observers
      */
     private fun initObservers() {
+        viewModel.showEmpty.observe(this) {
+            binding.showsShimmer.showEmpty()
+        }
+
         viewModel.listShows.observe(this) {
             adapterFavorites.submitList(it)
+            binding.showsShimmer.stopProgress()
         }
     }
 

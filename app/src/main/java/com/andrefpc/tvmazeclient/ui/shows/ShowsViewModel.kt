@@ -31,6 +31,9 @@ class ShowsViewModel(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
+    private val _showEmpty = MutableLiveData<Boolean>()
+    val showEmpty: LiveData<Boolean> get() = _showEmpty
+
     var currentPage = 0
     var searching = false
 
@@ -44,13 +47,22 @@ class ShowsViewModel(
             when (val result = tvMazeRepository.getShows(currentPage)) {
                 is ApiResult.Success -> {
                     result.result?.let {
-                        if(currentPage == 0) _listShows.postValue(it)
-                        else _addToListShows.postValue(it)
+                        if(currentPage == 0){
+                            if(it.isEmpty()){
+                                _showEmpty.postValue(true)
+                            }else{
+                                _listShows.postValue(it)
+                                delay(1000)
+                                _loading.postValue(false)
+                            }
+                        }
+                        else {
+                            _addToListShows.postValue(it)
+                        }
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
+                        if(currentPage == 0) _loading.postValue(false)
                     }
-                    delay(1000)
-                    if(currentPage == 0) _loading.postValue(false)
                 }
                 is ApiResult.Error -> {
                     if(currentPage == 0) _loading.postValue(false)
@@ -71,12 +83,17 @@ class ShowsViewModel(
             when (val result = tvMazeRepository.searchShows(term)) {
                 is ApiResult.Success -> {
                     result.result?.let {
-                        _listShows.postValue(it)
+                        if(it.isEmpty()){
+                            _showEmpty.postValue(true)
+                        }else{
+                            _listShows.postValue(it)
+                            delay(1000)
+                            _loading.postValue(false)
+                        }
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
+                        _loading.postValue(false)
                     }
-                    delay(1000)
-                    _loading.postValue(false)
                 }
                 is ApiResult.Error -> {
                     _loading.postValue(false)

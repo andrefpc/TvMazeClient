@@ -9,6 +9,7 @@ import com.andrefpc.tvmazeclient.data.ApiResult
 import com.andrefpc.tvmazeclient.data.Person
 import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -31,6 +32,9 @@ class PeopleViewModel(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
+    private val _showEmpty = MutableLiveData<Boolean>()
+    val showEmpty: LiveData<Boolean> get() = _showEmpty
+
     var currentPage = 0
     var searching = false
 
@@ -43,12 +47,22 @@ class PeopleViewModel(
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getPeople(currentPage)) {
                 is ApiResult.Success -> {
-                    if (currentPage == 0) _loading.postValue(false)
                     result.result?.let {
-                        if (currentPage == 0) _listPeople.postValue(it)
-                        else _addToListPeople.postValue(it)
+                        if(currentPage == 0){
+                            if(it.isEmpty()){
+                                _showEmpty.postValue(true)
+                            }else{
+                                _listPeople.postValue(it)
+                                delay(1000)
+                                _loading.postValue(false)
+                            }
+                        }
+                        else {
+                            _addToListPeople.postValue(it)
+                        }
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
+                        if(currentPage == 0) _loading.postValue(false)
                     }
                 }
                 is ApiResult.Error -> {
@@ -69,11 +83,17 @@ class PeopleViewModel(
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.searchPeople(term)) {
                 is ApiResult.Success -> {
-                    _loading.postValue(false)
                     result.result?.let {
-                        _listPeople.postValue(it)
+                        if(it.isEmpty()){
+                            _showEmpty.postValue(true)
+                        }else{
+                            _listPeople.postValue(it)
+                            delay(1000)
+                            _loading.postValue(false)
+                        }
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
+                        _loading.postValue(false)
                     }
                 }
                 is ApiResult.Error -> {

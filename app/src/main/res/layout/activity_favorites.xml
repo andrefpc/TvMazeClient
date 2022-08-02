@@ -13,14 +13,20 @@
         android:layout_marginTop="12dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shows"
+    <com.andrefpc.tvmazeclient.widget.ShimmerLayout
+        android:id="@+id/shows_shimmer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/search"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shows"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.andrefpc.tvmazeclient.widget.ShimmerLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

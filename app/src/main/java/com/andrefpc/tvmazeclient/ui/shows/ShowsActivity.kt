@@ -100,6 +100,11 @@ class ShowsActivity : AppCompatActivity() {
                 needScroll = true
                 viewModel.searchShows(it)
             }
+            if(it.isEmpty()){
+                needScroll = true
+                viewModel.getShows()
+                binding.search.hideKeyboard()
+            }
         }
         binding.search.onClear {
             needScroll = true
@@ -120,6 +125,10 @@ class ShowsActivity : AppCompatActivity() {
      * Init the ViewModel observers
      */
     private fun initObservers() {
+
+        viewModel.showEmpty.observe(this) {
+            binding.showsShimmer.showEmpty()
+        }
 
         viewModel.listShows.observe(this) {
             adapterShow.submitList(it)
