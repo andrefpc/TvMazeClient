@@ -21,6 +21,37 @@ class PeopleActivity : AppCompatActivity() {
     private val adapterPerson by lazy { PersonAdapter() }
     private var onScrollListener: RecyclerView.OnScrollListener? = null
     private var showsLayoutManager: GridLayoutManager? = null
+    var needScroll = false
+    private val listObserver: RecyclerView.AdapterDataObserver by lazy {
+        object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onChanged() {
+                checkScroll()
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+        }
+    }
+
+    private fun checkScroll() {
+        if (needScroll) {
+            binding.people.scrollToPosition(0)
+            needScroll = false
+        }
+    }
 
     /**
      * Lifecycle method that run when the activity is created
@@ -59,14 +90,19 @@ class PeopleActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        adapterPerson.registerAdapterDataObserver(listObserver)
+
         binding.search.onTextChange {
             if (it.length > 2) {
+                needScroll = true
                 viewModel.searchPeople(it)
             }
-            if (it.isEmpty()) {
-                viewModel.getPeople()
-                binding.search.hideKeyboard()
-            }
+        }
+
+        binding.search.onClear {
+            needScroll = true
+            viewModel.getPeople()
+            binding.search.hideKeyboard()
         }
     }
 
@@ -100,6 +136,7 @@ class PeopleActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         removeScrollListener()
+        adapterPerson.unregisterAdapterDataObserver(listObserver)
         super.onDestroy()
     }
 

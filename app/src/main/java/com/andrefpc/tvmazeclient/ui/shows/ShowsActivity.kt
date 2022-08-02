@@ -1,10 +1,9 @@
 package com.andrefpc.tvmazeclient.ui.shows
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.data.Show
@@ -13,7 +12,6 @@ import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
 import com.andrefpc.tvmazeclient.ui.favorites.FavoritesActivity
 import com.andrefpc.tvmazeclient.ui.people.PeopleActivity
 import com.andrefpc.tvmazeclient.ui.show_details.ShowDetailsActivity
-import com.andrefpc.tvmazeclient.ui.show_details.ShowHeaderAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -25,6 +23,37 @@ class ShowsActivity : AppCompatActivity() {
     private val adapterShow by lazy { ShowAdapter() }
     private var onScrollListener: RecyclerView.OnScrollListener? = null
     private var showsLayoutManager: LinearLayoutManager? = null
+    var needScroll = false
+    private val listObserver: RecyclerView.AdapterDataObserver by lazy {
+        object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onChanged() {
+                checkScroll()
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+        }
+    }
+
+    private fun checkScroll() {
+        if (needScroll) {
+            binding.shows.scrollToPosition(0)
+            needScroll = false
+        }
+    }
 
     /**
      * Lifecycle method that run when the activity is created
@@ -64,14 +93,18 @@ class ShowsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        adapterShow.registerAdapterDataObserver(listObserver)
+
         binding.search.onTextChange {
-            if(it.length > 2){
+            if (it.length > 2) {
+                needScroll = true
                 viewModel.searchShows(it)
             }
-            if(it.isEmpty()){
-                viewModel.getShows()
-                binding.search.hideKeyboard()
-            }
+        }
+        binding.search.onClear {
+            needScroll = true
+            viewModel.getShows()
+            binding.search.hideKeyboard()
         }
         binding.favorites.setOnClickListener {
             val intent = Intent(this, FavoritesActivity::class.java)
@@ -87,6 +120,7 @@ class ShowsActivity : AppCompatActivity() {
      * Init the ViewModel observers
      */
     private fun initObservers() {
+
         viewModel.listShows.observe(this) {
             adapterShow.submitList(it)
         }
@@ -113,6 +147,7 @@ class ShowsActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         removeScrollListener()
+        adapterShow.unregisterAdapterDataObserver(listObserver)
         super.onDestroy()
     }
 

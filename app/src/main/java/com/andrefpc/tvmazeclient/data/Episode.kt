@@ -8,7 +8,7 @@ data class Episode(
     var number: Int,
     var season: Int,
     val summary: String,
-    var image: Image,
+    var image: Image?,
     var airdate: String,
     var airtime: String,
     var runtime: Int

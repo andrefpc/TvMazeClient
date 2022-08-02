@@ -9,6 +9,7 @@ import com.andrefpc.tvmazeclient.data.ApiResult
 import com.andrefpc.tvmazeclient.data.Show
 import com.andrefpc.tvmazeclient.repositories.TvMazeRepository
 import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -42,13 +43,14 @@ class ShowsViewModel(
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getShows(currentPage)) {
                 is ApiResult.Success -> {
-                    if(currentPage == 0) _loading.postValue(false)
                     result.result?.let {
                         if(currentPage == 0) _listShows.postValue(it)
                         else _addToListShows.postValue(it)
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
                     }
+                    delay(1000)
+                    if(currentPage == 0) _loading.postValue(false)
                 }
                 is ApiResult.Error -> {
                     if(currentPage == 0) _loading.postValue(false)
@@ -68,12 +70,13 @@ class ShowsViewModel(
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.searchShows(term)) {
                 is ApiResult.Success -> {
-                    _loading.postValue(false)
                     result.result?.let {
                         _listShows.postValue(it)
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
                     }
+                    delay(1000)
+                    _loading.postValue(false)
                 }
                 is ApiResult.Error -> {
                     _loading.postValue(false)

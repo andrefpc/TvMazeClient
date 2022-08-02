@@ -76,7 +76,7 @@ class EpisodeModal : DialogFragment() {
         val timeValue = "${episode.airtime} (${episode.runtime} minutes)"
 
         binding.apply {
-            this.image.loadImage(episode.image.original)
+            this.image.loadImage(episode.image?.original)
             this.name.text = episode.name
             this.episode.text = episodeFinalNumber
             this.date.text = episode.airdate

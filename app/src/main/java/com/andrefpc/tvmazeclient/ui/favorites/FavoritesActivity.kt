@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.databinding.ActivityFavoritesBinding
 import com.andrefpc.tvmazeclient.extensions.ViewExtensions.hideKeyboard
 import com.andrefpc.tvmazeclient.ui.show_details.ShowDetailsActivity
@@ -16,6 +17,33 @@ class FavoritesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoritesBinding
     private val viewModel: FavoritesViewModel by viewModel()
     private val adapterFavorites by lazy { FavoritesAdapter() }
+    private val listObserver: RecyclerView.AdapterDataObserver by lazy {
+        object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onChanged() {
+                checkScroll()
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                checkScroll()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                checkScroll()
+            }
+        }
+    }
+
+    private fun checkScroll() {
+        binding.shows.scrollToPosition(0)
+    }
 
     /**
      * Lifecycle method that run when the activity is created
@@ -51,6 +79,8 @@ class FavoritesActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        adapterFavorites.registerAdapterDataObserver(listObserver)
+
         adapterFavorites.onDelete {
             viewModel.deleteFavorite(it)
         }
@@ -59,10 +89,12 @@ class FavoritesActivity : AppCompatActivity() {
             if(it.length > 2){
                 viewModel.searchFavorites(it)
             }
-            if(it.isEmpty()){
-                viewModel.getFavorites()
-                binding.search.hideKeyboard()
-            }
+
+        }
+
+        binding.search.onClear {
+            viewModel.getFavorites()
+            binding.search.hideKeyboard()
         }
     }
 
@@ -73,5 +105,10 @@ class FavoritesActivity : AppCompatActivity() {
         viewModel.listShows.observe(this) {
             adapterFavorites.submitList(it)
         }
+    }
+
+    override fun onDestroy() {
+        adapterFavorites.unregisterAdapterDataObserver(listObserver)
+        super.onDestroy()
     }
 }

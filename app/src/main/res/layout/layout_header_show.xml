@@ -11,6 +11,12 @@
         android:adjustViewBounds="true"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/shadow"
+        app:layout_constraintBottom_toBottomOf="@+id/image"/>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/favorite"
         android:layout_width="40dp"

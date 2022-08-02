@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/drawable/ic_clear_gray.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/search_bg.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/shadow.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/shimmer_bg.xml" value="0.179" />
         <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.1609375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19375" />

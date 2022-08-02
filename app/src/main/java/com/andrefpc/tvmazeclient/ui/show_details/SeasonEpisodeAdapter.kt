@@ -98,7 +98,7 @@ class SeasonEpisodeAdapter: ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(
             val seasonName = if(episode.season > 9) "S${episode.season}" else "S0${episode.season}"
             val episodeNumber = if(episode.number > 9) "E${episode.number}" else "E0${episode.number}"
             val episodeFinalNumber = "$seasonName | $episodeNumber"
-            this.image.loadImage(episode.image.medium)
+            this.image.loadImage(episode.image?.medium)
             this.episode.text = episodeFinalNumber
             this.name.text = episode.name
             this.root.setOnClickListener {

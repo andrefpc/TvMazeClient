@@ -67,7 +67,7 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
      */
     private fun LayoutHeaderShowBinding.changeFavorite(isFavorite: Boolean) {
         if (isFavorite) {
-            favorite.setColorFilter(context.getColor(R.color.teal_700), PorterDuff.Mode.SRC_IN)
+            favorite.setColorFilter(context.getColor(R.color.teal_200), PorterDuff.Mode.SRC_IN)
         } else {
             favorite.setColorFilter(context.getColor(R.color.white), PorterDuff.Mode.SRC_IN)
         }
