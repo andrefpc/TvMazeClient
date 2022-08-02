@@ -143,6 +143,7 @@ class MainActivity : AppCompatActivity() {
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(getString(R.string.authentication))
             .setSubtitle(getString(R.string.login_biometric))
+            .setNegativeButtonText(getString(R.string.login_biometric_negative))
             .build()
     }
 

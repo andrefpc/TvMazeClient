@@ -49,6 +49,9 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
             premiered.text = show.premiered ?: "Not Started"
             ended.text = show.ended ?: "Running"
             summary.text = show.summary.removeHtmlTags()
+            genres.text = show.genres.joinToString()
+            days.text = show.schedule.days.joinToString()
+            time.text = show.schedule.time
             favorite.setOnClickListener {
                 favoriteClickListener(show)
                 changeFavorite(true)
