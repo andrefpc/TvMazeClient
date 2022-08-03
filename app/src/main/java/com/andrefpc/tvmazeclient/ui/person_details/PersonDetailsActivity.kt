@@ -61,6 +61,7 @@ class PersonDetailsActivity : AppCompatActivity() {
             adapter = concatAdapter
         }
         viewModel.getShows(person.id)
+        binding.shimmerDetails.startProgress()
     }
 
     /**
@@ -74,6 +75,7 @@ class PersonDetailsActivity : AppCompatActivity() {
             }else{
                 showAdapter.submitList(it)
             }
+            binding.shimmerDetails.stopProgress()
         }
 
         viewModel.error.observe(this) {

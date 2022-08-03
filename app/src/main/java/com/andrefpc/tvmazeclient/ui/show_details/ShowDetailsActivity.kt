@@ -26,6 +26,9 @@ class ShowDetailsActivity : AppCompatActivity() {
     private var headerAdapter: ShowHeaderAdapter? = null
     private val concatAdapter by lazy { ConcatAdapter(headerAdapter, seasonEpisodeAdapter) }
 
+    var episodesLoaded = false
+    var castLoaded = false
+
     private lateinit var show: Show
 
     /**
@@ -79,6 +82,7 @@ class ShowDetailsActivity : AppCompatActivity() {
 
         viewModel.getSeasons(show.id)
         viewModel.getCast(show.id)
+        binding.shimmerDetails.startProgress()
     }
 
     /**
@@ -87,10 +91,14 @@ class ShowDetailsActivity : AppCompatActivity() {
     private fun initObservers() {
         viewModel.listSeasonEpisodes.observe(this) {
             seasonEpisodeAdapter.submitList(it)
+            episodesLoaded = true
+            stopShimmer()
         }
 
         viewModel.listCast.observe(this) {
             castAdapter.submitList(it)
+            castLoaded = true
+            stopShimmer()
         }
 
         viewModel.verifyFavorite.observe(this) {
@@ -100,7 +108,14 @@ class ShowDetailsActivity : AppCompatActivity() {
         }
 
         viewModel.error.observe(this) {
-            Toast.makeText(this, "Error getting shows: ${it.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this,  getString(R.string.error_getting_shows, it.message), Toast.LENGTH_LONG).show()
+            binding.shimmerDetails.stopProgress()
+        }
+    }
+
+    private fun stopShimmer() {
+        if (episodesLoaded && castLoaded) {
+            binding.shimmerDetails.stopProgress()
         }
     }
 }
