@@ -13,10 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVMazeClient">
         <activity
+            android:name=".ui.compose.chooser.ChooserActivity"
+            android:exported="true"
+            android:label="@string/title_activity_chooser" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.compose.main.MainActivity"
             android:exported="false"
-            android:label="@string/title_activity_main"
-            android:theme="@style/Theme.TVMazeClient" />
+            android:label="@string/title_activity_main"/>
         <activity
             android:name=".ui.xml_based.person_details.PersonDetailsActivity"
             android:exported="false" />
@@ -35,13 +44,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.xml_based.main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
     </application>
 
 </manifest>

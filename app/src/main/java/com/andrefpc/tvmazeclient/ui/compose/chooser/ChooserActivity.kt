@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.ui.compose.main
+package com.andrefpc.tvmazeclient.ui.compose.chooser
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,20 +7,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.andrefpc.tvmazeclient.ui.compose.ui.theme.TVMazeClientTheme
 
-class MainActivity : ComponentActivity() {
+class ChooserActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             TVMazeClientTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainView(
+                    ChooserView(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

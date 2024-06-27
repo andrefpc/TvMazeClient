@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">TV Maze Client</string>
+
+    <string name="choose_evaluate">CHOOSE WHICH VIEW DO YOU WANT TO EVALUATE?</string>
+    <string name="jetpack_compose">JETPACK COMPOSE</string>
+    <string name="xml_based">XML-BASED</string>
     <string name="login_button">LOGIN</string>
     <string name="create_button">CREATE PIN</string>
     <string name="pin_placeholder">PIN</string>
@@ -31,4 +35,5 @@
     <string name="error_getting_shows">Error getting shows: %1$s</string>
     <string name="person_without_shows">%1$s did not participate in any show</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_chooser">ChooserActivity</string>
 </resources>
