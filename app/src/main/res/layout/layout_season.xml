@@ -38,7 +38,7 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <com.andrefpc.tvmazeclient.widget.AnimatedArrow
+        <com.andrefpc.tvmazeclient.ui.xml_based.widget.AnimatedArrow
             android:id="@+id/arrow"
             android:layout_width="32dp"
             android:layout_height="32dp"

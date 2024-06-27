@@ -30,4 +30,5 @@
     <string name="enough_info_about_person">We don\'t have more information about %1$s</string>
     <string name="error_getting_shows">Error getting shows: %1$s</string>
     <string name="person_without_shows">%1$s did not participate in any show</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

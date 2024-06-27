@@ -1,6 +1,13 @@
 package com.andrefpc.tvmazeclient.api
 
-import com.andrefpc.tvmazeclient.data.*
+import com.andrefpc.tvmazeclient.core.data.Cast
+import com.andrefpc.tvmazeclient.core.data.Episode
+import com.andrefpc.tvmazeclient.core.data.Person
+import com.andrefpc.tvmazeclient.core.data.PersonShow
+import com.andrefpc.tvmazeclient.core.data.Search
+import com.andrefpc.tvmazeclient.core.data.SearchPeople
+import com.andrefpc.tvmazeclient.core.data.Season
+import com.andrefpc.tvmazeclient.core.data.Show
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
