@@ -14,6 +14,7 @@
     <string name="pin">PIN</string>
     <string name="or">OR</string>
     <string name="phone_authentication">PHONE AUTHENTICATION</string>
+    <string name="empty_pin">Pin cannot be empty</string>
     <string name="incorrect_pin">Incorrect pin</string>
     <string name="authentication_succeeded">Authentication succeeded!</string>
     <string name="login_canceled">Login cancelled by the user</string>
@@ -36,4 +37,11 @@
     <string name="person_without_shows">%1$s did not participate in any show</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_chooser">ChooserActivity</string>
+    <string name="title_activity_shows">TV Shows</string>
+    <string name="title_activity_people">People</string>
+    <string name="premier_label">Premier</string>
+    <string name="ended_at_label">Ended at</string>
+    <string name="not_started">Not Started</string>
+    <string name="running">Running</string>
+
 </resources>

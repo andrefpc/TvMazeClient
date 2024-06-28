@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,6 +33,9 @@ class FavoritesViewModel @Inject constructor(
 
     private val _showError = MutableSharedFlow<Throwable>()
     val showError: MutableSharedFlow<Throwable> get() = _showError
+
+    private val _openShowDetails = MutableSharedFlow<Show>()
+    val openShowDetails: SharedFlow<Show> = _openShowDetails
 
     /**
      * Exception handler for the coroutines
@@ -59,7 +63,7 @@ class FavoritesViewModel @Inject constructor(
     /**
      * Search into the favorite shows saved in the database
      */
-    fun searchFavorites(term: String) {
+    fun onSearchFavorites(term: String) {
         viewModelScope.launch(exceptionHandler) {
             val list = favoritesUseCase.getFavorites(term)
             if(list.isEmpty()) {
@@ -73,7 +77,7 @@ class FavoritesViewModel @Inject constructor(
     /**
      * Delete a favorite show in the database
      */
-    fun deleteFavorite(show: Show) {
+    fun onShowDeleted(show: Show) {
         viewModelScope.launch(exceptionHandler) {
             favoritesUseCase.deleteFavorite(show)
             val list = favoritesUseCase.getFavorites()
@@ -98,5 +102,14 @@ class FavoritesViewModel @Inject constructor(
     private fun showListView(list: List<Show>) {
         _screenState.update { ScreenState.Success }
         _listShowState.update { list }
+    }
+
+    /**
+     * Open the show details screen
+     */
+    fun onShowClicked(show: Show) {
+        viewModelScope.launch {
+            _openShowDetails.emit(show)
+        }
     }
 }

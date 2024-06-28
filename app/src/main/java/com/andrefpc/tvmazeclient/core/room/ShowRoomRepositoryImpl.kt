@@ -4,10 +4,11 @@ import android.content.Context
 import com.andrefpc.tvmazeclient.core.data.Image
 import com.andrefpc.tvmazeclient.core.data.Schedule
 import com.andrefpc.tvmazeclient.core.data.Show
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ShowRoomRepositoryImpl @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ShowRoomRepository {
     override suspend fun getAll(): List<Show> {
         val showDao = ShowRoomDatabase.getDatabase(context).showDao()

@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             if (canUseBiometrics) {
                 biometricPrompt.authenticate(promptInfo)
             } else {
-                showRegularLogin()
+                openPhoneAuthentication()
             }
         }
 
@@ -95,9 +95,9 @@ class MainActivity : AppCompatActivity() {
 
 
     /**
-     * Show regular Authentication
+     * Show phone Authentication
      */
-    private fun showRegularLogin() {
+    private fun openPhoneAuthentication() {
         val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
 
         if (km.isKeyguardSecure) {

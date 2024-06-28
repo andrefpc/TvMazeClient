@@ -4,10 +4,14 @@ import com.andrefpc.tvmazeclient.core.data.Show
 import com.andrefpc.tvmazeclient.core.room.ShowRoomRepository
 import javax.inject.Inject
 
-class AddFavoriteUseCase @Inject constructor(
+class SwitchFavoriteUseCase @Inject constructor(
     private val showRoomRepository: ShowRoomRepository
 ) {
     suspend operator fun invoke(show: Show) {
-        return showRoomRepository.insert(show)
+        return if(showRoomRepository.isFavorite(show.id)){
+            showRoomRepository.delete(show.id)
+        }else{
+            showRoomRepository.insert(show)
+        }
     }
 }

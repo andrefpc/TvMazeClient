@@ -14,8 +14,7 @@
         android:theme="@style/Theme.TVMazeClient">
         <activity
             android:name=".ui.compose.chooser.ChooserActivity"
-            android:exported="true"
-            android:label="@string/title_activity_chooser" >
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +23,26 @@
         </activity>
         <activity
             android:name=".ui.compose.main.MainActivity"
-            android:exported="false"
-            android:label="@string/title_activity_main"/>
+            android:exported="false"/>
+        <activity
+            android:name=".ui.compose.person_details.PersonDetailsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.compose.people.PeopleActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.compose.favorites.FavoritesActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.compose.show_details.ShowDetailsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.compose.shows.ShowsActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".ui.xml_based.main.MainActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.xml_based.person_details.PersonDetailsActivity"
             android:exported="false" />
@@ -42,9 +59,6 @@
         <activity
             android:name=".ui.xml_based.shows.ShowsActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.xml_based.main.MainActivity"
-            android:exported="false"/>
     </application>
 
 </manifest>

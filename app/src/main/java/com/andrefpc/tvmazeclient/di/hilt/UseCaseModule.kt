@@ -1,7 +1,7 @@
 package com.andrefpc.tvmazeclient.di.hilt
 
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
-import com.andrefpc.tvmazeclient.core.domain.use_case.AddFavoriteUseCase
+import com.andrefpc.tvmazeclient.core.domain.use_case.SwitchFavoriteUseCase
 import com.andrefpc.tvmazeclient.core.domain.use_case.CheckFavoriteUseCase
 import com.andrefpc.tvmazeclient.core.domain.use_case.DeleteFavoriteUseCase
 import com.andrefpc.tvmazeclient.core.domain.use_case.GetCastUseCase
@@ -57,7 +57,7 @@ object UseCaseModule {
             getEpisodesUseCase = GetEpisodesUseCase(tvMazeRepository),
             getSeasonsUseCase = GetSeasonsUseCase(tvMazeRepository)
         ),
-        addFavorite = AddFavoriteUseCase(showRoomRepository),
+        switchFavorite = SwitchFavoriteUseCase(showRoomRepository),
         checkFavorite = CheckFavoriteUseCase(showRoomRepository),
     )
 

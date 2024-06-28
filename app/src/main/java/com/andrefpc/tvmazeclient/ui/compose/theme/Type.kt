@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.ui.compose.ui.theme
+package com.andrefpc.tvmazeclient.ui.compose.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

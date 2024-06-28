@@ -2,10 +2,11 @@ package com.andrefpc.tvmazeclient.core.session
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class PinSessionImpl @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : PinSession {
     companion object {
         private const val PREFS = "prefs"
