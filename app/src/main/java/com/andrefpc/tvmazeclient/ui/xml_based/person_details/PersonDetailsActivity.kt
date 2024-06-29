@@ -1,21 +1,15 @@
 package com.andrefpc.tvmazeclient.ui.xml_based.person_details
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.core.data.Show
 import com.andrefpc.tvmazeclient.databinding.ActivityPersonDetailsBinding
-import com.andrefpc.tvmazeclient.databinding.ActivityShowDetailsBinding
-import com.andrefpc.tvmazeclient.ui.xml_based.episode_details.EpisodeModal
 import com.andrefpc.tvmazeclient.ui.xml_based.show_details.ShowDetailsActivity
-import com.andrefpc.tvmazeclient.ui.xml_based.show_details.ShowDetailsViewModel
-import com.andrefpc.tvmazeclient.ui.xml_based.show_details.ShowHeaderAdapter
 import com.andrefpc.tvmazeclient.ui.xml_based.shows.ShowAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,17 +63,25 @@ class PersonDetailsActivity : AppCompatActivity() {
      */
     private fun initObservers() {
         viewModel.listShows.observe(this) {
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
                 headerAdapter?.hideLabel()
-                Toast.makeText(this, getString(R.string.person_without_shows, person.name), Toast.LENGTH_SHORT).show()
-            }else{
+                Toast.makeText(
+                    this,
+                    getString(R.string.person_without_shows, person.name),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 showAdapter.submitList(it)
             }
             binding.shimmerDetails.stopProgress()
         }
 
         viewModel.error.observe(this) {
-            Toast.makeText(this, getString(R.string.error_getting_shows, it.message), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.error_getting_shows, it.message),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

@@ -9,10 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.databinding.SearchFieldBinding
 import com.andrefpc.tvmazeclient.core.extensions.ViewExtensions.fadeIn
 import com.andrefpc.tvmazeclient.core.extensions.ViewExtensions.fadeOut
 import com.andrefpc.tvmazeclient.core.extensions.ViewExtensions.hideKeyboard
+import com.andrefpc.tvmazeclient.databinding.SearchFieldBinding
 
 @SuppressLint("Recycle")
 class SearchField @JvmOverloads constructor(

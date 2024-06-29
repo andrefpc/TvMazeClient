@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.databinding.LayoutHeaderPersonBinding
 import com.andrefpc.tvmazeclient.core.extensions.ImageViewExtensions.loadImage
+import com.andrefpc.tvmazeclient.databinding.LayoutHeaderPersonBinding
 
 /**
  * Adapter used to populate header of the person details screen
@@ -15,7 +15,7 @@ class PersonHeaderAdapter(val person: Person) : RecyclerView.Adapter<RecyclerVie
 
     private var showLabel = true
 
-    fun hideLabel(){
+    fun hideLabel() {
         showLabel = false
         notifyItemChanged(0)
     }
@@ -40,9 +40,9 @@ class PersonHeaderAdapter(val person: Person) : RecyclerView.Adapter<RecyclerVie
         holder.binding.apply {
             image.loadImage(person.image?.original)
             name.text = person.name
-            if(showLabel){
+            if (showLabel) {
                 showsLabel.visibility = View.VISIBLE
-            }else{
+            } else {
                 showsLabel.visibility = View.GONE
             }
         }

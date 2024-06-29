@@ -15,7 +15,7 @@ class GetPeopleUseCase @Inject constructor(
         when (
             val result = searchTerm?.let {
                 tvMazeRepository.searchPeople(it)
-            }?: run {
+            } ?: run {
                 tvMazeRepository.getPeople(page)
             }
         ) {
@@ -26,6 +26,7 @@ class GetPeopleUseCase @Inject constructor(
                     throw PeopleListNullException()
                 }
             }
+
             is ApiResult.Error -> {
                 throw PeopleListRequestException(result.apiError)
             }

@@ -73,8 +73,8 @@ class ShowDetailsViewModel @Inject constructor(
     }
 
     /**
-    * Get the cast of a show from the server
-    */
+     * Get the cast of a show from the server
+     */
     private suspend fun getCast(id: Int) {
         val list = showDetailsUseCase.getCast(id)
         _listCastState.update { list }
@@ -97,7 +97,7 @@ class ShowDetailsViewModel @Inject constructor(
     private fun switchFavoriteStatus(show: Show) {
         viewModelScope.launch(exceptionHandler) {
             showDetailsUseCase.switchFavorite(show)
-            _favoriteState.update {  !favoriteState.value }
+            _favoriteState.update { !favoriteState.value }
         }
     }
 
@@ -106,7 +106,7 @@ class ShowDetailsViewModel @Inject constructor(
      */
     fun checkFavorite(show: Show) {
         viewModelScope.launch(exceptionHandler) {
-            _favoriteState.update {  showDetailsUseCase.checkFavorite(show.id) }
+            _favoriteState.update { showDetailsUseCase.checkFavorite(show.id) }
         }
     }
 

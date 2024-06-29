@@ -61,27 +61,26 @@ class PeopleViewModel @Inject constructor(
     }
 
     /**
-    * Get the people list from the server
-    */
+     * Get the people list from the server
+     */
     fun getPeople(page: Int = 0) {
         currentPage = page
         searching = false
         if (currentPage == 0) {
             showLoading()
-        }else{
+        } else {
             _isLoadingMore.update { true }
         }
         viewModelScope.launch(exceptionHandler) {
             val list = peopleUseCase.getPeople(currentPage)
-            if(currentPage == 0){
-                if(list.isEmpty()){
+            if (currentPage == 0) {
+                if (list.isEmpty()) {
                     showEmptyView()
-                }else{
+                } else {
                     _listPeopleState.update { list }
                     _screenState.update { ScreenState.Success }
                 }
-            }
-            else {
+            } else {
                 _listPeopleState.value += list
                 _isLoadingMore.update { false }
                 _screenState.update { ScreenState.Success }
@@ -98,9 +97,9 @@ class PeopleViewModel @Inject constructor(
         showLoading()
         viewModelScope.launch(exceptionHandler) {
             val list = peopleUseCase.getPeople(searchTerm = term)
-            if(list.isEmpty()){
+            if (list.isEmpty()) {
                 showEmptyView()
-            }else{
+            } else {
                 _listPeopleState.update { list }
                 _screenState.update { ScreenState.Success }
             }

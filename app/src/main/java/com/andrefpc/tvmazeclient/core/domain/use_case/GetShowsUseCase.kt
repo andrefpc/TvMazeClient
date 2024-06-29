@@ -1,10 +1,7 @@
 package com.andrefpc.tvmazeclient.core.domain.use_case
 
 import com.andrefpc.tvmazeclient.core.data.ApiResult
-import com.andrefpc.tvmazeclient.core.data.Person
 import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.core.domain.exception.PeopleListNullException
-import com.andrefpc.tvmazeclient.core.domain.exception.PeopleListRequestException
 import com.andrefpc.tvmazeclient.core.domain.exception.ShowListNullException
 import com.andrefpc.tvmazeclient.core.domain.exception.ShowListRequestException
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
@@ -18,7 +15,7 @@ class GetShowsUseCase @Inject constructor(
         when (
             val result = searchTerm?.let {
                 tvMazeRepository.searchShows(it)
-            }?: run {
+            } ?: run {
                 tvMazeRepository.getShows(page)
             }
         ) {
@@ -29,6 +26,7 @@ class GetShowsUseCase @Inject constructor(
                     throw ShowListNullException()
                 }
             }
+
             is ApiResult.Error -> {
                 throw ShowListRequestException(result.apiError)
             }

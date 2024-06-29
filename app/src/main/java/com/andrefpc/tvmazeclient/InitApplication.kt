@@ -12,7 +12,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 @HiltAndroidApp
-class InitApplication: Application() {
+class InitApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         initKoin()

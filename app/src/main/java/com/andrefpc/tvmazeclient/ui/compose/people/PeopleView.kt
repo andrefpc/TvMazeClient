@@ -17,13 +17,14 @@ import com.andrefpc.tvmazeclient.core.data.ScreenState
 import com.andrefpc.tvmazeclient.ui.compose.widget.CustomToolbar
 import com.andrefpc.tvmazeclient.ui.compose.widget.ErrorView
 import com.andrefpc.tvmazeclient.ui.compose.widget.SearchBar
+import com.andrefpc.tvmazeclient.ui.compose.widget.ShimmerType
 import com.andrefpc.tvmazeclient.ui.compose.widget.ShimmerView
 
 @Composable
 fun PeopleView(
     modifier: Modifier = Modifier,
     viewModel: PeopleViewModel = hiltViewModel()
-){
+) {
     val uiState by viewModel.screenState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -32,9 +33,11 @@ fun PeopleView(
 
     Box {
         CustomToolbar(stringResource(id = R.string.title_activity_people))
-        Column(modifier = modifier
-            .fillMaxSize()
-            .padding(top = 84.dp)) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 84.dp)
+        ) {
             SearchBar {
                 viewModel.onSearchPeople(it)
             }
@@ -42,7 +45,7 @@ fun PeopleView(
                 ScreenState.Empty -> ErrorView()
                 is ScreenState.Error -> ErrorView(error = (uiState as ScreenState.Error).error)
                 ScreenState.Initial -> Unit
-                ScreenState.Loading -> ShimmerView()
+                ScreenState.Loading -> ShimmerView(shimmerType = ShimmerType.PEOPLE)
                 ScreenState.Success -> PeopleSuccessView()
             }
         }

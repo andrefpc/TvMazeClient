@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun PeopleSuccessView(
     viewModel: PeopleViewModel = hiltViewModel()
-){
+) {
     val listPeopleState by viewModel.listPeopleState.collectAsState()
     val isLoadingMore by viewModel.isLoadingMore.collectAsState()
     val listState = rememberLazyGridState()
@@ -30,10 +30,12 @@ fun PeopleSuccessView(
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = listState,
-            modifier = Modifier.fillMaxSize().padding(12.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
         ) {
             items(listPeopleState.size) { index ->
-                PeopleItemView(person = listPeopleState[index]){
+                PeopleItemView(person = listPeopleState[index]) {
                     viewModel.onPersonClicked(it)
                 }
 

@@ -1,6 +1,5 @@
 package com.andrefpc.tvmazeclient.core.data
 
-import com.andrefpc.tvmazeclient.ui.xml_based.episode_details.EpisodeModal
 import java.io.Serializable
 
 data class Episode(
@@ -13,11 +12,11 @@ data class Episode(
     var airdate: String,
     var airtime: String,
     var runtime: Int
-): Serializable {
+) : Serializable {
     val seasonEpisodeTitle: String
         get() {
-            val season = if(season > 9) "S${season}" else "S0${season}"
-            val episode = if(number > 9) "E${number}" else "E0${number}"
+            val season = if (season > 9) "S${season}" else "S0${season}"
+            val episode = if (number > 9) "E${number}" else "E0${number}"
             return "$season | $episode"
         }
     val timeDurationTitle: String

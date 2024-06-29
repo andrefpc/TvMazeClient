@@ -21,28 +21,29 @@ object ImageViewExtensions {
         returnSuccess: () -> Unit = {}
     ) {
         if (!url.isNullOrEmpty()) {
-            Glide.with(this).load(url).placeholder(R.drawable.ic_no_image).listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    returnError()
-                    return false
-                }
+            Glide.with(this).load(url).placeholder(R.drawable.ic_no_image)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        returnError()
+                        return false
+                    }
 
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    returnSuccess()
-                    return false
-                }
-            }).into(this)
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        returnSuccess()
+                        return false
+                    }
+                }).into(this)
         } else {
             this.setImageResource(R.drawable.ic_no_image)
             returnError()

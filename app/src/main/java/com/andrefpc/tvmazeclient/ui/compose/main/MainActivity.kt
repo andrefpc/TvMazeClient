@@ -59,7 +59,7 @@ class MainActivity : FragmentActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.showMessage.collectLatest {message ->
+            viewModel.showMessage.collectLatest { message ->
                 Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
             }
         }

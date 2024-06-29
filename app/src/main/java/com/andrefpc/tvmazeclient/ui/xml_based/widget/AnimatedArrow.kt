@@ -171,9 +171,11 @@ class AnimatedArrow(
             MORE -> {
                 0f
             }
+
             LESS -> {
                 1f
             }
+
             else -> {
                 throw IllegalArgumentException("Unknown state, must be one of STATE_MORE = 0,  STATE_LESS = 1")
             }
@@ -199,9 +201,11 @@ class AnimatedArrow(
             0f -> {
                 MORE
             }
+
             1f -> {
                 LESS
             }
+
             else -> {
                 INTERMEDIATE
             }
@@ -312,15 +316,15 @@ class AnimatedArrow(
     private fun rotate(startPosition: Point, degrees: Double, target: Point) {
         val angle = Math.toRadians(degrees)
         val x = (
-            center.x + (startPosition.x - center.x) * cos(angle) -
-                (startPosition.y - center.y) * sin(angle)
-            ).toInt()
+                center.x + (startPosition.x - center.x) * cos(angle) -
+                        (startPosition.y - center.y) * sin(angle)
+                ).toInt()
         val y =
             (
-                center.y + (startPosition.x - center.x) * sin(angle) + (startPosition.y - center.y) * cos(
-                    angle
-                )
-                ).toInt()
+                    center.y + (startPosition.x - center.x) * sin(angle) + (startPosition.y - center.y) * cos(
+                        angle
+                    )
+                    ).toInt()
         target.set(x, y)
     }
 

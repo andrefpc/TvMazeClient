@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.core.data.ApiError
 import com.andrefpc.tvmazeclient.core.data.ApiResult
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.core.data.ScreenState
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
 import com.andrefpc.tvmazeclient.core.util.CoroutineContextProvider
 import kotlinx.coroutines.delay
@@ -40,8 +39,8 @@ class PeopleViewModel(
     var searching = false
 
     /**
-    * Get the people list from the server
-    */
+     * Get the people list from the server
+     */
     fun getPeople() {
         searching = false
         if (currentPage == 0) _loading.value = true
@@ -49,23 +48,23 @@ class PeopleViewModel(
             when (val result = tvMazeRepository.getPeople(currentPage)) {
                 is ApiResult.Success -> {
                     result.result?.let {
-                        if(currentPage == 0){
-                            if(it.isEmpty()){
+                        if (currentPage == 0) {
+                            if (it.isEmpty()) {
                                 _showEmpty.postValue(true)
-                            }else{
+                            } else {
                                 _listPeople.postValue(it)
                                 delay(1000)
                                 _loading.postValue(false)
                             }
-                        }
-                        else {
+                        } else {
                             _addToListPeople.postValue(it)
                         }
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
-                        if(currentPage == 0) _loading.postValue(false)
+                        if (currentPage == 0) _loading.postValue(false)
                     }
                 }
+
                 is ApiResult.Error -> {
                     if (currentPage == 0) _loading.postValue(false)
                     _error.postValue(result.apiError)
@@ -85,9 +84,9 @@ class PeopleViewModel(
             when (val result = tvMazeRepository.searchPeople(term)) {
                 is ApiResult.Success -> {
                     result.result?.let {
-                        if(it.isEmpty()){
+                        if (it.isEmpty()) {
                             _showEmpty.postValue(true)
-                        }else{
+                        } else {
                             _listPeople.postValue(it)
                             delay(1000)
                             _loading.postValue(false)
@@ -97,6 +96,7 @@ class PeopleViewModel(
                         _loading.postValue(false)
                     }
                 }
+
                 is ApiResult.Error -> {
                     _loading.postValue(false)
                     _error.postValue(result.apiError)

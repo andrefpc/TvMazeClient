@@ -8,9 +8,9 @@ class SwitchFavoriteUseCase @Inject constructor(
     private val showRoomRepository: ShowRoomRepository
 ) {
     suspend operator fun invoke(show: Show) {
-        return if(showRoomRepository.isFavorite(show.id)){
+        return if (showRoomRepository.isFavorite(show.id)) {
             showRoomRepository.delete(show.id)
-        }else{
+        } else {
             showRoomRepository.insert(show)
         }
     }

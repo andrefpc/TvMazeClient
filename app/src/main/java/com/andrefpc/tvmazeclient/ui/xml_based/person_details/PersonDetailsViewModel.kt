@@ -38,6 +38,7 @@ class PersonDetailsViewModel(
                         _error.postValue(ApiError())
                     }
                 }
+
                 is ApiResult.Error -> {
                     _error.postValue(result.apiError)
                 }

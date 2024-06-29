@@ -12,7 +12,7 @@ import com.andrefpc.tvmazeclient.databinding.LayoutCastBinding
 /**
  * Adapter used to populate the cast list
  */
-class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+class CastAdapter : ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()) {
     private var castClickListener: (Cast) -> Unit = { }
 
     fun onCastClick(castClickListener: (Cast) -> Unit) {
@@ -45,7 +45,7 @@ class CastAdapter: ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()
     /**
      * Method used to set the values for the adapter items widgets
      */
-    private fun bindCastViewHolder(binding: LayoutCastBinding, cast: Cast){
+    private fun bindCastViewHolder(binding: LayoutCastBinding, cast: Cast) {
         binding.apply {
             this.image.loadImage(cast.person.image?.medium)
             this.name.text = cast.person.name

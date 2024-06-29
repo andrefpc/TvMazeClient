@@ -2,8 +2,6 @@ package com.andrefpc.tvmazeclient.util
 
 import com.andrefpc.tvmazeclient.core.data.Image
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.core.data.Schedule
-import com.andrefpc.tvmazeclient.core.data.Show
 
 object PersonMocks {
     val person = Person(

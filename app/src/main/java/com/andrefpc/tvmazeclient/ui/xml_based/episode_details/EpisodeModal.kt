@@ -10,10 +10,10 @@ import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.andrefpc.tvmazeclient.core.data.Episode
-import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
 import com.andrefpc.tvmazeclient.core.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.core.extensions.StringExtensions.removeHtmlTags
 import com.andrefpc.tvmazeclient.core.util.ScreenUtil
+import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
 
 /**
  * Modal for episode info
@@ -52,7 +52,8 @@ class EpisodeModal : DialogFragment() {
         )
         activity?.let {
             val width = ScreenUtil.getScreenWidth(it) - ScreenUtil.dpToPX(40, it)
-            binding.card.layoutParams = LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT)
+            binding.card.layoutParams =
+                LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
         return binding.root
     }

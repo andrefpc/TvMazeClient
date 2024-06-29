@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.databinding.LayoutPersonBinding
-import com.andrefpc.tvmazeclient.databinding.LayoutShowBinding
 import com.andrefpc.tvmazeclient.core.extensions.ImageViewExtensions.loadImage
+import com.andrefpc.tvmazeclient.databinding.LayoutPersonBinding
 
 /**
  * Adapter used to populate the people list

@@ -60,7 +60,7 @@ fun ShowDetailsSeasonView(
                     .fillMaxSize()
                     .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Text(
                     modifier = Modifier.weight(1f),
                     text = seasonEpisodeStatus.seasonName,

@@ -28,9 +28,9 @@ class FavoritesViewModel(
     fun getFavorites() {
         viewModelScope.launch(dispatcher.IO) {
             val list = showRoomRepository.getAll()
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 _showEmpty.postValue(true)
-            }else{
+            } else {
                 _listShows.postValue(list)
             }
         }
@@ -42,9 +42,9 @@ class FavoritesViewModel(
     fun searchFavorites(term: String) {
         viewModelScope.launch(dispatcher.IO) {
             val list = showRoomRepository.search(term)
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 _showEmpty.postValue(true)
-            }else{
+            } else {
                 _listShows.postValue(list)
             }
         }
@@ -57,9 +57,9 @@ class FavoritesViewModel(
         viewModelScope.launch(dispatcher.IO) {
             showRoomRepository.delete(show.id)
             val list = showRoomRepository.getAll()
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 _showEmpty.postValue(true)
-            }else{
+            } else {
                 _listShows.postValue(list)
             }
         }

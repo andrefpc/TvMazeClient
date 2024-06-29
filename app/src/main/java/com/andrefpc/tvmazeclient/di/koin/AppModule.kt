@@ -7,12 +7,12 @@ import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepositoryImpl
 import com.andrefpc.tvmazeclient.core.domain.session.PinSession
 import com.andrefpc.tvmazeclient.core.domain.session.PinSessionImpl
+import com.andrefpc.tvmazeclient.core.util.CoroutineContextProvider
 import com.andrefpc.tvmazeclient.ui.xml_based.favorites.FavoritesViewModel
 import com.andrefpc.tvmazeclient.ui.xml_based.people.PeopleViewModel
 import com.andrefpc.tvmazeclient.ui.xml_based.person_details.PersonDetailsViewModel
 import com.andrefpc.tvmazeclient.ui.xml_based.show_details.ShowDetailsViewModel
 import com.andrefpc.tvmazeclient.ui.xml_based.shows.ShowsViewModel
-import com.andrefpc.tvmazeclient.core.util.CoroutineContextProvider
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

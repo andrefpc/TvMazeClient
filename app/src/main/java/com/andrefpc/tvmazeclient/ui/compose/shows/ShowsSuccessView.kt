@@ -28,7 +28,7 @@ import com.andrefpc.tvmazeclient.R
 @Composable
 fun ShowsSuccessView(
     viewModel: ShowsViewModel = hiltViewModel()
-){
+) {
     val listShowState by viewModel.listShowState.collectAsState()
     val isLoadingMore by viewModel.isLoadingMore.collectAsState()
     val listState = rememberLazyListState()

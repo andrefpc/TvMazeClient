@@ -20,6 +20,7 @@ class GetPersonShowsUseCase @Inject constructor(
                     throw ShowListNullException()
                 }
             }
+
             is ApiResult.Error -> {
                 throw ShowListRequestException(result.apiError)
             }

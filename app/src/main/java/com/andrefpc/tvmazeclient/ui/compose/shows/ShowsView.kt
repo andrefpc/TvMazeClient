@@ -24,7 +24,7 @@ import com.andrefpc.tvmazeclient.ui.compose.widget.ShimmerView
 fun ShowsView(
     modifier: Modifier = Modifier,
     viewModel: ShowsViewModel = hiltViewModel()
-){
+) {
     val uiState by viewModel.screenState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -33,9 +33,11 @@ fun ShowsView(
 
     Box {
         CustomToolbar(stringResource(id = R.string.title_activity_shows))
-        Column(modifier = modifier
-            .fillMaxSize()
-            .padding(top = 84.dp)) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 84.dp)
+        ) {
             SearchBar {
                 viewModel.searchShows(it)
             }

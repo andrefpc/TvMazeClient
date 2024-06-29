@@ -23,7 +23,7 @@ import com.andrefpc.tvmazeclient.ui.compose.widget.ShimmerView
 fun FavoritesView(
     modifier: Modifier = Modifier,
     viewModel: FavoritesViewModel = hiltViewModel()
-){
+) {
     val uiState by viewModel.screenState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -32,9 +32,11 @@ fun FavoritesView(
 
     Box {
         CustomToolbar(stringResource(id = R.string.title_activity_shows))
-        Column(modifier = modifier
-            .fillMaxSize()
-            .padding(top = 84.dp)) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 84.dp)
+        ) {
             SearchBar {
                 viewModel.onSearchFavorites(it)
             }

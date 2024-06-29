@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,7 +45,9 @@ fun PersonDetailsSuccessView(
     ) {
         item {
             Box(
-                modifier = Modifier.fillMaxWidth().aspectRatio(0.7f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(0.7f),
                 contentAlignment = Alignment.BottomStart
             ) {
                 Image(

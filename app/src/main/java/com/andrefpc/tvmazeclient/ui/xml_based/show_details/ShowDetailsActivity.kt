@@ -51,7 +51,11 @@ class ShowDetailsActivity : AppCompatActivity() {
     private fun initList() {
         headerAdapter?.onFavoriteClick {
             viewModel.addToFavorites(it)
-            Toast.makeText(this, getString(R.string.add_favorite_feedback, it.name), Toast.LENGTH_SHORT ).show()
+            Toast.makeText(
+                this,
+                getString(R.string.add_favorite_feedback, it.name),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         seasonEpisodeAdapter.onEpisodeClick { episode ->
@@ -108,7 +112,11 @@ class ShowDetailsActivity : AppCompatActivity() {
         }
 
         viewModel.error.observe(this) {
-            Toast.makeText(this,  getString(R.string.error_getting_shows, it.message), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.error_getting_shows, it.message),
+                Toast.LENGTH_LONG
+            ).show()
             binding.shimmerDetails.stopProgress()
         }
     }

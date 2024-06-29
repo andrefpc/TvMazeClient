@@ -35,7 +35,7 @@ import com.andrefpc.tvmazeclient.ui.compose.widget.CustomToolbar
 fun MainView(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel()
-){
+) {
     val context = LocalContext.current
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.login))
     val progress by animateLottieCompositionAsState(composition)

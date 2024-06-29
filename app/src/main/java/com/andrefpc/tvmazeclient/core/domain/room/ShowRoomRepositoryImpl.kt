@@ -49,7 +49,7 @@ class ShowRoomRepositoryImpl @Inject constructor(
 
     override suspend fun insert(show: Show) {
         val showDao = ShowRoomDatabase.getDatabase(context).showDao()
-        if(showDao.get(show.id) == null) {
+        if (showDao.get(show.id) == null) {
             showDao.insert(
                 ShowEntity(
                     id = show.id,

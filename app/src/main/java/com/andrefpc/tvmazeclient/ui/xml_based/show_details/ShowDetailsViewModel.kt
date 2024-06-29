@@ -41,8 +41,8 @@ class ShowDetailsViewModel(
     val seasonEpisodeStatusList: MutableList<SeasonEpisodeStatus> = arrayListOf()
 
     /**
-    * Get the cast of a show from the server
-    */
+     * Get the cast of a show from the server
+     */
     fun getCast(id: Int) {
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getCast(id)) {
@@ -53,6 +53,7 @@ class ShowDetailsViewModel(
                         _error.postValue(ApiError())
                     }
                 }
+
                 is ApiResult.Error -> {
                     _error.postValue(result.apiError)
                 }
@@ -73,6 +74,7 @@ class ShowDetailsViewModel(
                         _error.postValue(ApiError())
                     }
                 }
+
                 is ApiResult.Error -> {
                     _error.postValue(result.apiError)
                 }
@@ -92,6 +94,7 @@ class ShowDetailsViewModel(
                     _error.postValue(ApiError())
                 }
             }
+
             is ApiResult.Error -> {
                 _error.postValue(result.apiError)
             }

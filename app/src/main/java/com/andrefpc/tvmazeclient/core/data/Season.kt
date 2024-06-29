@@ -7,4 +7,4 @@ data class Season(
     var number: Int,
     var episodeOrder: Int,
     var opened: Boolean
-): Serializable
+) : Serializable

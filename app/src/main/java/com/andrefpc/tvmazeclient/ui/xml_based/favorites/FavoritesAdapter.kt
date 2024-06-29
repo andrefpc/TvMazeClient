@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.databinding.LayoutFavoriteBinding
-import com.andrefpc.tvmazeclient.databinding.LayoutShowBinding
 import com.andrefpc.tvmazeclient.core.extensions.ImageViewExtensions.loadImage
+import com.andrefpc.tvmazeclient.databinding.LayoutFavoriteBinding
 
 /**
  * Adapter used to populate the favorites list

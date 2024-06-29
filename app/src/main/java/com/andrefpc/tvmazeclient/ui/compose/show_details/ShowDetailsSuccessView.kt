@@ -106,7 +106,9 @@ fun ShowDetailsSuccessView(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Row(modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
+                Row(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp)) {
                     Column(modifier = Modifier.weight(0.5f)) {
                         Text(
                             text = stringResource(id = R.string.premier_label),
@@ -169,7 +171,9 @@ fun ShowDetailsSuccessView(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp, bottom = 20.dp),
                     textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.all_episodes_label),
                     fontSize = 20.sp,

@@ -12,7 +12,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.andrefpc.tvmazeclient.ui.compose.favorites.FavoritesActivity
-import com.andrefpc.tvmazeclient.ui.compose.main.MainViewModel
 import com.andrefpc.tvmazeclient.ui.compose.people.PeopleActivity
 import com.andrefpc.tvmazeclient.ui.compose.show_details.ShowDetailsActivity
 import com.andrefpc.tvmazeclient.ui.compose.theme.TVMazeClientTheme

@@ -42,30 +42,30 @@ class ShowsViewModel(
      */
     fun getShows() {
         searching = false
-        if(currentPage == 0) _loading.value = true
+        if (currentPage == 0) _loading.value = true
         viewModelScope.launch(dispatcher.IO) {
             when (val result = tvMazeRepository.getShows(currentPage)) {
                 is ApiResult.Success -> {
                     result.result?.let {
-                        if(currentPage == 0){
-                            if(it.isEmpty()){
+                        if (currentPage == 0) {
+                            if (it.isEmpty()) {
                                 _showEmpty.postValue(true)
-                            }else{
+                            } else {
                                 _listShows.postValue(it)
                                 delay(1000)
                                 _loading.postValue(false)
                             }
-                        }
-                        else {
+                        } else {
                             _addToListShows.postValue(it)
                         }
                     } ?: kotlin.run {
                         _error.postValue(ApiError())
-                        if(currentPage == 0) _loading.postValue(false)
+                        if (currentPage == 0) _loading.postValue(false)
                     }
                 }
+
                 is ApiResult.Error -> {
-                    if(currentPage == 0) _loading.postValue(false)
+                    if (currentPage == 0) _loading.postValue(false)
                     _error.postValue(result.apiError)
                 }
             }
@@ -83,9 +83,9 @@ class ShowsViewModel(
             when (val result = tvMazeRepository.searchShows(term)) {
                 is ApiResult.Success -> {
                     result.result?.let {
-                        if(it.isEmpty()){
+                        if (it.isEmpty()) {
                             _showEmpty.postValue(true)
-                        }else{
+                        } else {
                             _listShows.postValue(it)
                             delay(1000)
                             _loading.postValue(false)
@@ -95,6 +95,7 @@ class ShowsViewModel(
                         _loading.postValue(false)
                     }
                 }
+
                 is ApiResult.Error -> {
                     _loading.postValue(false)
                     _error.postValue(result.apiError)

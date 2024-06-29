@@ -5,4 +5,4 @@ import java.io.Serializable
 
 data class PersonShow(
     @SerializedName("_embedded") var embedded: PersonShowEmbedded
-): Serializable
+) : Serializable

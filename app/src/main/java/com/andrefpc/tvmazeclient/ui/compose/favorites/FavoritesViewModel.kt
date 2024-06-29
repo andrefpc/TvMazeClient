@@ -52,9 +52,9 @@ class FavoritesViewModel @Inject constructor(
     fun getFavorites() {
         viewModelScope.launch(exceptionHandler) {
             val list = favoritesUseCase.getFavorites()
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 showEmptyView()
-            }else{
+            } else {
                 showListView(list)
             }
         }
@@ -66,9 +66,9 @@ class FavoritesViewModel @Inject constructor(
     fun onSearchFavorites(term: String) {
         viewModelScope.launch(exceptionHandler) {
             val list = favoritesUseCase.getFavorites(term)
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 showEmptyView()
-            }else{
+            } else {
                 showListView(list)
             }
         }
@@ -80,9 +80,9 @@ class FavoritesViewModel @Inject constructor(
     fun onShowDeleted(show: Show) {
         viewModelScope.launch(exceptionHandler) {
             val list = favoritesUseCase.deleteFavorite(show)
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 showEmptyView()
-            }else{
+            } else {
                 showListView(list)
             }
         }

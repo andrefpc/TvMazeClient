@@ -1,9 +1,7 @@
 package com.andrefpc.tvmazeclient.di.hilt
 
 import android.content.Context
-import android.util.Log
 import com.andrefpc.tvmazeclient.BuildConfig
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -16,14 +14,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     private const val CONNECTION_TIMEOUT = 60000L
+
     @Provides
     @Singleton
     fun provideOkHttpClient(

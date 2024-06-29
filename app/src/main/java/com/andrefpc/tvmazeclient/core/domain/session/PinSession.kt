@@ -8,6 +8,7 @@ interface PinSession {
      * @param [pin] Pin value
      */
     fun savePin(pin: String)
+
     /**
      * Get the pin from the shared preferences
      * @return List of [Show]

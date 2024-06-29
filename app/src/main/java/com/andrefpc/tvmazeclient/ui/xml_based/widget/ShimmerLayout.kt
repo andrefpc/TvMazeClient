@@ -8,7 +8,6 @@ import android.widget.ViewFlipper
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.LayoutEmptyBinding
 import com.andrefpc.tvmazeclient.databinding.LayoutEmptyImageBinding
-import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
 
 
 class ShimmerLayout @JvmOverloads constructor(

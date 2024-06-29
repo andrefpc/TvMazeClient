@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.databinding.ActivityShowsBinding
 import com.andrefpc.tvmazeclient.core.extensions.ViewExtensions.hideKeyboard
+import com.andrefpc.tvmazeclient.databinding.ActivityShowsBinding
 import com.andrefpc.tvmazeclient.ui.xml_based.favorites.FavoritesActivity
 import com.andrefpc.tvmazeclient.ui.xml_based.people.PeopleActivity
 import com.andrefpc.tvmazeclient.ui.xml_based.show_details.ShowDetailsActivity
@@ -100,7 +100,7 @@ class ShowsActivity : AppCompatActivity() {
                 needScroll = true
                 viewModel.searchShows(it)
             }
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
                 needScroll = true
                 viewModel.getShows()
                 binding.search.hideKeyboard()
@@ -166,7 +166,7 @@ class ShowsActivity : AppCompatActivity() {
     private fun listenScroll() {
         onScrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(!viewModel.searching) {
+                if (!viewModel.searching) {
                     showsLayoutManager?.let { manager ->
                         val visibleItemCount: Int = manager.childCount
                         val totalItemCount: Int = manager.itemCount

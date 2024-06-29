@@ -13,10 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.ui.compose.favorites.FavoritesActivity
-import com.andrefpc.tvmazeclient.ui.compose.people.PeopleActivity
 import com.andrefpc.tvmazeclient.ui.compose.show_details.ShowDetailsActivity
-import com.andrefpc.tvmazeclient.ui.compose.shows.ShowsViewModel
 import com.andrefpc.tvmazeclient.ui.compose.theme.TVMazeClientTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -47,6 +44,7 @@ class PersonDetailsActivity : ComponentActivity() {
             }
         }
     }
+
     private fun setupObservers() {
         lifecycleScope.launch {
             viewModel.openShowDetails.collectLatest {

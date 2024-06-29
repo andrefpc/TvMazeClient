@@ -1,14 +1,14 @@
 package com.andrefpc.tvmazeclient.ui.xml_based.favorites
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.databinding.ActivityFavoritesBinding
 import com.andrefpc.tvmazeclient.core.extensions.ViewExtensions.hideKeyboard
+import com.andrefpc.tvmazeclient.databinding.ActivityFavoritesBinding
 import com.andrefpc.tvmazeclient.ui.xml_based.show_details.ShowDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -85,14 +85,18 @@ class FavoritesActivity : AppCompatActivity() {
 
         adapterFavorites.onDelete {
             viewModel.deleteFavorite(it)
-            Toast.makeText(this, getString(R.string.delete_favorite_feedback, it.name), Toast.LENGTH_SHORT ).show()
+            Toast.makeText(
+                this,
+                getString(R.string.delete_favorite_feedback, it.name),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         binding.search.onTextChange {
-            if(it.length > 2){
+            if (it.length > 2) {
                 viewModel.searchFavorites(it)
             }
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
                 viewModel.getFavorites()
                 binding.search.hideKeyboard()
             }

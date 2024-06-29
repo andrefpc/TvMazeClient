@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class RepositoryModule {
     @Binds
     abstract fun bindTvMazeRepository(tvMazeRepositoryImpl: TvMazeRepositoryImpl): TvMazeRepository
+
     @Binds
     abstract fun bindShowRoomRepository(showRoomRepositoryImpl: ShowRoomRepositoryImpl): ShowRoomRepository
 }

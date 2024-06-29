@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun FavoritesSuccessView(
     viewModel: FavoritesViewModel = hiltViewModel()
-){
+) {
     val listShowState by viewModel.listShowState.collectAsState()
     val listState = rememberLazyListState()
 

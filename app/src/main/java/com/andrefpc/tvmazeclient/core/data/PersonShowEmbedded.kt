@@ -4,4 +4,4 @@ import java.io.Serializable
 
 data class PersonShowEmbedded(
     var show: Show
-): Serializable
+) : Serializable

@@ -1,24 +1,21 @@
 package com.andrefpc.tvmazeclient.ui.xml_based.show_details
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.core.data.Episode
-import com.andrefpc.tvmazeclient.core.data.Season
 import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.databinding.LayoutHeaderShowBinding
 import com.andrefpc.tvmazeclient.core.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.core.extensions.StringExtensions.removeHtmlTags
-import org.koin.core.component.KoinComponent
+import com.andrefpc.tvmazeclient.databinding.LayoutHeaderShowBinding
 
 /**
  * Adapter used to populate header of the show details screen
  */
-class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Boolean ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Boolean) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var favoriteClickListener: (Show) -> Unit = { }
 
@@ -81,5 +78,6 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
     /**
      * View holder used to populate the item views
      */
-    class HeaderViewHolder(val binding: LayoutHeaderShowBinding) : RecyclerView.ViewHolder(binding.root)
+    class HeaderViewHolder(val binding: LayoutHeaderShowBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

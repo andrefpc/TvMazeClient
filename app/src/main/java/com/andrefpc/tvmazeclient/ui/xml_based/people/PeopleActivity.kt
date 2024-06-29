@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.databinding.ActivityPeopleBinding
 import com.andrefpc.tvmazeclient.core.extensions.ViewExtensions.hideKeyboard
+import com.andrefpc.tvmazeclient.databinding.ActivityPeopleBinding
 import com.andrefpc.tvmazeclient.ui.xml_based.person_details.PersonDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -86,12 +86,16 @@ class PeopleActivity : AppCompatActivity() {
      */
     private fun initListeners() {
         adapterPerson.onClick {
-            if(it.image != null) {
+            if (it.image != null) {
                 val intent = Intent(this, PersonDetailsActivity::class.java)
                 intent.putExtra("person", it)
                 startActivity(intent)
-            }else{
-                Toast.makeText(this, getString(R.string.enough_info_about_person, it.name), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.enough_info_about_person, it.name),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -102,7 +106,7 @@ class PeopleActivity : AppCompatActivity() {
                 needScroll = true
                 viewModel.searchPeople(it)
             }
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
                 needScroll = true
                 viewModel.getPeople()
                 binding.search.hideKeyboard()

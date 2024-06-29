@@ -12,8 +12,8 @@ import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.databinding.ActivityMainBinding
 import com.andrefpc.tvmazeclient.core.domain.session.PinSession
+import com.andrefpc.tvmazeclient.databinding.ActivityMainBinding
 import com.andrefpc.tvmazeclient.ui.xml_based.shows.ShowsActivity
 import org.koin.android.ext.android.inject
 import java.util.concurrent.Executor
@@ -169,26 +169,32 @@ class MainActivity : AppCompatActivity() {
                 notifyUser(getString(R.string.biometric_enrolled))
                 false
             }
+
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
                 notifyUser(getString(R.string.no_biometric_available))
                 false
             }
+
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
                 notifyUser(getString(R.string.biometric_unavailable))
                 false
             }
+
             BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
                 notifyUser(getString(R.string.no_biometric_available))
                 false
             }
+
             BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
                 notifyUser(getString(R.string.biometric_unsupported))
                 false
             }
+
             BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
                 notifyUser(getString(R.string.cant_authenticate_with_biometrics))
                 false
             }
+
             else -> false
         }
     }

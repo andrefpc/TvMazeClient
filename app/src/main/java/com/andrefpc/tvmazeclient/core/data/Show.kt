@@ -11,4 +11,4 @@ data class Show(
     var summary: String,
     var premiered: String?,
     var ended: String?
-): Serializable
+) : Serializable

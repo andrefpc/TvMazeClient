@@ -4,8 +4,6 @@ import com.andrefpc.tvmazeclient.core.data.Cast
 import com.andrefpc.tvmazeclient.core.data.Character
 import com.andrefpc.tvmazeclient.core.data.Image
 import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.core.data.Schedule
-import com.andrefpc.tvmazeclient.core.data.Show
 
 object CastMocks {
     val cast = Cast(

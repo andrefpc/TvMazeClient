@@ -2,11 +2,8 @@ package com.andrefpc.tvmazeclient.ui.compose.person_details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.core.data.ApiResult
 import com.andrefpc.tvmazeclient.core.data.ScreenState
 import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
-import com.andrefpc.tvmazeclient.core.util.CoroutineContextProvider
 import com.andrefpc.tvmazeclient.ui.compose.person_details.domain.use_case.PersonDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
