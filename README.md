@@ -3,9 +3,9 @@
 ![](https://img.shields.io/badge/version-v1.1.0-blue)  ![](https://img.shields.io/badge/platform-android-red)
 
 ## Welcome
-Tv Maze Client is an app to search and get information about produced tv series.
+Tv Maze Client is a comprehensive app designed to search for and provide detailed information about TV series.
 
-When I created this app, I used XML to make the views and Koin for dependency injection, but I decided to recreate these views using Jetpack Compose, and using Hilt for dependency injection. However, instead of replacing the code, I created two different paths, so that the users can choose which one to evaluate.
+Originally, this app utilized XML for view creation and Koin for dependency injection. To enhance and modernize the app, I have recreated the views using Jetpack Compose and switched the dependency injection framework to Hilt. Rather than replacing the original implementation, I have maintained both versions, allowing users to choose and evaluate their preferred approach.
 
 ## Setup
 
@@ -86,6 +86,18 @@ The app supports Light and Dark mode.
     - 📔 **widget** (Store the custom widgets)
   - 📔 **xml_bases** (Store the UI files for the XML-based perspective of the app)
     - 📔 **widget** (Store the custom widgets)
+   
+## Unit Tests
+
+111 Unit Tests were created for this application and they are separated into repository tests, use case tests, and view model tests.
+
+#### Tests Packages Structure
+- 📔 **repository** (Store Repository tests)
+- 📔 **use_case** (Store Use Case tests)
+- 📔 **viwe_model** (Store ViewModel tests)
+- 📔 **util** (Store Mocks to be used in the tests)
+  
+<img width="1378" alt="Screenshot 2024-06-29 at 17 15 28" src="https://github.com/andrefpc/TvMazeClient/assets/4115436/48386491-d021-42f4-8d21-c58830ebae60">
 
 
 ## Assessment Requirements
