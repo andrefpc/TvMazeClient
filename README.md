@@ -27,6 +27,7 @@ The app supports Light and Dark mode.
 ### Architecture
 
 - MVVM (Model View ViewModel)
+- Clean Code
 
 ### UI Components
 
