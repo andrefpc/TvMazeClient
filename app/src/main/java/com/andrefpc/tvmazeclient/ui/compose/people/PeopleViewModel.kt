@@ -78,13 +78,14 @@ class PeopleViewModel @Inject constructor(
                     showEmptyView()
                 }else{
                     _listPeopleState.update { list }
+                    _screenState.update { ScreenState.Success }
                 }
             }
             else {
                 _listPeopleState.value += list
                 _isLoadingMore.update { false }
+                _screenState.update { ScreenState.Success }
             }
-            _screenState.update { ScreenState.Success }
         }
     }
 

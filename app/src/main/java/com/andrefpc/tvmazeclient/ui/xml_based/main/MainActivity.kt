@@ -13,7 +13,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.ActivityMainBinding
-import com.andrefpc.tvmazeclient.core.session.PinSession
+import com.andrefpc.tvmazeclient.core.domain.session.PinSession
 import com.andrefpc.tvmazeclient.ui.xml_based.shows.ShowsActivity
 import org.koin.android.ext.android.inject
 import java.util.concurrent.Executor

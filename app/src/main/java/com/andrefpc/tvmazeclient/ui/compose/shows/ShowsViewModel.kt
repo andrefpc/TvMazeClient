@@ -84,13 +84,13 @@ class ShowsViewModel @Inject constructor(
                     _screenState.update { ScreenState.Empty }
                 } else {
                     _listShowState.update { list }
+                    _screenState.update { ScreenState.Success }
                 }
             } else {
                 _isLoadingMore.update { false }
                 _listShowState.value += list
+                _screenState.update { ScreenState.Success }
             }
-
-            _screenState.update { ScreenState.Success }
         }
     }
 

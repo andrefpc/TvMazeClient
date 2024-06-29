@@ -13,7 +13,7 @@ import com.andrefpc.tvmazeclient.core.data.SeasonEpisode
 import com.andrefpc.tvmazeclient.core.data.SeasonEpisodeStatus
 import com.andrefpc.tvmazeclient.core.data.Show
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepository
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.core.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 

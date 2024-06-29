@@ -2,8 +2,8 @@ package com.andrefpc.tvmazeclient.di.hilt
 
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepositoryImpl
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepository
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepositoryImpl
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

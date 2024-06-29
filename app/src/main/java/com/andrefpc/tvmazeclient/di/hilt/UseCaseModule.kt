@@ -12,7 +12,7 @@ import com.andrefpc.tvmazeclient.core.domain.use_case.GetPersonShowsUseCase
 import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonEpisodesUseCase
 import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.core.domain.use_case.GetShowsUseCase
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepository
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.ui.compose.favorites.domain.use_case.FavoritesUseCase
 import com.andrefpc.tvmazeclient.ui.compose.people.domain.use_case.PeopleUseCase
 import com.andrefpc.tvmazeclient.ui.compose.person_details.domain.use_case.PersonDetailsUseCase

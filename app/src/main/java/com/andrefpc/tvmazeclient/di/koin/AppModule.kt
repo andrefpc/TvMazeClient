@@ -3,10 +3,10 @@ package com.andrefpc.tvmazeclient.di.koin
 import com.andrefpc.tvmazeclient.api.TvMazeApi
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
 import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepositoryImpl
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepository
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepositoryImpl
-import com.andrefpc.tvmazeclient.core.session.PinSession
-import com.andrefpc.tvmazeclient.core.session.PinSessionImpl
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepositoryImpl
+import com.andrefpc.tvmazeclient.core.domain.session.PinSession
+import com.andrefpc.tvmazeclient.core.domain.session.PinSessionImpl
 import com.andrefpc.tvmazeclient.ui.xml_based.favorites.FavoritesViewModel
 import com.andrefpc.tvmazeclient.ui.xml_based.people.PeopleViewModel
 import com.andrefpc.tvmazeclient.ui.xml_based.person_details.PersonDetailsViewModel

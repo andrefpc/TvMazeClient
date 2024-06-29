@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.core.session
+package com.andrefpc.tvmazeclient.core.domain.session
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -79,8 +79,7 @@ class FavoritesViewModel @Inject constructor(
      */
     fun onShowDeleted(show: Show) {
         viewModelScope.launch(exceptionHandler) {
-            favoritesUseCase.deleteFavorite(show)
-            val list = favoritesUseCase.getFavorites()
+            val list = favoritesUseCase.deleteFavorite(show)
             if(list.isEmpty()) {
                 showEmptyView()
             }else{

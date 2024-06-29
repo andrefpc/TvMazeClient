@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.core.room
+package com.andrefpc.tvmazeclient.core.domain.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

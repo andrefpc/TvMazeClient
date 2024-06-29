@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.core.session
+package com.andrefpc.tvmazeclient.core.domain.session
 
 import com.andrefpc.tvmazeclient.core.data.Show
 

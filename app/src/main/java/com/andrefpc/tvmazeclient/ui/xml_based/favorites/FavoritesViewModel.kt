@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.core.room.ShowRoomRepository
+import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
 import com.andrefpc.tvmazeclient.core.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 

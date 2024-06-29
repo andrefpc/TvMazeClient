@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.core.data.ScreenState
-import com.andrefpc.tvmazeclient.core.session.PinSession
+import com.andrefpc.tvmazeclient.core.domain.session.PinSession
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,9 +27,8 @@ class MainViewModel @Inject constructor(
     private val pinSession: PinSession
 ) : ViewModel() {
 
-    private val canUseBiometrics = false
-    private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    var canUseBiometrics = false
+
 
     /**
      * State flow for the jetpack compose code
@@ -47,6 +46,12 @@ class MainViewModel @Inject constructor(
     private val _showPhoneAuthentication = MutableSharedFlow<Unit>()
     val showPhoneAuthentication: MutableSharedFlow<Unit> get() = _showPhoneAuthentication
 
+    private val _initBiometrics = MutableSharedFlow<Unit>()
+    val initBiometrics: MutableSharedFlow<Unit> get() = _initBiometrics
+
+    private val _showBiometricsAuthentication = MutableSharedFlow<Unit>()
+    val showBiometricsAuthentication: MutableSharedFlow<Unit> get() = _showBiometricsAuthentication
+
     /**
      * Exception handler for the coroutines
      */
@@ -60,9 +65,11 @@ class MainViewModel @Inject constructor(
      * Check if the biometrics status is available to init it
      */
     fun verifyBiometrics(context: Context){
-        val canUseBiometrics = checkBiometrics(context)
-        if (canUseBiometrics) {
-            initBiometrics(context)
+        viewModelScope.launch(exceptionHandler) {
+            canUseBiometrics = checkBiometrics(context)
+            if (canUseBiometrics) {
+                _initBiometrics.emit(Unit)
+            }
         }
     }
 
@@ -84,7 +91,7 @@ class MainViewModel @Inject constructor(
     fun onBiometricsClick() {
         viewModelScope.launch(exceptionHandler) {
             if (canUseBiometrics) {
-                biometricPrompt.authenticate(promptInfo)
+                _showBiometricsAuthentication.emit(Unit)
             } else {
                 _showPhoneAuthentication.emit(Unit)
             }
@@ -115,7 +122,7 @@ class MainViewModel @Inject constructor(
     /**
      * Check the biometrics status
      */
-    private fun checkBiometrics(context: Context): Boolean {
+    fun checkBiometrics(context: Context): Boolean {
         val biometricManager = BiometricManager.from(context)
         return when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
@@ -150,49 +157,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Init the biometrics features
-     */
-    private fun initBiometrics(context: Context) {
-        val executor = ContextCompat.getMainExecutor(context)
-        biometricPrompt = BiometricPrompt(context as FragmentActivity, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(
-                    errorCode: Int,
-                    errString: CharSequence
-                ) {
-                    super.onAuthenticationError(errorCode, errString)
-                    sendMessage(context.getString(R.string.authentication_error) + errString)
-                }
-
-                override fun onAuthenticationSucceeded(
-                    result: BiometricPrompt.AuthenticationResult
-                ) {
-                    super.onAuthenticationSucceeded(result)
-                    sendMessage(context.getString(R.string.authentication_succeeded))
-                    openShows()
-                }
-
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    sendMessage(context.getString(R.string.authentication_failed))
-                }
-            })
-
-        promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(context.getString(R.string.authentication))
-            .setSubtitle(context.getString(R.string.login_biometric))
-            .setNegativeButtonText(context.getString(R.string.login_biometric_negative))
-            .build()
-    }
-
     fun sendMessage(message: String){
         viewModelScope.launch(exceptionHandler) {
             _showMessage.emit(message)
         }
     }
 
-    private fun openShows(){
+    fun openShows(){
         viewModelScope.launch(exceptionHandler) {
             _openShowScreen.emit(Unit)
         }

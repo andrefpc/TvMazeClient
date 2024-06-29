@@ -1,4 +1,4 @@
-package com.andrefpc.tvmazeclient.core.room
+package com.andrefpc.tvmazeclient.core.domain.room
 
 import android.content.Context
 import com.andrefpc.tvmazeclient.core.data.Image

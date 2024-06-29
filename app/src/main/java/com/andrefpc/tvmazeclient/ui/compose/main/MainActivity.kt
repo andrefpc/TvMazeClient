@@ -1,6 +1,7 @@
 package com.andrefpc.tvmazeclient.ui.compose.main
 
 import android.app.KeyguardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -8,10 +9,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.andrefpc.tvmazeclient.R
@@ -24,6 +27,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +61,18 @@ class MainActivity : FragmentActivity() {
         lifecycleScope.launch {
             viewModel.showMessage.collectLatest {message ->
                 Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.initBiometrics.collectLatest {
+                initBiometrics(this@MainActivity)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.showBiometricsAuthentication.collectLatest {
+                biometricPrompt.authenticate(promptInfo)
             }
         }
     }
@@ -96,5 +113,41 @@ class MainActivity : FragmentActivity() {
     private fun openShows() {
         val intent = Intent(this@MainActivity, ShowsActivity::class.java)
         startActivity(intent)
+    }
+
+    /**
+     * Init the biometrics features
+     */
+    private fun initBiometrics(context: Context) {
+        val executor = ContextCompat.getMainExecutor(context)
+        biometricPrompt = BiometricPrompt(context as FragmentActivity, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(
+                    errorCode: Int,
+                    errString: CharSequence
+                ) {
+                    super.onAuthenticationError(errorCode, errString)
+                    viewModel.sendMessage(context.getString(R.string.authentication_error) + errString)
+                }
+
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult
+                ) {
+                    super.onAuthenticationSucceeded(result)
+                    viewModel.sendMessage(context.getString(R.string.authentication_succeeded))
+                    openShows()
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    viewModel.sendMessage(context.getString(R.string.authentication_failed))
+                }
+            })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(context.getString(R.string.authentication))
+            .setSubtitle(context.getString(R.string.login_biometric))
+            .setNegativeButtonText(context.getString(R.string.login_biometric_negative))
+            .build()
     }
 }
