@@ -5,8 +5,7 @@
 ## Welcome
 Tv Maze Client is an app to search and get information about produced tv series.
 
-When I created this app, I used XML to make the views and Koin for dependency injection, but I decided to recreate these views using Jetpack Compose, using Hilt for dependency injection.
-However, instead of replacing the code, I created two different paths, so that the users can choose which one to evaluate.
+When I created this app, I used XML to make the views and Koin for dependency injection, but I decided to recreate these views using Jetpack Compose, and using Hilt for dependency injection. However, instead of replacing the code, I created two different paths, so that the users can choose which one to evaluate.
 
 ## Setup
 
