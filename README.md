@@ -1,18 +1,20 @@
 # TvMazeClient
 
-![](https://img.shields.io/badge/version-v1.0.0-blue)  ![](https://img.shields.io/badge/platform-android-red)
+![](https://img.shields.io/badge/version-v1.1.0-blue)  ![](https://img.shields.io/badge/platform-android-red)
 
 ## Welcome
 Tv Maze Client is an app to search and get information about produced tv series.
 
-The app was created to an assessment process.
+When I created this app, I used XML to make the views and Koin for dependency injection, but I decided to recreate these views using Jetpack Compose, and using Hilt for dependency injection. However, instead of replacing the code, I created two different paths, so that the users can choose which one to evaluate.
 
 ## Setup
 
 The app supports Light and Dark mode.
 
 ### Software Setup
--  [Android Studio Bumblebee | 2021.1.1 Patch 1](https://developer.android.com/studio?gclid=Cj0KCQjw8amWBhCYARIsADqZJoVZuFFOp4_Y2zww_wY8fyKNk2nwKYNJ23QFmrSvDv7-wTR0G_xxLFYaAlPgEALw_wcB&gclsrc=aw.ds "Android Studio")
+-  [Android Studio Jellyfish | 2023.3.1](https://developer.android.com/studio?gad_source=1&gclid=CjwKCAjw4f6zBhBVEiwATEHFVmpf2NLDn7JXHQBQRuBgbBOdqonr5bdd5wYU2pK2Ek24D8HLCu7-yxoCD7MQAvD_BwE&gclsrc=aw.ds)
+
+### Target SDK
 
 ### API Reference
 
@@ -26,14 +28,23 @@ The app supports Light and Dark mode.
 
 - MVVM (Model View ViewModel)
 
+### UI Components
+
+- XML
+- Jetpack Compose
+
 ### Dependency Injection
 
-- [Koin](https://insert-koin.io/ "Koin")
+- [Koin](https://insert-koin.io/ "Koin") (For XML-Based Path)
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) (For Jetpack Compose Path)
 
 ### Multithreading
 
 - [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines?gclid=CjwKCAjw7rWKBhAtEiwAJ3CWLKmcgJFMZLK1QyQwWwfd5_Oy7Da_YNByntiMwhAcQxbpwAbj9fqIORoCIWEQAvD_BwE&gclsrc=aw.ds "Coroutine")
-- [LiveDatas](https://developer.android.com/topic/libraries/architecture/livedata?hl=pt-br "LiveDatas")  
+
+### Observables
+- [LiveDatas](https://developer.android.com/topic/libraries/architecture/livedata?hl=pt-br "LiveDatas") (For XML-Based Path)
+- [StateFlows and ShareFlows](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow) (For Jetpack Compose Path)
 
 ### HTTP Client
 
@@ -43,24 +54,39 @@ The app supports Light and Dark mode.
 
 - [Room](https://developer.android.com/training/data-storage/room "Room")
 
+### Remote Images Load
+- [Glide](http://bumptech.github.io/glide/ "Glide") (For XML-Based Path) 
+- [Coil](https://github.com/coil-kt/coil) (For Jetpack Compose Path)
+
+### Shimmer Loading
+- [Facebook Shimmer](https://github.com/facebookarchive/shimmer-android?tab=readme-ov-file) (For XML-Based Path) 
+- [Compose Shimmer](https://github.com/valentinilk/compose-shimmer) (For Jetpack Compose Path)
+
 ### Other Tools
 
-- [Glide](http://bumptech.github.io/glide/ "Glide") - load remote images.
 - [Gson](https://github.com/google/gson "Gson") - JSON serialization.
 - [Material Design](https://material.io/develop/android/docs/getting-started "Material Design") - UI tools.
 - [Lottie](https://airbnb.io/lottie/#/ "Lottie") - MainScreen Animation
 
 ## Packages Structure
 - 📔 **api** (Store the api methods)
-- 📔 **data** (Store the data objects)
+- 📔 **core** (Store the core classes that will be used through the code)
+  - 📔 **data** (Store data objects)
+  - 📔 **domain** (Store repositories, use cases and business logics)
+    - 📔 **exception** (Store the exceptions created to handle errors)
+    - 📔 **repository** (Store the repositories interfaces to call the api services)
+    - 📔 **room** (Store the classes to setup and access the Room database)
+    - 📔 **session** (Store the classes to setup the shared preferences)
+    - 📔 **use_case** (Store the classes that handle business logics)
+  - 📔 **extensions** (Store the app extensions)
+  - 📔 **util** (Store the util classes)
 - 📔 **di** (Store the dependecy injection setup files)
-- 📔 **extensions** (Store the app extensions)
-- 📔 **repositories** (Store the repositories interfaces to call the api services)
-- 📔 **room** (Store the classes to setup and access the Room database)
-- 📔 **session** (Store the classes to setup the shared preferences)
 - 📔 **ui** (Store the UI files, like Activities, Fragments, Adapters and the ViewModels)
-- 📔 **util** (Store the util classes)
-- 📔 **widget** (Store the custom widgets)
+  - 📔 **compose** (Store the UI files for the Jetpack Compose perspective of the app)
+    - 📔 **widget** (Store the custom widgets)
+  - 📔 **xml_bases** (Store the UI files for the XML-based perspective of the app)
+    - 📔 **widget** (Store the custom widgets)
+
 
 ## Assessment Requirements
 
