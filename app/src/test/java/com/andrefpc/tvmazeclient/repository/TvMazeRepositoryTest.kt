@@ -1,16 +1,16 @@
 package com.andrefpc.tvmazeclient.repository
 
-import com.andrefpc.tvmazeclient.api.TvMazeApi
-import com.andrefpc.tvmazeclient.core.data.ApiResult
-import com.andrefpc.tvmazeclient.core.data.Cast
-import com.andrefpc.tvmazeclient.core.data.Episode
-import com.andrefpc.tvmazeclient.core.data.Person
-import com.andrefpc.tvmazeclient.core.data.PersonShow
-import com.andrefpc.tvmazeclient.core.data.Search
-import com.andrefpc.tvmazeclient.core.data.SearchPeople
-import com.andrefpc.tvmazeclient.core.data.Season
-import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepositoryImpl
+import com.andrefpc.tvmazeclient.data.remote.TvMazeApi
+import com.andrefpc.tvmazeclient.data.remote.model.CastDto
+import com.andrefpc.tvmazeclient.data.remote.model.EpisodeDto
+import com.andrefpc.tvmazeclient.data.remote.model.PersonDto
+import com.andrefpc.tvmazeclient.data.remote.model.PersonShowDto
+import com.andrefpc.tvmazeclient.data.remote.model.SearchDto
+import com.andrefpc.tvmazeclient.data.remote.model.SearchPeopleDto
+import com.andrefpc.tvmazeclient.data.remote.model.SeasonDto
+import com.andrefpc.tvmazeclient.data.remote.model.ShowDto
+import com.andrefpc.tvmazeclient.data.repository.api.TvMazeRepositoryImpl
+import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.util.CastMocks
 import com.andrefpc.tvmazeclient.util.EpisodeMocks
 import com.andrefpc.tvmazeclient.util.PersonMocks
@@ -43,7 +43,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `getShows should return success when response is successful`() = runTest {
         // Given
-        val shows = listOf(ShowMocks.show)
+        val shows = listOf(ShowMocks.showDto)
         val response = Response.success(shows)
         coEvery { tvMazeApi.getShows(any()) } returns response
 
@@ -51,7 +51,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.getShows(0)
 
         // Then
-        assert(result is ApiResult.Success && result.result == shows)
+        assert(result is ApiResult.Success && result.result == shows.map { it.toDomain() })
         coVerify { tvMazeApi.getShows(any()) }
     }
 
@@ -59,7 +59,7 @@ class TvMazeRepositoryTest {
     fun `getShows should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<Show>>(400, errorBody)
+        val response = Response.error<List<ShowDto>>(400, errorBody)
         coEvery { tvMazeApi.getShows(any()) } returns response
 
         // When
@@ -86,7 +86,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `searchShows should return success when response is successful`() = runTest {
         // Given
-        val searchResults = listOf(Search(ShowMocks.show))
+        val searchResults = listOf(SearchDto(ShowMocks.showDto))
         val response = Response.success(searchResults)
         coEvery { tvMazeApi.search(any()) } returns response
 
@@ -94,7 +94,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.searchShows("test")
 
         // Then
-        assert(result is ApiResult.Success && result.result == searchResults.map { it.show })
+        assert(result is ApiResult.Success && result.result == searchResults.map { it.show.toDomain() })
         coVerify { tvMazeApi.search(any()) }
     }
 
@@ -102,7 +102,7 @@ class TvMazeRepositoryTest {
     fun `searchShows should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<Search>>(400, errorBody)
+        val response = Response.error<List<SearchDto>>(400, errorBody)
         coEvery { tvMazeApi.search(any()) } returns response
 
         // When
@@ -129,7 +129,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `getSeasons should return success when response is successful`() = runTest {
         // Given
-        val seasons = listOf(SeasonMocks.season)
+        val seasons = listOf(SeasonMocks.seasonDto)
         val response = Response.success(seasons)
         coEvery { tvMazeApi.getSeasons(any()) } returns response
 
@@ -137,7 +137,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.getSeasons(1)
 
         // Then
-        assert(result is ApiResult.Success && result.result == seasons)
+        assert(result is ApiResult.Success && result.result == seasons.map { it.toDomain() })
         coVerify { tvMazeApi.getSeasons(any()) }
     }
 
@@ -145,7 +145,7 @@ class TvMazeRepositoryTest {
     fun `getSeasons should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<Season>>(400, errorBody)
+        val response = Response.error<List<SeasonDto>>(400, errorBody)
         coEvery { tvMazeApi.getSeasons(any()) } returns response
 
         // When
@@ -172,7 +172,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `getEpisodes should return success when response is successful`() = runTest {
         // Given
-        val episodes = listOf(EpisodeMocks.episode)
+        val episodes = listOf(EpisodeMocks.episodeDto)
         val response = Response.success(episodes)
         coEvery { tvMazeApi.getEpisodes(any()) } returns response
 
@@ -180,7 +180,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.getEpisodes(1)
 
         // Then
-        assert(result is ApiResult.Success && result.result == episodes)
+        assert(result is ApiResult.Success && result.result == episodes.map { it.toDomain() })
         coVerify { tvMazeApi.getEpisodes(any()) }
     }
 
@@ -188,7 +188,7 @@ class TvMazeRepositoryTest {
     fun `getEpisodes should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<Episode>>(400, errorBody)
+        val response = Response.error<List<EpisodeDto>>(400, errorBody)
         coEvery { tvMazeApi.getEpisodes(any()) } returns response
 
         // When
@@ -215,7 +215,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `getCast should return success when response is successful`() = runTest {
         // Given
-        val cast = listOf(CastMocks.cast)
+        val cast = listOf(CastMocks.castDto)
         val response = Response.success(cast)
         coEvery { tvMazeApi.getCast(any()) } returns response
 
@@ -223,7 +223,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.getCast(1)
 
         // Then
-        assert(result is ApiResult.Success && result.result == cast)
+        assert(result is ApiResult.Success && result.result == cast.map { it.toDomain() })
         coVerify { tvMazeApi.getCast(any()) }
     }
 
@@ -231,7 +231,7 @@ class TvMazeRepositoryTest {
     fun `getCast should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<Cast>>(400, errorBody)
+        val response = Response.error<List<CastDto>>(400, errorBody)
         coEvery { tvMazeApi.getCast(any()) } returns response
 
         // When
@@ -258,7 +258,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `getPersonShows should return success when response is successful`() = runTest {
         // Given
-        val personShows = listOf(PersonShowMocks.personShow)
+        val personShows = listOf(PersonShowMocks.personShowDto)
         val response = Response.success(personShows)
         coEvery { tvMazeApi.getPersonShows(any()) } returns response
 
@@ -266,7 +266,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.getPersonShows(1)
 
         // Then
-        assert(result is ApiResult.Success && result.result == personShows.map { it.embedded.show })
+        assert(result is ApiResult.Success && result.result == personShows.map { it.embedded.show.toDomain() })
         coVerify { tvMazeApi.getPersonShows(any()) }
     }
 
@@ -274,7 +274,7 @@ class TvMazeRepositoryTest {
     fun `getPersonShows should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<PersonShow>>(400, errorBody)
+        val response = Response.error<List<PersonShowDto>>(400, errorBody)
         coEvery { tvMazeApi.getPersonShows(any()) } returns response
 
         // When
@@ -301,7 +301,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `getPeople should return success when response is successful`() = runTest {
         // Given
-        val people = listOf(PersonMocks.person)
+        val people = listOf(PersonMocks.personDto)
         val response = Response.success(people)
         coEvery { tvMazeApi.getPeople(any()) } returns response
 
@@ -309,7 +309,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.getPeople(0)
 
         // Then
-        assert(result is ApiResult.Success && result.result == people)
+        assert(result is ApiResult.Success && result.result == people.map { it.toDomain() })
         coVerify { tvMazeApi.getPeople(any()) }
     }
 
@@ -317,7 +317,7 @@ class TvMazeRepositoryTest {
     fun `getPeople should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<Person>>(400, errorBody)
+        val response = Response.error<List<PersonDto>>(400, errorBody)
         coEvery { tvMazeApi.getPeople(any()) } returns response
 
         // When
@@ -344,7 +344,7 @@ class TvMazeRepositoryTest {
     @Test
     fun `searchPeople should return success when response is successful`() = runTest {
         // Given
-        val searchResults = listOf(SearchPeopleMocks.searchPeople)
+        val searchResults = listOf(SearchPeopleMocks.searchPeopleDto)
         val response = Response.success(searchResults)
         coEvery { tvMazeApi.searchPeople(any()) } returns response
 
@@ -352,7 +352,7 @@ class TvMazeRepositoryTest {
         val result = tvMazeRepository.searchPeople("test")
 
         // Then
-        assert(result is ApiResult.Success && result.result == searchResults.map { it.person })
+        assert(result is ApiResult.Success && result.result == searchResults.map { it.person.toDomain() })
         coVerify { tvMazeApi.searchPeople(any()) }
     }
 
@@ -360,7 +360,7 @@ class TvMazeRepositoryTest {
     fun `searchPeople should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<SearchPeople>>(400, errorBody)
+        val response = Response.error<List<SearchPeopleDto>>(400, errorBody)
         coEvery { tvMazeApi.searchPeople(any()) } returns response
 
         // When

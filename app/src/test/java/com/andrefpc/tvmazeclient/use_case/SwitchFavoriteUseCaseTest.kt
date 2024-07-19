@@ -1,7 +1,7 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
-import com.andrefpc.tvmazeclient.core.domain.use_case.SwitchFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.repository.database.ShowRoomRepository
+import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
 import com.andrefpc.tvmazeclient.util.ShowMocks
 import io.mockk.coEvery
 import io.mockk.coVerify

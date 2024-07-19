@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.view_model.person_details
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.core.data.ScreenState
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetPersonShowsUseCase
-import com.andrefpc.tvmazeclient.ui.compose.person_details.PersonDetailsViewModel
-import com.andrefpc.tvmazeclient.ui.compose.person_details.domain.use_case.PersonDetailsUseCase
+import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.domain.use_case.GetPersonShowsUseCase
+import com.andrefpc.tvmazeclient.presentation.compose.screen.person_details.PersonDetailsViewModel
+import com.andrefpc.tvmazeclient.domain.use_case.PersonDetailsUseCase
 import com.andrefpc.tvmazeclient.util.ShowMocks
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

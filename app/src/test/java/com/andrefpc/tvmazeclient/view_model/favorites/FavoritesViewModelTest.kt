@@ -1,11 +1,11 @@
 package com.andrefpc.tvmazeclient.view_model.favorites
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.core.data.ScreenState
-import com.andrefpc.tvmazeclient.core.domain.use_case.DeleteFavoriteUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetFavoritesUseCase
-import com.andrefpc.tvmazeclient.ui.compose.favorites.FavoritesViewModel
-import com.andrefpc.tvmazeclient.ui.compose.favorites.domain.use_case.FavoritesUseCase
+import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.domain.use_case.DeleteFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetFavoritesUseCase
+import com.andrefpc.tvmazeclient.presentation.compose.screen.favorites.FavoritesViewModel
+import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
 import com.andrefpc.tvmazeclient.util.ShowMocks
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

@@ -1,11 +1,12 @@
 package com.andrefpc.tvmazeclient.util
 
-import com.andrefpc.tvmazeclient.core.data.Image
-import com.andrefpc.tvmazeclient.core.data.Schedule
-import com.andrefpc.tvmazeclient.core.data.Show
+import com.andrefpc.tvmazeclient.data.remote.model.ShowDto
+import com.andrefpc.tvmazeclient.domain.model.Image
+import com.andrefpc.tvmazeclient.domain.model.Schedule
+import com.andrefpc.tvmazeclient.domain.model.Show
 
 object ShowMocks {
-    val show = Show(
+    val showDto = ShowDto(
         id = 1,
         name = "Test Show",
         image = Image(
@@ -21,8 +22,9 @@ object ShowMocks {
         premiered = "",
         ended = ""
     )
+    val show = showDto.toDomain()
 
-    val showUpdated = Show(
+    val showUpdatedDto = ShowDto(
         id = 2,
         name = "Updated Show",
         image = Image(
@@ -38,4 +40,6 @@ object ShowMocks {
         premiered = "",
         ended = ""
     )
+
+    val showUpdated = showUpdatedDto.toDomain()
 }

@@ -1,24 +1,30 @@
 package com.andrefpc.tvmazeclient.util
 
-import com.andrefpc.tvmazeclient.core.data.Image
-import com.andrefpc.tvmazeclient.core.data.Person
+import com.andrefpc.tvmazeclient.data.remote.model.ImageDto
+import com.andrefpc.tvmazeclient.data.remote.model.PersonDto
+import com.andrefpc.tvmazeclient.domain.model.Image
+import com.andrefpc.tvmazeclient.domain.model.Person
 
 object PersonMocks {
-    val person = Person(
+    val personDto = PersonDto(
         id = 1,
         name = "Test Person",
-        image = Image(
+        image = ImageDto(
             medium = "",
             original = ""
         )
     )
 
-    val personUpdated = Person(
+    val person = personDto.toDomain()
+
+    val personUpdatedDto = PersonDto(
         id = 2,
         name = "Updated Person",
-        image = Image(
+        image = ImageDto(
             medium = "",
             original = ""
         )
     )
+
+    val personUpdated = personDto.toDomain()
 }

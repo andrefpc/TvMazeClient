@@ -1,13 +1,13 @@
 package com.andrefpc.tvmazeclient.view_model.show_details
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.core.data.ScreenState
-import com.andrefpc.tvmazeclient.core.domain.use_case.CheckFavoriteUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetCastUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonEpisodesUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.SwitchFavoriteUseCase
-import com.andrefpc.tvmazeclient.ui.compose.show_details.ShowDetailsViewModel
-import com.andrefpc.tvmazeclient.ui.compose.show_details.domain.use_case.ShowDetailsUseCase
+import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
+import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsViewModel
+import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
 import com.andrefpc.tvmazeclient.util.CastMocks
 import com.andrefpc.tvmazeclient.util.EpisodeMocks
 import com.andrefpc.tvmazeclient.util.PersonMocks

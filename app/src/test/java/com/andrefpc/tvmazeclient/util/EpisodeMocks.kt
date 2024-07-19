@@ -1,16 +1,18 @@
 package com.andrefpc.tvmazeclient.util
 
-import com.andrefpc.tvmazeclient.core.data.Episode
-import com.andrefpc.tvmazeclient.core.data.Image
+import com.andrefpc.tvmazeclient.data.remote.model.EpisodeDto
+import com.andrefpc.tvmazeclient.data.remote.model.ImageDto
+import com.andrefpc.tvmazeclient.domain.model.Episode
+import com.andrefpc.tvmazeclient.domain.model.Image
 
 object EpisodeMocks {
-    val episode = Episode(
+    val episodeDto = EpisodeDto(
         id = 1,
         name = "Episode 1",
         number = 1,
         season = 1,
         summary = "Summary",
-        image = Image(
+        image = ImageDto(
             medium = "",
             original = ""
         ),
@@ -18,4 +20,6 @@ object EpisodeMocks {
         airtime = "",
         runtime = 0
     )
+
+    val episode = episodeDto.toDomain()
 }

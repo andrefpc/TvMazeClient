@@ -5,7 +5,8 @@ import com.andrefpc.tvmazeclient.di.koin.apiModule
 import com.andrefpc.tvmazeclient.di.koin.coroutineContextProviderModule
 import com.andrefpc.tvmazeclient.di.koin.remoteModule
 import com.andrefpc.tvmazeclient.di.koin.repositoryModule
-import com.andrefpc.tvmazeclient.di.koin.sessionModule
+import com.andrefpc.tvmazeclient.di.koin.navigationModule
+import com.andrefpc.tvmazeclient.di.koin.useCaseModules
 import com.andrefpc.tvmazeclient.di.koin.viewModelModule
 import dagger.hilt.android.HiltAndroidApp
 import org.koin.android.ext.koin.androidContext
@@ -25,7 +26,8 @@ class InitApplication : Application() {
                 listOf(
                     apiModule,
                     repositoryModule,
-                    sessionModule,
+                    navigationModule,
+                    useCaseModules,
                     viewModelModule,
                     remoteModule,
                     coroutineContextProviderModule

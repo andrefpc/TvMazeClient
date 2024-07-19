@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVMazeClient">
         <activity
-            android:name=".ui.compose.chooser.ChooserActivity"
+            android:name=".presentation.compose.screen.chooser.ChooserActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,42 +22,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.compose.main.MainActivity"
+            android:name=".presentation.compose.screen.main.MainActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.compose.person_details.PersonDetailsActivity"
+            android:name=".presentation.compose.screen.person_details.PersonDetailsActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.compose.people.PeopleActivity"
+            android:name=".presentation.compose.screen.people.PeopleActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.compose.favorites.FavoritesActivity"
+            android:name=".presentation.compose.screen.favorites.FavoritesActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.compose.show_details.ShowDetailsActivity"
+            android:name=".presentation.compose.screen.show_details.ShowDetailsActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.compose.shows.ShowsActivity"
+            android:name=".presentation.compose.screen.shows.ShowsActivity"
             android:exported="false"/>
 
         <activity
-            android:name=".ui.xml_based.main.MainActivity"
+            android:name=".presentation.xml_based.screen.main.MainActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.xml_based.person_details.PersonDetailsActivity"
+            android:name=".presentation.xml_based.screen.person_details.PersonDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.xml_based.people.PeopleActivity"
+            android:name=".presentation.xml_based.screen.people.PeopleActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.xml_based.favorites.FavoritesActivity"
+            android:name=".presentation.xml_based.screen.favorites.FavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.xml_based.show_details.ShowDetailsActivity"
+            android:name=".presentation.xml_based.screen.show_details.ShowDetailsActivity"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".ui.xml_based.shows.ShowsActivity"
+            android:name=".presentation.xml_based.screen.shows.ShowsActivity"
             android:exported="false" />
     </application>
 

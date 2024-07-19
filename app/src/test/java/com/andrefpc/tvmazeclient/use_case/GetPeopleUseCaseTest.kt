@@ -1,11 +1,11 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.core.data.ApiError
-import com.andrefpc.tvmazeclient.core.data.ApiResult
-import com.andrefpc.tvmazeclient.core.domain.exception.PeopleListNullException
-import com.andrefpc.tvmazeclient.core.domain.exception.PeopleListRequestException
-import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetPeopleUseCase
+import com.andrefpc.tvmazeclient.domain.model.ApiError
+import com.andrefpc.tvmazeclient.domain.model.ApiResult
+import com.andrefpc.tvmazeclient.data.exception.PeopleListNullException
+import com.andrefpc.tvmazeclient.data.exception.PeopleListRequestException
+import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.use_case.GetPeopleUseCase
 import com.andrefpc.tvmazeclient.util.PersonMocks
 import io.mockk.coEvery
 import io.mockk.coVerify

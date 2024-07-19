@@ -1,12 +1,12 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.core.data.ApiError
-import com.andrefpc.tvmazeclient.core.data.ApiResult
-import com.andrefpc.tvmazeclient.core.data.Show
-import com.andrefpc.tvmazeclient.core.domain.exception.ShowListNullException
-import com.andrefpc.tvmazeclient.core.domain.exception.ShowListRequestException
-import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetShowsUseCase
+import com.andrefpc.tvmazeclient.domain.model.ApiError
+import com.andrefpc.tvmazeclient.domain.model.ApiResult
+import com.andrefpc.tvmazeclient.domain.model.Show
+import com.andrefpc.tvmazeclient.data.exception.ShowListNullException
+import com.andrefpc.tvmazeclient.data.exception.ShowListRequestException
+import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.use_case.GetShowsUseCase
 import com.andrefpc.tvmazeclient.util.ShowMocks
 import io.mockk.coEvery
 import io.mockk.coVerify

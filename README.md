@@ -69,23 +69,27 @@ The app supports Light and Dark mode.
 - [Lottie](https://airbnb.io/lottie/#/ "Lottie") - MainScreen Animation
 
 ## Packages Structure
-- 📔 **api** (Store the api methods)
-- 📔 **core** (Store the core classes that will be used through the code)
-  - 📔 **data** (Store data objects)
-  - 📔 **domain** (Store repositories, use cases and business logics)
-    - 📔 **exception** (Store the exceptions created to handle errors)
-    - 📔 **repository** (Store the repositories interfaces to call the api services)
-    - 📔 **room** (Store the classes to setup and access the Room database)
-    - 📔 **session** (Store the classes to setup the shared preferences)
-    - 📔 **use_case** (Store the classes that handle business logics)
-  - 📔 **extensions** (Store the app extensions)
-  - 📔 **util** (Store the util classes)
+- 📔 **data** (Store data objects)
+  - 📔 **exception** (Store the exceptions created to handle errors)
+  - 📔 **local** (Store the classes to setup and access the Room database)
+  - 📔 **remote** (Store the api interfaces and dto objects)
+  - 📔 **repository** (Store the repositories implementations)
 - 📔 **di** (Store the dependecy injection setup files)
-- 📔 **ui** (Store the UI files, like Activities, Fragments, Adapters and the ViewModels)
+- 📔 **domain** (Store repositories, use cases and business logics)
+  - 📔 **model** (Store the domain models)
+  - 📔 **repository** (Store the repositories interfaces)
+  - 📔 **use_case** (Store the use case classes that will handle business logics)
+- 📔 **presentation** (Store the classes responsible to present screens )
   - 📔 **compose** (Store the UI files for the Jetpack Compose perspective of the app)
+    - 📔 **navigation** (Store the classes that will handle navigation)
+    - 📔 **screen** (Store the Views, Activities and viewModels)
+    - 📔 **theme** (Store the files that will handle theming)
     - 📔 **widget** (Store the custom widgets)
-  - 📔 **xml_bases** (Store the UI files for the XML-based perspective of the app)
-    - 📔 **widget** (Store the custom widgets)
+- 📔 **xml_bases** (Store the UI files for the XML-based perspective of the app)
+  - 📔 **navigation** (Store the classes that will handle navigation)
+  - 📔 **screen** (Store the Fragments, Activities and viewModels)
+  - 📔 **widget** (Store the custom widgets)
+- 📔 **util** (Store extensions and util classes)
    
 ## Unit Tests
 
@@ -94,8 +98,8 @@ The app supports Light and Dark mode.
 #### Tests Packages Structure
 - 📔 **repository** (Store Repository tests)
 - 📔 **use_case** (Store Use Case tests)
-- 📔 **viwe_model** (Store ViewModel tests)
 - 📔 **util** (Store Mocks to be used in the tests)
+- 📔 **view_model** (Store ViewModel tests)
   
 <img width="1378" alt="Screenshot 2024-06-29 at 17 15 28" src="https://github.com/andrefpc/TvMazeClient/assets/4115436/48386491-d021-42f4-8d21-c58830ebae60">
 

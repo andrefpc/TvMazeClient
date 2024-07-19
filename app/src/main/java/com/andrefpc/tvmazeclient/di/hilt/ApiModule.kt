@@ -1,6 +1,6 @@
 package com.andrefpc.tvmazeclient.di.hilt
 
-import com.andrefpc.tvmazeclient.api.TvMazeApi
+import com.andrefpc.tvmazeclient.data.remote.TvMazeApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

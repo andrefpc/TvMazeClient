@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.biometric.BiometricManager
 import androidx.fragment.app.FragmentActivity
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.core.domain.session.PinSession
-import com.andrefpc.tvmazeclient.ui.compose.main.MainViewModel
+import com.andrefpc.tvmazeclient.domain.repository.preferences.PinRepository
+import com.andrefpc.tvmazeclient.presentation.compose.screen.main.MainViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.every
@@ -34,7 +34,7 @@ class MainViewModelTest {
     var instantExecutorRule: TestRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var pinSession: PinSession
+    lateinit var pinRepository: PinRepository
 
     private lateinit var viewModel: MainViewModel
 
@@ -46,7 +46,7 @@ class MainViewModelTest {
 
         Dispatchers.setMain(testDispatcher)
 
-        viewModel = MainViewModel(pinSession)
+        viewModel = MainViewModel(pinRepository)
     }
 
     @After
@@ -57,7 +57,7 @@ class MainViewModelTest {
     @Test
     fun `checkPin should update button state correctly`() = runTest {
         // Given
-        every { pinSession.getPin() } returns null
+        every { pinRepository.getPin() } returns null
 
         // When
         viewModel.checkPin()
@@ -67,7 +67,7 @@ class MainViewModelTest {
         assertEquals(R.string.create_button, viewModel.pinButtonState.value)
 
         // Given
-        every { pinSession.getPin() } returns "1234"
+        every { pinRepository.getPin() } returns "1234"
 
         // When
         viewModel.checkPin()
@@ -94,13 +94,13 @@ class MainViewModelTest {
     fun `onPinClick should save new pin and update state correctly`() = runTest {
         // Given
         val context = mockk<Context>(relaxed = true)
-        every { pinSession.getPin() } returns null
+        every { pinRepository.getPin() } returns null
 
         // When
         viewModel.onPinClick(context, "1234")
 
         // Then
-        coVerify { pinSession.savePin("1234") }
+        coVerify { pinRepository.savePin("1234") }
         assertEquals(R.string.login_button, viewModel.pinButtonState.value)
         assertEquals(Unit, viewModel.openShowScreen.first())
     }
@@ -109,7 +109,7 @@ class MainViewModelTest {
     fun `onPinClick should open shows if pin matches`() = runTest {
         // Given
         val context = mockk<Context>(relaxed = true)
-        every { pinSession.getPin() } returns "1234"
+        every { pinRepository.getPin() } returns "1234"
 
         // When
         viewModel.onPinClick(context, "1234")
@@ -123,7 +123,7 @@ class MainViewModelTest {
         // Given
         val context = mockk<Context>(relaxed = true)
         every { context.getString(R.string.incorrect_pin) } returns "Incorrect PIN"
-        every { pinSession.getPin() } returns "1234"
+        every { pinRepository.getPin() } returns "1234"
 
         // When
         viewModel.onPinClick(context, "5678")

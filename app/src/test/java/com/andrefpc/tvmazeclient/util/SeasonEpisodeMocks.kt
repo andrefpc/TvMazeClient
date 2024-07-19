@@ -1,6 +1,6 @@
 package com.andrefpc.tvmazeclient.util
 
-import com.andrefpc.tvmazeclient.core.data.SeasonEpisodeStatus
+import com.andrefpc.tvmazeclient.domain.model.SeasonEpisodeStatus
 
 object SeasonEpisodeMocks {
     val seasonEpisodeStatus = SeasonEpisodeStatus(

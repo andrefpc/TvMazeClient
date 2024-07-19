@@ -1,13 +1,13 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.core.data.ApiError
-import com.andrefpc.tvmazeclient.core.domain.exception.EpisodesListNullException
-import com.andrefpc.tvmazeclient.core.domain.exception.EpisodesListRequestException
-import com.andrefpc.tvmazeclient.core.domain.exception.SeasonListNullException
-import com.andrefpc.tvmazeclient.core.domain.exception.SeasonListRequestException
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetEpisodesUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonEpisodesUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonsUseCase
+import com.andrefpc.tvmazeclient.domain.model.ApiError
+import com.andrefpc.tvmazeclient.data.exception.EpisodesListNullException
+import com.andrefpc.tvmazeclient.data.exception.EpisodesListRequestException
+import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
+import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
+import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.util.EpisodeMocks
 import com.andrefpc.tvmazeclient.util.SeasonEpisodeMocks
 import com.andrefpc.tvmazeclient.util.SeasonMocks

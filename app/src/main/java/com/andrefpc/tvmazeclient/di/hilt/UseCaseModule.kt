@@ -1,23 +1,23 @@
 package com.andrefpc.tvmazeclient.di.hilt
 
-import com.andrefpc.tvmazeclient.core.domain.repository.TvMazeRepository
-import com.andrefpc.tvmazeclient.core.domain.room.ShowRoomRepository
-import com.andrefpc.tvmazeclient.core.domain.use_case.CheckFavoriteUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.DeleteFavoriteUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetCastUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetEpisodesUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetFavoritesUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetPeopleUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetPersonShowsUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonEpisodesUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetSeasonsUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.GetShowsUseCase
-import com.andrefpc.tvmazeclient.core.domain.use_case.SwitchFavoriteUseCase
-import com.andrefpc.tvmazeclient.ui.compose.favorites.domain.use_case.FavoritesUseCase
-import com.andrefpc.tvmazeclient.ui.compose.people.domain.use_case.PeopleUseCase
-import com.andrefpc.tvmazeclient.ui.compose.person_details.domain.use_case.PersonDetailsUseCase
-import com.andrefpc.tvmazeclient.ui.compose.show_details.domain.use_case.ShowDetailsUseCase
-import com.andrefpc.tvmazeclient.ui.compose.shows.domain_use_case.ShowsUseCase
+import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.repository.database.ShowRoomRepository
+import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.DeleteFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetFavoritesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetPeopleUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetPersonShowsUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetShowsUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.PeopleUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.PersonDetailsUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.ShowsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +59,8 @@ object UseCaseModule {
             getEpisodesUseCase = GetEpisodesUseCase(tvMazeRepository),
             getSeasonsUseCase = GetSeasonsUseCase(tvMazeRepository)
         ),
+        getSeasons = GetSeasonsUseCase(tvMazeRepository),
+        getEpisodes = GetEpisodesUseCase(tvMazeRepository),
         switchFavorite = SwitchFavoriteUseCase(showRoomRepository),
         checkFavorite = CheckFavoriteUseCase(showRoomRepository),
     )
