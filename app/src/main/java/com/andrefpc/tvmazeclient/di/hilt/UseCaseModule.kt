@@ -1,9 +1,11 @@
 package com.andrefpc.tvmazeclient.di.hilt
 
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.repository.api.PersonRepository
+import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository
 import com.andrefpc.tvmazeclient.domain.repository.database.ShowRoomRepository
 import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.DeleteFavoriteUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetFavoritesUseCase
@@ -12,12 +14,11 @@ import com.andrefpc.tvmazeclient.domain.use_case.GetPersonShowsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetShowsUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.PeopleUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.PersonDetailsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.ShowsUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,37 +38,37 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun providePeopleUseCase(tvMazeRepository: TvMazeRepository): PeopleUseCase = PeopleUseCase(
-        getPeople = GetPeopleUseCase(tvMazeRepository)
+    fun providePeopleUseCase(personRepository: PersonRepository): PeopleUseCase = PeopleUseCase(
+        getPeople = GetPeopleUseCase(personRepository)
     )
 
     @Provides
     @Singleton
-    fun providePersonDetailsUseCase(tvMazeRepository: TvMazeRepository): PersonDetailsUseCase =
+    fun providePersonDetailsUseCase(personRepository: PersonRepository): PersonDetailsUseCase =
         PersonDetailsUseCase(
-            getPersonShows = GetPersonShowsUseCase(tvMazeRepository)
+            getPersonShows = GetPersonShowsUseCase(personRepository)
         )
 
     @Provides
     @Singleton
     fun provideShowDetailsUseCase(
         showRoomRepository: ShowRoomRepository,
-        tvMazeRepository: TvMazeRepository
+        showRepository: ShowRepository
     ): ShowDetailsUseCase = ShowDetailsUseCase(
-        getCast = GetCastUseCase(tvMazeRepository),
+        getCast = GetCastUseCase(showRepository),
         getSeasonEpisodes = GetSeasonEpisodesUseCase(
-            getEpisodesUseCase = GetEpisodesUseCase(tvMazeRepository),
-            getSeasonsUseCase = GetSeasonsUseCase(tvMazeRepository)
+            getEpisodesUseCase = GetEpisodesUseCase(showRepository),
+            getSeasonsUseCase = GetSeasonsUseCase(showRepository)
         ),
-        getSeasons = GetSeasonsUseCase(tvMazeRepository),
-        getEpisodes = GetEpisodesUseCase(tvMazeRepository),
+        getSeasons = GetSeasonsUseCase(showRepository),
+        getEpisodes = GetEpisodesUseCase(showRepository),
         switchFavorite = SwitchFavoriteUseCase(showRoomRepository),
         checkFavorite = CheckFavoriteUseCase(showRoomRepository),
     )
 
     @Provides
     @Singleton
-    fun provideShowsUseCase(tvMazeRepository: TvMazeRepository): ShowsUseCase = ShowsUseCase(
-        getShows = GetShowsUseCase(tvMazeRepository)
+    fun provideShowsUseCase(showRepository: ShowRepository): ShowsUseCase = ShowsUseCase(
+        getShows = GetShowsUseCase(showRepository)
     )
 }

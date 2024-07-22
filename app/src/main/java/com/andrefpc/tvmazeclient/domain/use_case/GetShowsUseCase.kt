@@ -1,22 +1,22 @@
 package com.andrefpc.tvmazeclient.domain.use_case
 
-import com.andrefpc.tvmazeclient.domain.model.ApiResult
-import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.data.exception.ShowListNullException
 import com.andrefpc.tvmazeclient.data.exception.ShowListRequestException
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.model.ApiResult
+import com.andrefpc.tvmazeclient.domain.model.Show
+import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository
 import javax.inject.Inject
 
 class GetShowsUseCase @Inject constructor(
-    private val tvMazeRepository: TvMazeRepository
+    private val showRepository: ShowRepository
 ) {
     @Throws(ShowListNullException::class, ShowListRequestException::class)
     suspend operator fun invoke(page: Int = 0, searchTerm: String? = null): List<Show> {
         when (
             val result = searchTerm?.let {
-                tvMazeRepository.searchShows(it)
+                showRepository.searchShows(it)
             } ?: run {
-                tvMazeRepository.getShows(page)
+                showRepository.getShows(page)
             }
         ) {
             is ApiResult.Success -> {

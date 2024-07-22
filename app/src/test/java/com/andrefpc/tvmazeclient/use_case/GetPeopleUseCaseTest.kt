@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.domain.model.ApiError
-import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.data.exception.PeopleListNullException
 import com.andrefpc.tvmazeclient.data.exception.PeopleListRequestException
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.model.ApiError
+import com.andrefpc.tvmazeclient.domain.model.ApiResult
+import com.andrefpc.tvmazeclient.domain.repository.api.PersonRepository
 import com.andrefpc.tvmazeclient.domain.use_case.GetPeopleUseCase
 import com.andrefpc.tvmazeclient.util.PersonMocks
 import io.mockk.coEvery
@@ -24,13 +24,13 @@ class GetPeopleUseCaseTest {
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var tvMazeRepository: TvMazeRepository
+    lateinit var personRepository: PersonRepository
 
     private lateinit var getPeopleUseCase: GetPeopleUseCase
 
     @Before
     fun setup() {
-        getPeopleUseCase = GetPeopleUseCase(tvMazeRepository)
+        getPeopleUseCase = GetPeopleUseCase(personRepository)
     }
 
     @Test
@@ -38,14 +38,14 @@ class GetPeopleUseCaseTest {
         // Given
         val page = 1
         val peopleList = listOf(PersonMocks.person)
-        coEvery { tvMazeRepository.getPeople(page) } returns ApiResult.Success(peopleList)
+        coEvery { personRepository.getPeople(page) } returns ApiResult.Success(peopleList)
 
         // When
         val result = getPeopleUseCase(page)
 
         // Then
         assertEquals(peopleList, result)
-        coVerify(exactly = 1) { tvMazeRepository.getPeople(page) }
+        coVerify(exactly = 1) { personRepository.getPeople(page) }
     }
 
     @Test
@@ -53,7 +53,7 @@ class GetPeopleUseCaseTest {
         // Given
         val searchTerm = "Search Term"
         val searchedPeopleList = listOf(PersonMocks.person)
-        coEvery { tvMazeRepository.searchPeople(searchTerm) } returns ApiResult.Success(
+        coEvery { personRepository.searchPeople(searchTerm) } returns ApiResult.Success(
             searchedPeopleList
         )
 
@@ -62,20 +62,20 @@ class GetPeopleUseCaseTest {
 
         // Then
         assertEquals(searchedPeopleList, result)
-        coVerify(exactly = 1) { tvMazeRepository.searchPeople(searchTerm) }
+        coVerify(exactly = 1) { personRepository.searchPeople(searchTerm) }
     }
 
     @Test
     fun `should throw PeopleListNullException when result is null`() = runTest {
         // Given
         val page = 1
-        coEvery { tvMazeRepository.getPeople(page) } returns ApiResult.Success(null)
+        coEvery { personRepository.getPeople(page) } returns ApiResult.Success(null)
 
         // When / Then
         assertFailsWith<PeopleListNullException> {
             getPeopleUseCase(page)
         }
-        coVerify(exactly = 1) { tvMazeRepository.getPeople(page) }
+        coVerify(exactly = 1) { personRepository.getPeople(page) }
     }
 
     @Test
@@ -83,13 +83,13 @@ class GetPeopleUseCaseTest {
         // Given
         val page = 1
         val apiError = ApiError("Error")
-        coEvery { tvMazeRepository.getPeople(page) } returns ApiResult.Error(apiError)
+        coEvery { personRepository.getPeople(page) } returns ApiResult.Error(apiError)
 
         // When / Then
         assertFailsWith<PeopleListRequestException> {
             getPeopleUseCase(page)
         }
-        coVerify(exactly = 1) { tvMazeRepository.getPeople(page) }
+        coVerify(exactly = 1) { personRepository.getPeople(page) }
     }
 
     @Test
@@ -97,12 +97,12 @@ class GetPeopleUseCaseTest {
         // Given
         val searchTerm = "Search Term"
         val apiError = ApiError("Error")
-        coEvery { tvMazeRepository.searchPeople(searchTerm) } returns ApiResult.Error(apiError)
+        coEvery { personRepository.searchPeople(searchTerm) } returns ApiResult.Error(apiError)
 
         // When / Then
         assertFailsWith<PeopleListRequestException> {
             getPeopleUseCase(searchTerm = searchTerm)
         }
-        coVerify(exactly = 1) { tvMazeRepository.searchPeople(searchTerm) }
+        coVerify(exactly = 1) { personRepository.searchPeople(searchTerm) }
     }
 }

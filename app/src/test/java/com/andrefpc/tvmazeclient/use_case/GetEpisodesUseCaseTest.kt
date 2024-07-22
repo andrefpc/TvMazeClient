@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.domain.model.ApiError
-import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.data.exception.EpisodesListNullException
 import com.andrefpc.tvmazeclient.data.exception.EpisodesListRequestException
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.model.ApiError
+import com.andrefpc.tvmazeclient.domain.model.ApiResult
+import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository
 import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
 import com.andrefpc.tvmazeclient.util.EpisodeMocks
 import io.mockk.coEvery
@@ -24,13 +24,13 @@ class GetEpisodesUseCaseTest {
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var tvMazeRepository: TvMazeRepository
+    lateinit var showRepository: ShowRepository
 
     private lateinit var getEpisodesUseCase: GetEpisodesUseCase
 
     @Before
     fun setup() {
-        getEpisodesUseCase = GetEpisodesUseCase(tvMazeRepository)
+        getEpisodesUseCase = GetEpisodesUseCase(showRepository)
     }
 
     @Test
@@ -38,27 +38,27 @@ class GetEpisodesUseCaseTest {
         // Given
         val id = 1
         val episodesList = listOf(EpisodeMocks.episode)
-        coEvery { tvMazeRepository.getEpisodes(id) } returns ApiResult.Success(episodesList)
+        coEvery { showRepository.getEpisodes(id) } returns ApiResult.Success(episodesList)
 
         // When
         val result = getEpisodesUseCase(id)
 
         // Then
         assertEquals(episodesList, result)
-        coVerify(exactly = 1) { tvMazeRepository.getEpisodes(id) }
+        coVerify(exactly = 1) { showRepository.getEpisodes(id) }
     }
 
     @Test
     fun `should throw EpisodesListNullException when result is success but episodes list is null`() = runTest {
         // Given
         val id = 1
-        coEvery { tvMazeRepository.getEpisodes(id) } returns ApiResult.Success(null)
+        coEvery { showRepository.getEpisodes(id) } returns ApiResult.Success(null)
 
         // When & Then
         assertFailsWith<EpisodesListNullException> {
             getEpisodesUseCase(id)
         }
-        coVerify(exactly = 1) { tvMazeRepository.getEpisodes(id) }
+        coVerify(exactly = 1) { showRepository.getEpisodes(id) }
     }
 
     @Test
@@ -66,13 +66,13 @@ class GetEpisodesUseCaseTest {
         // Given
         val id = 1
         val apiError = ApiError(message = "Error fetching episodes list")
-        coEvery { tvMazeRepository.getEpisodes(id) } returns ApiResult.Error(apiError)
+        coEvery { showRepository.getEpisodes(id) } returns ApiResult.Error(apiError)
 
         // When & Then
         val exception = assertFailsWith<EpisodesListRequestException> {
             getEpisodesUseCase(id)
         }
         assertEquals(apiError, exception.apiError)
-        coVerify(exactly = 1) { tvMazeRepository.getEpisodes(id) }
+        coVerify(exactly = 1) { showRepository.getEpisodes(id) }
     }
 }

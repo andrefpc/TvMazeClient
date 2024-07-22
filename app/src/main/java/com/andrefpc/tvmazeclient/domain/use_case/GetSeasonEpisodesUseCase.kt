@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.domain.use_case
 
+import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
+import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
 import com.andrefpc.tvmazeclient.domain.model.Episode
 import com.andrefpc.tvmazeclient.domain.model.Season
 import com.andrefpc.tvmazeclient.domain.model.SeasonEpisodeStatus
-import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
-import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
 import javax.inject.Inject
 
 class GetSeasonEpisodesUseCase @Inject constructor(

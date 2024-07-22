@@ -4,7 +4,7 @@ import com.andrefpc.tvmazeclient.domain.model.ApiError
 import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.data.exception.CastListNullException
 import com.andrefpc.tvmazeclient.data.exception.CastListRequestException
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository
 import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
 import com.andrefpc.tvmazeclient.util.CastMocks
 import io.mockk.coEvery
@@ -24,13 +24,13 @@ class GetCastUseCaseTest {
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var tvMazeRepository: TvMazeRepository
+    lateinit var showRepository: ShowRepository
 
     private lateinit var getCastUseCase: GetCastUseCase
 
     @Before
     fun setup() {
-        getCastUseCase = GetCastUseCase(tvMazeRepository)
+        getCastUseCase = GetCastUseCase(showRepository)
     }
 
     @Test
@@ -38,27 +38,27 @@ class GetCastUseCaseTest {
         // Given
         val id = 1
         val castList = listOf(CastMocks.cast)
-        coEvery { tvMazeRepository.getCast(id) } returns ApiResult.Success(castList)
+        coEvery { showRepository.getCast(id) } returns ApiResult.Success(castList)
 
         // When
         val result = getCastUseCase(id)
 
         // Then
         assertEquals(castList, result)
-        coVerify(exactly = 1) { tvMazeRepository.getCast(id) }
+        coVerify(exactly = 1) { showRepository.getCast(id) }
     }
 
     @Test
     fun `should throw CastListNullException when result is success but cast list is null`() = runTest {
         // Given
         val id = 1
-        coEvery { tvMazeRepository.getCast(id) } returns ApiResult.Success(null)
+        coEvery { showRepository.getCast(id) } returns ApiResult.Success(null)
 
         // When & Then
         assertFailsWith<CastListNullException> {
             getCastUseCase(id)
         }
-        coVerify(exactly = 1) { tvMazeRepository.getCast(id) }
+        coVerify(exactly = 1) { showRepository.getCast(id) }
     }
 
     @Test
@@ -66,13 +66,13 @@ class GetCastUseCaseTest {
         // Given
         val id = 1
         val apiError = ApiError(message = "Error fetching cast list")
-        coEvery { tvMazeRepository.getCast(id) } returns ApiResult.Error(apiError)
+        coEvery { showRepository.getCast(id) } returns ApiResult.Error(apiError)
 
         // When & Then
         val exception = assertFailsWith<CastListRequestException> {
             getCastUseCase(id)
         }
         assertEquals(apiError, exception.apiError)
-        coVerify(exactly = 1) { tvMazeRepository.getCast(id) }
+        coVerify(exactly = 1) { showRepository.getCast(id) }
     }
 }

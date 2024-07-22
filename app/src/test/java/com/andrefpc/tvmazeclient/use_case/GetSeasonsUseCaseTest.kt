@@ -1,11 +1,11 @@
 package com.andrefpc.tvmazeclient.use_case
 
+import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
+import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
 import com.andrefpc.tvmazeclient.domain.model.ApiError
 import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.domain.model.Season
-import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
-import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.util.SeasonMocks
 import io.mockk.coEvery
@@ -25,13 +25,13 @@ class GetSeasonsUseCaseTest {
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var tvMazeRepository: TvMazeRepository
+    lateinit var showRepository: ShowRepository
 
     private lateinit var getSeasonsUseCase: GetSeasonsUseCase
 
     @Before
     fun setup() {
-        getSeasonsUseCase = GetSeasonsUseCase(tvMazeRepository)
+        getSeasonsUseCase = GetSeasonsUseCase(showRepository)
     }
 
     @Test
@@ -41,14 +41,14 @@ class GetSeasonsUseCaseTest {
         val seasons = listOf(SeasonMocks.season)
         val apiResult = ApiResult.Success(seasons)
 
-        coEvery { tvMazeRepository.getSeasons(id) } returns apiResult
+        coEvery { showRepository.getSeasons(id) } returns apiResult
 
         // When
         val result = getSeasonsUseCase(id)
 
         // Then
         assertEquals(seasons, result)
-        coVerify(exactly = 1) { tvMazeRepository.getSeasons(id) }
+        coVerify(exactly = 1) { showRepository.getSeasons(id) }
     }
 
     @Test
@@ -57,13 +57,13 @@ class GetSeasonsUseCaseTest {
         val id = 1
         val apiResult = ApiResult.Success<List<Season>>(null)
 
-        coEvery { tvMazeRepository.getSeasons(id) } returns apiResult
+        coEvery { showRepository.getSeasons(id) } returns apiResult
 
         // When / Then
         assertFailsWith<SeasonListNullException> {
             getSeasonsUseCase(id)
         }
-        coVerify(exactly = 1) { tvMazeRepository.getSeasons(id) }
+        coVerify(exactly = 1) { showRepository.getSeasons(id) }
     }
 
     @Test
@@ -73,12 +73,12 @@ class GetSeasonsUseCaseTest {
         val apiError = ApiError("Error")
         val apiResult = ApiResult.Error(apiError)
 
-        coEvery { tvMazeRepository.getSeasons(id) } returns apiResult
+        coEvery { showRepository.getSeasons(id) } returns apiResult
 
         // When / Then
         assertFailsWith<SeasonListRequestException> {
             getSeasonsUseCase(id)
         }
-        coVerify(exactly = 1) { tvMazeRepository.getSeasons(id) }
+        coVerify(exactly = 1) { showRepository.getSeasons(id) }
     }
 }

@@ -1,10 +1,12 @@
 package com.andrefpc.tvmazeclient.di.koin
 
 import com.andrefpc.tvmazeclient.data.remote.TvMazeApi
-import com.andrefpc.tvmazeclient.data.repository.api.TvMazeRepositoryImpl
+import com.andrefpc.tvmazeclient.data.repository.api.PersonRepositoryImpl
+import com.andrefpc.tvmazeclient.data.repository.api.ShowRepositoryImpl
 import com.andrefpc.tvmazeclient.data.repository.database.ShowRoomRepositoryImpl
 import com.andrefpc.tvmazeclient.data.repository.preferences.PinRepositoryImpl
-import com.andrefpc.tvmazeclient.domain.repository.api.TvMazeRepository
+import com.andrefpc.tvmazeclient.domain.repository.api.PersonRepository
+import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository
 import com.andrefpc.tvmazeclient.domain.repository.database.ShowRoomRepository
 import com.andrefpc.tvmazeclient.domain.repository.preferences.PinRepository
 import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
@@ -39,8 +41,11 @@ val apiModule = module {
 }
 
 val repositoryModule = module {
-    single<TvMazeRepository> {
-        TvMazeRepositoryImpl(tvMazeApi = get())
+    single<ShowRepository> {
+        ShowRepositoryImpl(tvMazeApi = get())
+    }
+    single<PersonRepository> {
+        PersonRepositoryImpl(tvMazeApi = get())
     }
     single<ShowRoomRepository> {
         ShowRoomRepositoryImpl(context = get())
@@ -59,14 +64,14 @@ val navigationModule = module {
 val useCaseModules = module {
     single { CheckFavoriteUseCase(showRoomRepository = get()) }
     single { DeleteFavoriteUseCase(showRoomRepository = get()) }
-    single { GetCastUseCase(tvMazeRepository = get()) }
-    single { GetEpisodesUseCase(tvMazeRepository = get()) }
+    single { GetCastUseCase(showRepository = get()) }
+    single { GetEpisodesUseCase(showRepository = get()) }
     single { GetFavoritesUseCase(showRoomRepository = get()) }
-    single { GetPeopleUseCase(tvMazeRepository = get()) }
-    single { GetPersonShowsUseCase(tvMazeRepository = get()) }
+    single { GetPeopleUseCase(personRepository = get()) }
+    single { GetPersonShowsUseCase(personRepository = get()) }
     single { GetSeasonEpisodesUseCase(getSeasonsUseCase = get(), getEpisodesUseCase = get()) }
-    single { GetSeasonsUseCase(tvMazeRepository = get()) }
-    single { GetShowsUseCase(tvMazeRepository = get()) }
+    single { GetSeasonsUseCase(showRepository = get()) }
+    single { GetShowsUseCase(showRepository = get()) }
     single { SwitchFavoriteUseCase(showRoomRepository = get()) }
     single { FavoritesUseCase(getFavorites = get(), deleteFavorite = get()) }
     single { PeopleUseCase(getPeople = get()) }

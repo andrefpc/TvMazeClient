@@ -4,7 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.andrefpc.tvmazeclient.domain.model.ScreenState
 import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
+import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
 import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsViewModel
 import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
@@ -44,6 +46,12 @@ class ShowDetailsViewModelTest {
     lateinit var getSeasonEpisodesUseCase: GetSeasonEpisodesUseCase
 
     @MockK
+    lateinit var getSeasonsUseCase: GetSeasonsUseCase
+
+    @MockK
+    lateinit var getEpisodesUseCase: GetEpisodesUseCase
+
+    @MockK
     lateinit var switchFavoriteUseCase: SwitchFavoriteUseCase
 
     @MockK
@@ -64,6 +72,8 @@ class ShowDetailsViewModelTest {
         showDetailsUseCase = ShowDetailsUseCase(
             getCast = getCastUseCase,
             getSeasonEpisodes = getSeasonEpisodesUseCase,
+            getSeasons = getSeasonsUseCase,
+            getEpisodes = getEpisodesUseCase,
             switchFavorite = switchFavoriteUseCase,
             checkFavorite = checkFavoriteUseCase
         )
