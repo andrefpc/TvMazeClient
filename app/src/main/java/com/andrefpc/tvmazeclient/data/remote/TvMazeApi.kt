@@ -3,13 +3,11 @@ package com.andrefpc.tvmazeclient.data.remote
 import com.andrefpc.tvmazeclient.data.remote.model.CastDto
 import com.andrefpc.tvmazeclient.data.remote.model.EpisodeDto
 import com.andrefpc.tvmazeclient.data.remote.model.PersonDto
-import com.andrefpc.tvmazeclient.data.remote.model.SearchDto
+import com.andrefpc.tvmazeclient.data.remote.model.PersonShowDto
+import com.andrefpc.tvmazeclient.data.remote.model.SearchShowDto
+import com.andrefpc.tvmazeclient.data.remote.model.SearchPeopleDto
 import com.andrefpc.tvmazeclient.data.remote.model.SeasonDto
 import com.andrefpc.tvmazeclient.data.remote.model.ShowDto
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.data.remote.model.PersonShowDto
-import com.andrefpc.tvmazeclient.data.remote.model.SearchPeopleDto
-import com.andrefpc.tvmazeclient.domain.model.SearchPeople
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -26,7 +24,7 @@ interface TvMazeApi {
      * Search Shows
      */
     @GET("search/shows")
-    suspend fun search(@QueryMap params: HashMap<String, String>): Response<List<SearchDto>>
+    suspend fun search(@QueryMap params: HashMap<String, String>): Response<List<SearchShowDto>>
 
     /**
      * Get Seasons

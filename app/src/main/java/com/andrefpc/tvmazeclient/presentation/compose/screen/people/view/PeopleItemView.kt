@@ -20,10 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.andrefpc.tvmazeclient.domain.model.Person
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 
 @Composable
-fun PeopleItemView(person: Person, onClick: (Person) -> Unit) {
+fun PeopleItemView(person: PersonViewState, onClick: (PersonViewState) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +39,7 @@ fun PeopleItemView(person: Person, onClick: (Person) -> Unit) {
             contentAlignment = Alignment.BottomCenter
         ) {
             Image(
-                painter = rememberAsyncImagePainter(model = person.image?.original),
+                painter = rememberAsyncImagePainter(model = person.image),
                 contentDescription = person.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop

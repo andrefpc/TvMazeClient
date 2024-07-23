@@ -31,13 +31,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.andrefpc.tvmazeclient.domain.model.Episode
-import com.andrefpc.tvmazeclient.domain.model.SeasonEpisodeStatus
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodesViewState
 
 @Composable
 fun ShowDetailsSeasonView(
-    seasonEpisodeStatus: SeasonEpisodeStatus,
-    onEpisodeClick: (Episode) -> Unit
+    seasonEpisodes: SeasonEpisodesViewState,
+    onEpisodeClick: (EpisodeViewState) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val scaleY by animateFloatAsState(targetValue = if (isExpanded) -1f else 1f, label = "")
@@ -63,12 +63,12 @@ fun ShowDetailsSeasonView(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = seasonEpisodeStatus.seasonName,
+                    text = seasonEpisodes.seasonName,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
                 Text(
-                    text = seasonEpisodeStatus.episodes.size.toString(),
+                    text = seasonEpisodes.episodes.size.toString(),
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                 )
@@ -90,7 +90,7 @@ fun ShowDetailsSeasonView(
             Column(
                 modifier = Modifier.padding(top = 12.dp)
             ) {
-                for (episode in seasonEpisodeStatus.episodes) {
+                for (episode in seasonEpisodes.episodes) {
                     ShowDetailsEpisodeView(
                         episode = episode,
                         onEpisodeClick = onEpisodeClick

@@ -2,9 +2,9 @@ package com.andrefpc.tvmazeclient.presentation.compose.screen.people
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
-import com.andrefpc.tvmazeclient.domain.use_case.PeopleUseCase
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
+import com.andrefpc.tvmazeclient.presentation.model.handler.PeopleUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,16 +20,16 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class PeopleViewModel @Inject constructor(
-    private val peopleUseCase: PeopleUseCase
+    private val peopleHandler: PeopleUseCaseHandler
 ) : ViewModel() {
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Initial)
-    val screenState: StateFlow<ScreenState> get() = _screenState
+    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listPeopleState = MutableStateFlow<List<Person>>(emptyList())
-    val listPeopleState: StateFlow<List<Person>> get() = _listPeopleState
+    private val _listPeopleState = MutableStateFlow<List<PersonViewState>>(emptyList())
+    val listPeopleState: StateFlow<List<PersonViewState>> get() = _listPeopleState
 
     private val _showError = MutableSharedFlow<Throwable>()
     val showError: MutableSharedFlow<Throwable> get() = _showError
@@ -37,8 +37,8 @@ class PeopleViewModel @Inject constructor(
     private val _isLoadingMore = MutableStateFlow(false)
     val isLoadingMore: StateFlow<Boolean> = _isLoadingMore
 
-    private val _openPersonDetails = MutableSharedFlow<Person>()
-    val openPersonDetails: SharedFlow<Person> = _openPersonDetails
+    private val _openPersonDetails = MutableSharedFlow<PersonViewState>()
+    val openPersonDetails: SharedFlow<PersonViewState> = _openPersonDetails
 
     var currentPage = 0
     var searching = false
@@ -72,18 +72,18 @@ class PeopleViewModel @Inject constructor(
             _isLoadingMore.update { true }
         }
         viewModelScope.launch(exceptionHandler) {
-            val list = peopleUseCase.getPeople(currentPage)
+            val list = peopleHandler.getPeople(currentPage).map {PersonViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
                     showEmptyView()
                 } else {
                     _listPeopleState.update { list }
-                    _screenState.update { ScreenState.Success }
+                    _screenState.update { ScreenViewState.Success }
                 }
             } else {
                 _listPeopleState.value += list
                 _isLoadingMore.update { false }
-                _screenState.update { ScreenState.Success }
+                _screenState.update { ScreenViewState.Success }
             }
         }
     }
@@ -96,12 +96,12 @@ class PeopleViewModel @Inject constructor(
         searching = true
         showLoading()
         viewModelScope.launch(exceptionHandler) {
-            val list = peopleUseCase.getPeople(searchTerm = term)
+            val list = peopleHandler.getPeople(searchTerm = term).map { PersonViewState(it) }
             if (list.isEmpty()) {
                 showEmptyView()
             } else {
                 _listPeopleState.update { list }
-                _screenState.update { ScreenState.Success }
+                _screenState.update { ScreenViewState.Success }
             }
         }
     }
@@ -110,20 +110,20 @@ class PeopleViewModel @Inject constructor(
      * Show the loading screen
      */
     private fun showLoading() {
-        _screenState.update { ScreenState.Loading }
+        _screenState.update { ScreenViewState.Loading }
     }
 
     /**
      * Show the empty screen
      */
     private fun showEmptyView() {
-        _screenState.update { ScreenState.Empty }
+        _screenState.update { ScreenViewState.Empty }
     }
 
     /**
      * Open the person details screen
      */
-    fun onPersonClicked(person: Person) {
+    fun onPersonClicked(person: PersonViewState) {
         viewModelScope.launch {
             _openPersonDetails.emit(person)
         }

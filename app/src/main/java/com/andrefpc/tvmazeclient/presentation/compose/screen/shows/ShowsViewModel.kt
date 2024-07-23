@@ -2,9 +2,11 @@ package com.andrefpc.tvmazeclient.presentation.compose.screen.shows
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.ShowsUseCase
+import com.andrefpc.tvmazeclient.di.hilt.ProdCoroutineContext
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
+import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,16 +22,17 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ShowsViewModel @Inject constructor(
-    private val showsUseCase: ShowsUseCase
+    private val showsHandler: ShowsUseCaseHandler,
+    @ProdCoroutineContext private val defaultDispatcher: CoroutineContextProvider
 ) : ViewModel() {
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Initial)
-    val screenState: StateFlow<ScreenState> get() = _screenState
+    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listShowState = MutableStateFlow<List<Show>>(emptyList())
-    val listShowState: StateFlow<List<Show>> get() = _listShowState
+    private val _listShowState = MutableStateFlow<List<ShowViewState>>(emptyList())
+    val listShowState: StateFlow<List<ShowViewState>> get() = _listShowState
 
     private val _isLoadingMore = MutableStateFlow(false)
     val isLoadingMore: StateFlow<Boolean> = _isLoadingMore
@@ -40,8 +43,8 @@ class ShowsViewModel @Inject constructor(
     private val _openPeople = MutableSharedFlow<Unit>()
     val openPeople: SharedFlow<Unit> = _openPeople
 
-    private val _openShowDetails = MutableSharedFlow<Show>()
-    val openShowDetails: SharedFlow<Show> = _openShowDetails
+    private val _openShowDetails = MutableSharedFlow<ShowViewState>()
+    val openShowDetails: SharedFlow<ShowViewState> = _openShowDetails
 
     var currentPage = 0
     var searching = false
@@ -73,23 +76,23 @@ class ShowsViewModel @Inject constructor(
         currentPage = page
         searching = false
         if (currentPage == 0) {
-            _screenState.update { ScreenState.Loading }
+            _screenState.update { ScreenViewState.Loading }
         } else {
             _isLoadingMore.update { true }
         }
-        viewModelScope.launch(exceptionHandler) {
-            val list = showsUseCase.getShows(page = currentPage)
+        viewModelScope.launch(exceptionHandler + defaultDispatcher.IO) {
+            val list = showsHandler.getShows(page = currentPage).map { ShowViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
-                    _screenState.update { ScreenState.Empty }
+                    _screenState.update { ScreenViewState.Empty }
                 } else {
                     _listShowState.update { list }
-                    _screenState.update { ScreenState.Success }
+                    _screenState.update { ScreenViewState.Success }
                 }
             } else {
                 _isLoadingMore.update { false }
                 _listShowState.value += list
-                _screenState.update { ScreenState.Success }
+                _screenState.update { ScreenViewState.Success }
             }
         }
     }
@@ -100,14 +103,14 @@ class ShowsViewModel @Inject constructor(
      */
     fun searchShows(term: String) {
         searching = true
-        _screenState.update { ScreenState.Loading }
-        viewModelScope.launch(exceptionHandler) {
-            val list = showsUseCase.getShows(searchTerm = term)
+        _screenState.update { ScreenViewState.Loading }
+        viewModelScope.launch(exceptionHandler + defaultDispatcher.IO) {
+            val list = showsHandler.getShows(searchTerm = term).map { ShowViewState(it) }
             if (list.isEmpty()) {
-                _screenState.update { ScreenState.Empty }
+                _screenState.update { ScreenViewState.Empty }
             } else {
                 _listShowState.update { list }
-                _screenState.update { ScreenState.Success }
+                _screenState.update { ScreenViewState.Success }
             }
         }
     }
@@ -133,7 +136,7 @@ class ShowsViewModel @Inject constructor(
     /**
      * Open the show details screen
      */
-    fun onShowClicked(show: Show) {
+    fun onShowClicked(show: ShowViewState) {
         viewModelScope.launch {
             _openShowDetails.emit(show)
         }

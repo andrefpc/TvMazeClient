@@ -4,6 +4,7 @@ import com.andrefpc.tvmazeclient.data.remote.model.ImageDto
 import com.andrefpc.tvmazeclient.data.remote.model.PersonDto
 import com.andrefpc.tvmazeclient.domain.model.Image
 import com.andrefpc.tvmazeclient.domain.model.Person
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 
 object PersonMocks {
     val personDto = PersonDto(
@@ -16,6 +17,7 @@ object PersonMocks {
     )
 
     val person = personDto.toDomain()
+    val personViewState = PersonViewState(person)
 
     val personUpdatedDto = PersonDto(
         id = 2,
@@ -27,4 +29,5 @@ object PersonMocks {
     )
 
     val personUpdated = personDto.toDomain()
+    val personUpdatedViewState = PersonViewState(personUpdated)
 }

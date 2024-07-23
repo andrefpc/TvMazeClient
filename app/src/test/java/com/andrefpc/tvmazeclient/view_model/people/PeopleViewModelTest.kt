@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.view_model.people
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.domain.use_case.GetPeopleUseCase
 import com.andrefpc.tvmazeclient.presentation.compose.screen.people.PeopleViewModel
-import com.andrefpc.tvmazeclient.domain.use_case.PeopleUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.PeopleUseCaseHandler
 import com.andrefpc.tvmazeclient.util.PersonMocks
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -32,7 +32,7 @@ class PeopleViewModelTest {
     @MockK
     lateinit var getPeopleUseCase: GetPeopleUseCase
 
-    private lateinit var peopleUseCase: PeopleUseCase
+    private lateinit var peopleHandler: PeopleUseCaseHandler
     private lateinit var viewModel: PeopleViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -44,8 +44,8 @@ class PeopleViewModelTest {
 
         Dispatchers.setMain(testDispatcher)
 
-        peopleUseCase = PeopleUseCase(getPeopleUseCase)
-        viewModel = PeopleViewModel(peopleUseCase)
+        peopleHandler = PeopleUseCaseHandler(getPeopleUseCase)
+        viewModel = PeopleViewModel(peopleHandler)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,6 +59,7 @@ class PeopleViewModelTest {
     fun `getPeople should update listPeopleState and screenState correctly`() = runTest {
         // Given
         val people = listOf(PersonMocks.person)
+        val peopleViewState = listOf(PersonMocks.personViewState)
 
         coEvery { getPeopleUseCase(page = 0) } returns people
 
@@ -67,8 +68,8 @@ class PeopleViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(people, viewModel.listPeopleState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(peopleViewState, viewModel.listPeopleState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -82,7 +83,7 @@ class PeopleViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(ScreenState.Empty, viewModel.screenState.value)
+        assertEquals(ScreenViewState.Empty, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -91,6 +92,9 @@ class PeopleViewModelTest {
         // Given
         val peoplePage1 = listOf(PersonMocks.person)
         val peoplePage2 = listOf(PersonMocks.personUpdated)
+        val peoplePage1ViewState = listOf(PersonMocks.personViewState)
+        val peoplePage2ViewState = listOf(PersonMocks.personUpdatedViewState)
+
 
         coEvery { getPeopleUseCase(page = 0) } returns peoplePage1
         coEvery { getPeopleUseCase(page = 1) } returns peoplePage2
@@ -103,8 +107,8 @@ class PeopleViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(peoplePage1 + peoplePage2, viewModel.listPeopleState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(peoplePage1ViewState + peoplePage2ViewState, viewModel.listPeopleState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -112,6 +116,7 @@ class PeopleViewModelTest {
     fun `onSearchPeople should update listPeopleState and screenState correctly`() = runTest {
         // Given
         val searchResult = listOf(PersonMocks.personUpdated)
+        val searchResultViewState = listOf(PersonMocks.personUpdatedViewState)
 
         coEvery { getPeopleUseCase(searchTerm = "search term") } returns searchResult
 
@@ -120,8 +125,8 @@ class PeopleViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(searchResult, viewModel.listPeopleState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(searchResultViewState, viewModel.listPeopleState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -135,20 +140,20 @@ class PeopleViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(ScreenState.Empty, viewModel.screenState.value)
+        assertEquals(ScreenViewState.Empty, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onPersonClicked should emit the correct person`() = runTest {
         // Given
-        val person = PersonMocks.person
+        val personViewState = PersonMocks.personViewState
 
         // When
-        viewModel.onPersonClicked(person)
+        viewModel.onPersonClicked(personViewState)
 
         // Then
-        assertEquals(person, viewModel.openPersonDetails.first())
+        assertEquals(personViewState, viewModel.openPersonDetails.first())
     }
 
     @Test

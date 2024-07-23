@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.databinding.ActivityShowsBinding
-import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.AppNavigation
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.NavigatorScreen
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import com.andrefpc.tvmazeclient.util.extensions.ViewExtensions.hideKeyboard
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -131,7 +131,7 @@ class ShowsActivity : AppCompatActivity() {
         }
 
         viewModel.addToListShows.observe(this) {
-            val currentList: MutableList<Show> = arrayListOf()
+            val currentList: MutableList<ShowViewState> = arrayListOf()
             currentList.addAll(adapterShow.currentList)
             currentList.addAll(it)
             adapterShow.submitList(currentList)

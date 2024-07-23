@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.view_model.person_details
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.domain.use_case.GetPersonShowsUseCase
 import com.andrefpc.tvmazeclient.presentation.compose.screen.person_details.PersonDetailsViewModel
-import com.andrefpc.tvmazeclient.domain.use_case.PersonDetailsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.PersonDetailsUseCaseHandler
 import com.andrefpc.tvmazeclient.util.ShowMocks
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -32,7 +32,7 @@ class PersonDetailsViewModelTest {
     @MockK
     lateinit var getPersonShowsUseCase: GetPersonShowsUseCase
 
-    private lateinit var personDetailsUseCase: PersonDetailsUseCase
+    private lateinit var personDetailsHandler: PersonDetailsUseCaseHandler
     private lateinit var viewModel: PersonDetailsViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -44,8 +44,8 @@ class PersonDetailsViewModelTest {
 
         Dispatchers.setMain(testDispatcher)
 
-        personDetailsUseCase = PersonDetailsUseCase(getPersonShowsUseCase)
-        viewModel = PersonDetailsViewModel(personDetailsUseCase)
+        personDetailsHandler = PersonDetailsUseCaseHandler(getPersonShowsUseCase)
+        viewModel = PersonDetailsViewModel(personDetailsHandler)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,6 +59,7 @@ class PersonDetailsViewModelTest {
     fun `getShows should update listShowState and screenState correctly`() = runTest {
         // Given
         val shows = listOf(ShowMocks.show)
+        val showsViewState = listOf(ShowMocks.showViewState)
         val personId = 1
 
         coEvery { getPersonShowsUseCase(personId) } returns shows
@@ -68,8 +69,8 @@ class PersonDetailsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(shows, viewModel.listShowState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(showsViewState, viewModel.listShowState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @Test
@@ -90,12 +91,12 @@ class PersonDetailsViewModelTest {
     @Test
     fun `onShowClicked should emit the correct show`() = runTest {
         // Given
-        val show = ShowMocks.show
+        val showViewState = ShowMocks.showViewState
 
         // When
-        viewModel.onShowClicked(show)
+        viewModel.onShowClicked(showViewState)
 
         // Then
-        assertEquals(show, viewModel.openShowDetails.first())
+        assertEquals(showViewState, viewModel.openShowDetails.first())
     }
 }

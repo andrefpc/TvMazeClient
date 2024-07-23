@@ -3,7 +3,7 @@ package com.andrefpc.tvmazeclient.repository
 import com.andrefpc.tvmazeclient.data.remote.TvMazeApi
 import com.andrefpc.tvmazeclient.data.remote.model.CastDto
 import com.andrefpc.tvmazeclient.data.remote.model.EpisodeDto
-import com.andrefpc.tvmazeclient.data.remote.model.SearchDto
+import com.andrefpc.tvmazeclient.data.remote.model.SearchShowDto
 import com.andrefpc.tvmazeclient.data.remote.model.SeasonDto
 import com.andrefpc.tvmazeclient.data.remote.model.ShowDto
 import com.andrefpc.tvmazeclient.data.repository.api.ShowRepositoryImpl
@@ -80,7 +80,7 @@ class ShowRepositoryTest {
     @Test
     fun `searchShows should return success when response is successful`() = runTest {
         // Given
-        val searchResults = listOf(SearchDto(ShowMocks.showDto))
+        val searchResults = listOf(SearchShowDto(ShowMocks.showDto))
         val response = Response.success(searchResults)
         coEvery { tvMazeApi.search(any()) } returns response
 
@@ -96,7 +96,7 @@ class ShowRepositoryTest {
     fun `searchShows should return error when response is unsuccessful`() = runTest {
         // Given
         val errorBody = ResponseBody.create(null, "{\"message\":\"error\"}")
-        val response = Response.error<List<SearchDto>>(400, errorBody)
+        val response = Response.error<List<SearchShowDto>>(400, errorBody)
         coEvery { tvMazeApi.search(any()) } returns response
 
         // When

@@ -20,13 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.andrefpc.tvmazeclient.domain.model.Cast
-import com.andrefpc.tvmazeclient.domain.model.Person
+import com.andrefpc.tvmazeclient.presentation.model.CastViewState
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 
 @Composable
 fun ShowDetailsCastView(
-    cast: Cast,
-    onPersonClick: (Person) -> Unit
+    cast: CastViewState,
+    onPersonClick: (PersonViewState) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -43,7 +43,7 @@ fun ShowDetailsCastView(
             contentAlignment = Alignment.BottomCenter
         ) {
             Image(
-                painter = rememberAsyncImagePainter(model = cast.person.image?.original),
+                painter = rememberAsyncImagePainter(model = cast.person.image),
                 contentDescription = cast.person.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop

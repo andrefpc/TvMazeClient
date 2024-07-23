@@ -2,9 +2,9 @@ package com.andrefpc.tvmazeclient.presentation.compose.screen.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
+import com.andrefpc.tvmazeclient.presentation.model.handler.FavoritesUseCaseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,22 +20,22 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoritesUseCase: FavoritesUseCase
+    private val favoritesHandler: FavoritesUseCaseHandler
 ) : ViewModel() {
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Initial)
-    val screenState: StateFlow<ScreenState> get() = _screenState
+    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listShowState = MutableStateFlow<List<Show>>(emptyList())
-    val listShowState: StateFlow<List<Show>> get() = _listShowState
+    private val _listShowState = MutableStateFlow<List<ShowViewState>>(emptyList())
+    val listShowState: StateFlow<List<ShowViewState>> get() = _listShowState
 
     private val _showError = MutableSharedFlow<Throwable>()
     val showError: MutableSharedFlow<Throwable> get() = _showError
 
-    private val _openShowDetails = MutableSharedFlow<Show>()
-    val openShowDetails: SharedFlow<Show> = _openShowDetails
+    private val _openShowDetails = MutableSharedFlow<ShowViewState>()
+    val openShowDetails: SharedFlow<ShowViewState> = _openShowDetails
 
     /**
      * Exception handler for the coroutines
@@ -50,7 +50,7 @@ class FavoritesViewModel @Inject constructor(
      * Get the favorite shows saved in the database
      */
     fun getFavorites() = viewModelScope.launch(exceptionHandler) {
-        val list = favoritesUseCase.getFavorites()
+        val list = favoritesHandler.getFavorites().map { ShowViewState(it) }
         if (list.isEmpty()) {
             showEmptyView()
         } else {
@@ -62,7 +62,7 @@ class FavoritesViewModel @Inject constructor(
      * Search into the favorite shows saved in the database
      */
     fun onSearchFavorites(term: String) = viewModelScope.launch(exceptionHandler) {
-        val list = favoritesUseCase.getFavorites(term)
+        val list = favoritesHandler.getFavorites(term).map { ShowViewState(it) }
         if (list.isEmpty()) {
             showEmptyView()
         } else {
@@ -73,8 +73,8 @@ class FavoritesViewModel @Inject constructor(
     /**
      * Delete a favorite show in the database
      */
-    fun onShowDeleted(show: Show) = viewModelScope.launch(exceptionHandler) {
-        val list = favoritesUseCase.deleteFavorite(show)
+    fun onShowDeleted(show: ShowViewState) = viewModelScope.launch(exceptionHandler) {
+        val list = favoritesHandler.deleteFavorite(show.toDomain()).map { ShowViewState(it) }
         if (list.isEmpty()) {
             showEmptyView()
         } else {
@@ -86,21 +86,21 @@ class FavoritesViewModel @Inject constructor(
      * Update the screen state to show the empty view
      */
     private fun showEmptyView() {
-        _screenState.update { ScreenState.Empty }
+        _screenState.update { ScreenViewState.Empty }
     }
 
     /**
      * Update the screen state and the list state to show the list view
      */
-    private fun showListView(list: List<Show>) {
-        _screenState.update { ScreenState.Success }
+    private fun showListView(list: List<ShowViewState>) {
+        _screenState.update { ScreenViewState.Success }
         _listShowState.update { list }
     }
 
     /**
      * Open the show details screen
      */
-    fun onShowClicked(show: Show) {
+    fun onShowClicked(show: ShowViewState) {
         viewModelScope.launch {
             _openShowDetails.emit(show)
         }

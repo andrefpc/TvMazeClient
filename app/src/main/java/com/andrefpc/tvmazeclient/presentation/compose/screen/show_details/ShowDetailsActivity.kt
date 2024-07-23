@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.AppNavigation
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.NavigatorScreen
 import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.view.ShowDetailsView
 import com.andrefpc.tvmazeclient.presentation.compose.theme.TVMazeClientTheme
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,9 +32,9 @@ class ShowDetailsActivity : ComponentActivity() {
         setupObservers()
 
         val show = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra("show", Show::class.java) as Show
+            intent.getParcelableExtra("show", ShowViewState::class.java) as ShowViewState
         } else {
-            intent.getSerializableExtra("show") as Show
+            intent.getParcelableExtra("show")
         }
 
         enableEdgeToEdge()

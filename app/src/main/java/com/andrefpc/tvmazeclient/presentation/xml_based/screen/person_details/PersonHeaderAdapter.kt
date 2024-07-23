@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.databinding.LayoutHeaderPersonBinding
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
+import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 
 /**
  * Adapter used to populate header of the person details screen
  */
-class PersonHeaderAdapter(val person: Person) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PersonHeaderAdapter(val person: PersonViewState) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var showLabel = true
 
@@ -38,7 +38,7 @@ class PersonHeaderAdapter(val person: Person) : RecyclerView.Adapter<RecyclerVie
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as HeaderViewHolder
         holder.binding.apply {
-            image.loadImage(person.image?.original)
+            image.loadImage(person.image)
             name.text = person.name
             if (showLabel) {
                 showsLabel.visibility = View.VISIBLE

@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import com.andrefpc.tvmazeclient.domain.model.Person
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.AppNavigation
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.NavigatorScreen
 import com.andrefpc.tvmazeclient.presentation.compose.screen.person_details.view.PersonDetailsView
 import com.andrefpc.tvmazeclient.presentation.compose.theme.TVMazeClientTheme
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,9 +32,9 @@ class PersonDetailsActivity : ComponentActivity() {
         setupObservers()
 
         val person = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra("person", Person::class.java) as Person
+            intent.getParcelableExtra("person", PersonViewState::class.java)
         } else {
-            intent.getSerializableExtra("person") as Person
+            intent.getParcelableExtra("person")
         }
 
         enableEdgeToEdge()

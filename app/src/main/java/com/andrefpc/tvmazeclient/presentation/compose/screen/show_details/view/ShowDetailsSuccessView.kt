@@ -35,17 +35,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsViewModel
-import com.andrefpc.tvmazeclient.util.extensions.StringExtensions.removeHtmlTags
 import com.andrefpc.tvmazeclient.presentation.compose.theme.Gray
 import com.andrefpc.tvmazeclient.presentation.compose.theme.Teal700
-
-private const val s = "Not Started"
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
+import com.andrefpc.tvmazeclient.util.extensions.StringExtensions.removeHtmlTags
 
 @Composable
 fun ShowDetailsSuccessView(
-    show: Show,
+    show: ShowViewState,
     viewModel: ShowDetailsViewModel = hiltViewModel()
 ) {
     val listCastState by viewModel.listCastState.collectAsState()
@@ -70,7 +68,7 @@ fun ShowDetailsSuccessView(
                     contentAlignment = Alignment.BottomStart
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = show.image?.original),
+                        painter = rememberAsyncImagePainter(model = show.image),
                         contentDescription = show.name,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
@@ -107,9 +105,11 @@ fun ShowDetailsSuccessView(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Row(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 20.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp)
+                ) {
                     Column(modifier = Modifier.weight(0.5f)) {
                         Text(
                             text = stringResource(id = R.string.premier_label),
@@ -152,14 +152,14 @@ fun ShowDetailsSuccessView(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.padding(horizontal = 20.dp),
-                    text = show.schedule.days.joinToString(),
+                    text = show.days.joinToString(),
                     fontSize = 16.sp,
                     lineHeight = 16.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.padding(horizontal = 20.dp),
-                    text = show.schedule.time,
+                    text = show.time,
                     fontSize = 16.sp,
                     lineHeight = 16.sp
                 )
@@ -184,7 +184,7 @@ fun ShowDetailsSuccessView(
         }
 
         items(listSeasonEpisodesState.size) { index ->
-            ShowDetailsSeasonView(seasonEpisodeStatus = listSeasonEpisodesState[index]) {
+            ShowDetailsSeasonView(seasonEpisodes = listSeasonEpisodesState[index]) {
                 viewModel.onEpisodeClicked(it)
             }
         }

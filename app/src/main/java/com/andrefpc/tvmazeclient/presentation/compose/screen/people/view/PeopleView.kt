@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.presentation.compose.screen.people.PeopleViewModel
 import com.andrefpc.tvmazeclient.presentation.compose.widget.CustomToolbar
 import com.andrefpc.tvmazeclient.presentation.compose.widget.ErrorView
@@ -43,11 +43,11 @@ fun PeopleView(
                 viewModel.onSearchPeople(it)
             }
             when (uiState) {
-                ScreenState.Empty -> ErrorView()
-                is ScreenState.Error -> ErrorView(error = (uiState as ScreenState.Error).error)
-                ScreenState.Initial -> Unit
-                ScreenState.Loading -> ShimmerView(shimmerType = ShimmerType.PEOPLE)
-                ScreenState.Success -> PeopleSuccessView()
+                ScreenViewState.Empty -> ErrorView()
+                is ScreenViewState.Error -> ErrorView(error = (uiState as ScreenViewState.Error).error)
+                ScreenViewState.Initial -> Unit
+                ScreenViewState.Loading -> ShimmerView(shimmerType = ShimmerType.PEOPLE)
+                ScreenViewState.Success -> PeopleSuccessView()
             }
         }
     }

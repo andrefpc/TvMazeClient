@@ -11,7 +11,7 @@ import com.andrefpc.tvmazeclient.domain.repository.database.ShowRoomRepository
 import com.andrefpc.tvmazeclient.domain.repository.preferences.PinRepository
 import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.DeleteFavoriteUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.FavoritesUseCaseHandler
 import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetFavoritesUseCase
@@ -20,10 +20,10 @@ import com.andrefpc.tvmazeclient.domain.use_case.GetPersonShowsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetShowsUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.PeopleUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.PersonDetailsUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
-import com.andrefpc.tvmazeclient.domain.use_case.ShowsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.PeopleUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.handler.PersonDetailsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
 import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.AppNavigation
 import com.andrefpc.tvmazeclient.presentation.xml_based.navigation.AppNavigationXmlImpl
@@ -73,11 +73,11 @@ val useCaseModules = module {
     single { GetSeasonsUseCase(showRepository = get()) }
     single { GetShowsUseCase(showRepository = get()) }
     single { SwitchFavoriteUseCase(showRoomRepository = get()) }
-    single { FavoritesUseCase(getFavorites = get(), deleteFavorite = get()) }
-    single { PeopleUseCase(getPeople = get()) }
-    single { PersonDetailsUseCase(getPersonShows = get()) }
+    single { FavoritesUseCaseHandler(getFavorites = get(), deleteFavorite = get()) }
+    single { PeopleUseCaseHandler(getPeople = get()) }
+    single { PersonDetailsUseCaseHandler(getPersonShows = get()) }
     single {
-        ShowDetailsUseCase(
+        ShowDetailsUseCaseHandler(
             getCast = get(),
             getSeasonEpisodes = get(),
             getSeasons = get(),
@@ -86,24 +86,24 @@ val useCaseModules = module {
             checkFavorite = get()
         )
     }
-    single { ShowsUseCase(getShows = get()) }
+    single { ShowsUseCaseHandler(getShows = get()) }
 }
 
 val viewModelModule = module {
     viewModel {
-        ShowsViewModel(showsUseCase = get())
+        ShowsViewModel(showsHandler = get())
     }
     viewModel {
-        ShowDetailsViewModel(showDetailsUseCase = get())
+        ShowDetailsViewModel(showDetailsHandler = get())
     }
     viewModel {
-        FavoritesViewModel(favoritesUseCase = get())
+        FavoritesViewModel(favoritesHandler = get())
     }
     viewModel {
-        PeopleViewModel(peopleUseCase = get())
+        PeopleViewModel(peopleHandler = get())
     }
     viewModel {
-        PersonDetailsViewModel(personDetailsUseCase = get())
+        PersonDetailsViewModel(personDetailsHandler = get())
     }
 }
 

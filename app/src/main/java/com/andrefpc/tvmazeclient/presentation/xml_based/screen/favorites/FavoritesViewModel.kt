@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.FavoritesUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.FavoritesUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
  * ViewModel used by the FavoritesActivity
  */
 class FavoritesViewModel(
-    private val favoritesUseCase: FavoritesUseCase
+    private val favoritesHandler: FavoritesUseCaseHandler
 ) : ViewModel() {
-    private val _listShows = MutableLiveData<List<Show>>()
-    val listShows: LiveData<List<Show>> get() = _listShows
+    private val _listShows = MutableLiveData<List<ShowViewState>>()
+    val listShows: LiveData<List<ShowViewState>> get() = _listShows
 
     private val _showEmpty = MutableLiveData<Boolean>()
     val showEmpty: LiveData<Boolean> get() = _showEmpty
@@ -26,7 +26,7 @@ class FavoritesViewModel(
      */
     fun getFavorites() {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = favoritesUseCase.getFavorites()
+            val list = favoritesHandler.getFavorites().map { ShowViewState(it) }
             if (list.isEmpty()) {
                 _showEmpty.postValue(true)
             } else {
@@ -40,7 +40,7 @@ class FavoritesViewModel(
      */
     fun searchFavorites(term: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = favoritesUseCase.getFavorites(term = term)
+            val list = favoritesHandler.getFavorites(term = term).map { ShowViewState(it) }
             if (list.isEmpty()) {
                 _showEmpty.postValue(true)
             } else {
@@ -52,10 +52,10 @@ class FavoritesViewModel(
     /**
      * Delete a favorite show in the database
      */
-    fun deleteFavorite(show: Show) {
+    fun deleteFavorite(show: ShowViewState) {
         viewModelScope.launch(Dispatchers.IO) {
-            favoritesUseCase.deleteFavorite(show)
-            val list = favoritesUseCase.getFavorites()
+            favoritesHandler.deleteFavorite(show.toDomain())
+            val list = favoritesHandler.getFavorites().map { ShowViewState(it) }
             if (list.isEmpty()) {
                 _showEmpty.postValue(true)
             } else {

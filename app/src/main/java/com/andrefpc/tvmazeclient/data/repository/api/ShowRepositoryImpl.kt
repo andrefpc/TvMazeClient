@@ -3,7 +3,7 @@ package com.andrefpc.tvmazeclient.data.repository.api
 import com.andrefpc.tvmazeclient.data.remote.TvMazeApi
 import com.andrefpc.tvmazeclient.data.remote.model.CastDto
 import com.andrefpc.tvmazeclient.data.remote.model.EpisodeDto
-import com.andrefpc.tvmazeclient.data.remote.model.SearchDto
+import com.andrefpc.tvmazeclient.data.remote.model.SearchShowDto
 import com.andrefpc.tvmazeclient.data.remote.model.SeasonDto
 import com.andrefpc.tvmazeclient.data.remote.model.ShowDto
 import com.andrefpc.tvmazeclient.domain.model.ApiError
@@ -43,7 +43,7 @@ class ShowRepositoryImpl @Inject constructor(
     override suspend fun searchShows(term: String): ApiResult<List<Show>> {
         try {
             val params = hashMapOf("q" to term)
-            val response: Response<List<SearchDto>> = tvMazeApi.search(params)
+            val response: Response<List<SearchShowDto>> = tvMazeApi.search(params)
             if (!response.isSuccessful) {
                 val errorBody = response.errorBody()?.string()
                 val apiError: ApiError = Gson().fromJson(errorBody, ApiError::class.java)

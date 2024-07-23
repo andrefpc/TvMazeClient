@@ -8,6 +8,7 @@ import com.andrefpc.tvmazeclient.domain.model.Cast
 import com.andrefpc.tvmazeclient.domain.model.Character
 import com.andrefpc.tvmazeclient.domain.model.Image
 import com.andrefpc.tvmazeclient.domain.model.Person
+import com.andrefpc.tvmazeclient.presentation.model.CastViewState
 
 object CastMocks {
     val castDto = CastDto(
@@ -26,4 +27,5 @@ object CastMocks {
     )
 
     val cast = castDto.toDomain()
+    val castViewState = CastViewState(cast)
 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.domain.use_case.PeopleUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.PeopleUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
  * ViewModel used by the PeopleActivity
  */
 class PeopleViewModel(
-    private val peopleUseCase: PeopleUseCase
+    private val peopleHandler: PeopleUseCaseHandler
 ) : ViewModel() {
-    private val _listPeople = MutableLiveData<List<Person>>()
-    val listPeople: LiveData<List<Person>> get() = _listPeople
+    private val _listPeople = MutableLiveData<List<PersonViewState>>()
+    val listPeople: LiveData<List<PersonViewState>> get() = _listPeople
 
-    private val _addToListPeople = MutableLiveData<List<Person>>()
-    val addToListPeople: LiveData<List<Person>> get() = _addToListPeople
+    private val _addToListPeople = MutableLiveData<List<PersonViewState>>()
+    val addToListPeople: LiveData<List<PersonViewState>> get() = _addToListPeople
 
     private val _error = MutableLiveData<Throwable>()
     val error: LiveData<Throwable> get() = _error
@@ -51,7 +51,7 @@ class PeopleViewModel(
         searching = false
         if (currentPage == 0) _loading.value = true
         viewModelScope.launch(exceptionHandler) {
-            val list = peopleUseCase.getPeople(currentPage)
+            val list = peopleHandler.getPeople(currentPage).map { PersonViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
                     _showEmpty.postValue(true)
@@ -74,7 +74,7 @@ class PeopleViewModel(
         searching = true
         _loading.value = true
         viewModelScope.launch(exceptionHandler) {
-            val list = peopleUseCase.getPeople(searchTerm = term)
+            val list = peopleHandler.getPeople(searchTerm = term).map { PersonViewState(it) }
             if (list.isEmpty()) {
                 _showEmpty.postValue(true)
             } else {

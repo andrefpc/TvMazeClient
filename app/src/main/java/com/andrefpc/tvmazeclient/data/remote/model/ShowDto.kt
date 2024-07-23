@@ -9,14 +9,14 @@ data class ShowDto(
     var id: Int,
     var name: String,
     var image: Image?,
-    var schedule: Schedule,
+    var schedule: ScheduleDto,
     var genres: ArrayList<String>,
     var summary: String,
     var premiered: String?,
     var ended: String?
 ) : Serializable {
     fun toDomain(): Show {
-        return Show(id, name, image, schedule, genres, summary, premiered, ended)
+        return Show(id, name, image, schedule.toDomain(), genres, summary, premiered, ended)
     }
 
 }

@@ -1,11 +1,12 @@
 package com.andrefpc.tvmazeclient.view_model.shows
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.domain.use_case.GetShowsUseCase
 import com.andrefpc.tvmazeclient.presentation.compose.screen.shows.ShowsViewModel
-import com.andrefpc.tvmazeclient.domain.use_case.ShowsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
 import com.andrefpc.tvmazeclient.util.ShowMocks
+import com.andrefpc.tvmazeclient.util.TestCoroutineContextProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -32,7 +33,7 @@ class ShowsViewModelTest {
     @MockK
     lateinit var getShowsUseCase: GetShowsUseCase
 
-    private lateinit var showsUseCase: ShowsUseCase
+    private lateinit var showsHandler: ShowsUseCaseHandler
     private lateinit var viewModel: ShowsViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -44,8 +45,8 @@ class ShowsViewModelTest {
 
         Dispatchers.setMain(testDispatcher)
 
-        showsUseCase = ShowsUseCase(getShowsUseCase)
-        viewModel = ShowsViewModel(showsUseCase)
+        showsHandler = ShowsUseCaseHandler(getShowsUseCase)
+        viewModel = ShowsViewModel(showsHandler, TestCoroutineContextProvider())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,6 +60,7 @@ class ShowsViewModelTest {
     fun `getShows should update listShowState and screenState correctly`() = runTest {
         // Given
         val shows = listOf(ShowMocks.show)
+        val showsViewState = listOf(ShowMocks.showViewState)
         val page = 0
 
         coEvery { getShowsUseCase(page = page) } returns shows
@@ -68,8 +70,8 @@ class ShowsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(shows, viewModel.listShowState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(showsViewState, viewModel.listShowState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -84,7 +86,7 @@ class ShowsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(ScreenState.Empty, viewModel.screenState.value)
+        assertEquals(ScreenViewState.Empty, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -93,6 +95,8 @@ class ShowsViewModelTest {
         // Given
         val showsPage1 = listOf(ShowMocks.show)
         val showsPage2 = listOf(ShowMocks.showUpdated)
+        val showsPage1ViewState = listOf(ShowMocks.showViewState)
+        val showsPage2ViewState = listOf(ShowMocks.showUpdatedViewState)
 
         coEvery { getShowsUseCase(page = 0) } returns showsPage1
         coEvery { getShowsUseCase(page = 1) } returns showsPage2
@@ -105,8 +109,8 @@ class ShowsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(showsPage1 + showsPage2, viewModel.listShowState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(showsPage1ViewState + showsPage2ViewState, viewModel.listShowState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -114,6 +118,7 @@ class ShowsViewModelTest {
     fun `searchShows should update listShowState and screenState correctly`() = runTest {
         // Given
         val searchResult = listOf(ShowMocks.showUpdated)
+        val searchResultViewState = listOf(ShowMocks.showUpdatedViewState)
         val searchTerm = "search term"
 
         coEvery { getShowsUseCase(searchTerm = searchTerm) } returns searchResult
@@ -123,8 +128,8 @@ class ShowsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(searchResult, viewModel.listShowState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(searchResultViewState, viewModel.listShowState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -139,7 +144,7 @@ class ShowsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(ScreenState.Empty, viewModel.screenState.value)
+        assertEquals(ScreenViewState.Empty, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -166,13 +171,13 @@ class ShowsViewModelTest {
     @Test
     fun `onShowClicked should emit the correct show`() = runTest {
         // Given
-        val show = ShowMocks.show
+        val showViewState = ShowMocks.showViewState
 
         // When
-        viewModel.onShowClicked(show)
+        viewModel.onShowClicked(showViewState)
 
         // Then
-        assertEquals(show, viewModel.openShowDetails.first())
+        assertEquals(showViewState, viewModel.openShowDetails.first())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

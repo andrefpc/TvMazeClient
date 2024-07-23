@@ -24,10 +24,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.andrefpc.tvmazeclient.domain.model.Show
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 
 @Composable
-fun ShowItemView(show: Show, onClick: (Show) -> Unit) {
+fun ShowItemView(
+    show: ShowViewState,
+    onClick: (ShowViewState) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +42,7 @@ fun ShowItemView(show: Show, onClick: (Show) -> Unit) {
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             Image(
-                painter = rememberAsyncImagePainter(model = show.image?.medium),
+                painter = rememberAsyncImagePainter(model = show.image),
                 contentDescription = show.name,
                 modifier = Modifier
                     .fillMaxHeight()
@@ -70,14 +73,14 @@ fun ShowItemView(show: Show, onClick: (Show) -> Unit) {
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = show.schedule.days.joinToString(),
+                    text = show.days.joinToString(),
                     fontSize = 12.sp,
                     maxLines = 1,
                     lineHeight = 16.sp,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = show.schedule.time,
+                    text = show.time,
                     fontSize = 12.sp,
                     maxLines = 1,
                     lineHeight = 16.sp,

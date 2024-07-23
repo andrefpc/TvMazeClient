@@ -27,13 +27,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.domain.model.Person
 import com.andrefpc.tvmazeclient.presentation.compose.screen.person_details.PersonDetailsViewModel
 import com.andrefpc.tvmazeclient.presentation.compose.screen.shows.view.ShowItemView
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 
 @Composable
 fun PersonDetailsSuccessView(
-    person: Person,
+    person: PersonViewState,
     viewModel: PersonDetailsViewModel = hiltViewModel()
 ) {
     val listShowState by viewModel.listShowState.collectAsState()
@@ -52,7 +52,7 @@ fun PersonDetailsSuccessView(
                 contentAlignment = Alignment.BottomStart
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(model = person.image?.original),
+                    painter = rememberAsyncImagePainter(model = person.image),
                     contentDescription = person.name,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop

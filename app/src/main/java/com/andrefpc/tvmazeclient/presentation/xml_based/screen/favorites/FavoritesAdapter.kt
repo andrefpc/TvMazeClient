@@ -5,23 +5,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.databinding.LayoutFavoriteBinding
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
+import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 
 /**
  * Adapter used to populate the favorites list
  */
-class FavoritesAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+class FavoritesAdapter : ListAdapter<ShowViewState, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
-    private var clickListener: (Show) -> Unit = { }
-    private var deleteListener: (Show) -> Unit = { }
+    private var clickListener: (ShowViewState) -> Unit = { }
+    private var deleteListener: (ShowViewState) -> Unit = { }
 
-    fun onClick(clickListener: (Show) -> Unit) {
+    fun onClick(clickListener: (ShowViewState) -> Unit) {
         this.clickListener = clickListener
     }
 
-    fun onDelete(deleteListener: (Show) -> Unit) {
+    fun onDelete(deleteListener: (ShowViewState) -> Unit) {
         this.deleteListener = deleteListener
     }
 
@@ -42,13 +42,13 @@ class FavoritesAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCall
      */
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as MyViewHolder
-        val show: Show = getItem(position)
+        val show: ShowViewState = getItem(position)
         holder.binding.apply {
-            image.loadImage(show.image?.medium)
+            image.loadImage(show.thumb)
             name.text = show.name
             genres.text = show.genres.joinToString()
-            days.text = show.schedule.days.joinToString()
-            time.text = show.schedule.time
+            days.text = show.days.joinToString()
+            time.text = show.time
             root.setOnClickListener {
                 clickListener(show)
             }
@@ -71,15 +71,19 @@ class FavoritesAdapter : ListAdapter<Show, RecyclerView.ViewHolder>(ItemDiffCall
     class MyViewHolder(val binding: LayoutFavoriteBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {
-        private class ItemDiffCallback : DiffUtil.ItemCallback<Show>() {
-            override fun areItemsTheSame(oldItem: Show, newItem: Show): Boolean =
+        private class ItemDiffCallback : DiffUtil.ItemCallback<ShowViewState>() {
+            override fun areItemsTheSame(oldItem: ShowViewState, newItem: ShowViewState): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Show, newItem: Show): Boolean =
+            override fun areContentsTheSame(
+                oldItem: ShowViewState,
+                newItem: ShowViewState
+            ): Boolean =
                 oldItem.id == newItem.id &&
                         oldItem.name == newItem.name &&
                         oldItem.image == newItem.image &&
-                        oldItem.schedule == newItem.schedule &&
+                        oldItem.days == newItem.days &&
+                        oldItem.time == newItem.time &&
                         oldItem.genres == newItem.genres &&
                         oldItem.summary == newItem.summary
         }

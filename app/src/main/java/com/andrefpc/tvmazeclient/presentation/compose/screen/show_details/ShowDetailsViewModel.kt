@@ -2,13 +2,15 @@ package com.andrefpc.tvmazeclient.presentation.compose.screen.show_details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Cast
-import com.andrefpc.tvmazeclient.domain.model.Episode
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
-import com.andrefpc.tvmazeclient.domain.model.SeasonEpisodeStatus
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
+import com.andrefpc.tvmazeclient.di.hilt.ProdCoroutineContext
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.CastViewState
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodesViewState
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
+import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,20 +26,22 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
-    private val showDetailsUseCase: ShowDetailsUseCase
+    private val showDetailsHandler: ShowDetailsUseCaseHandler,
+    @ProdCoroutineContext private val defaultDispatcher: CoroutineContextProvider
 ) : ViewModel() {
 
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Initial)
-    val screenState: StateFlow<ScreenState> get() = _screenState
+    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listSeasonEpisodesState = MutableStateFlow<List<SeasonEpisodeStatus>>(emptyList())
-    val listSeasonEpisodesState: StateFlow<List<SeasonEpisodeStatus>> get() = _listSeasonEpisodesState
+    private val _listSeasonEpisodesState =
+        MutableStateFlow<List<SeasonEpisodesViewState>>(emptyList())
+    val listSeasonEpisodesState: StateFlow<List<SeasonEpisodesViewState>> get() = _listSeasonEpisodesState
 
-    private val _listCastState = MutableStateFlow<List<Cast>>(emptyList())
-    val listCastState: StateFlow<List<Cast>> get() = _listCastState
+    private val _listCastState = MutableStateFlow<List<CastViewState>>(emptyList())
+    val listCastState: StateFlow<List<CastViewState>> get() = _listCastState
 
     private val _favoriteState = MutableStateFlow(false)
     val favoriteState: StateFlow<Boolean> get() = _favoriteState
@@ -45,13 +49,13 @@ class ShowDetailsViewModel @Inject constructor(
     private val _showError = MutableSharedFlow<Throwable>()
     val showError: MutableSharedFlow<Throwable> get() = _showError
 
-    private val _openEpisode = MutableSharedFlow<Episode>()
-    val openEpisode: SharedFlow<Episode> = _openEpisode
+    private val _openEpisode = MutableSharedFlow<EpisodeViewState>()
+    val openEpisode: SharedFlow<EpisodeViewState> = _openEpisode
 
-    private val _openPersonDetails = MutableSharedFlow<Person>()
-    val openPersonDetails: SharedFlow<Person> = _openPersonDetails
+    private val _openPersonDetails = MutableSharedFlow<PersonViewState>()
+    val openPersonDetails: SharedFlow<PersonViewState> = _openPersonDetails
 
-    private var seasonEpisodeStatusList: MutableList<SeasonEpisodeStatus> = arrayListOf()
+    private var seasonEpisodesList: MutableList<SeasonEpisodesViewState> = arrayListOf()
 
     /**
      * Exception handler for the coroutines
@@ -66,7 +70,7 @@ class ShowDetailsViewModel @Inject constructor(
      * Get the cast and episodes of a show from the server
      */
     fun getCastAndEpisodes(id: Int) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(exceptionHandler + defaultDispatcher.IO) {
             getCast(id)
             getSeasonsEpisodes(id)
         }
@@ -76,27 +80,27 @@ class ShowDetailsViewModel @Inject constructor(
      * Get the cast of a show from the server
      */
     private suspend fun getCast(id: Int) {
-        val list = showDetailsUseCase.getCast(id)
+        val list = showDetailsHandler.getCast(id).map { CastViewState(it) }
         _listCastState.update { list }
-        _screenState.update { ScreenState.Success }
+        _screenState.update { ScreenViewState.Success }
     }
 
     /**
      * Get the seasons of a show from the server
      */
     private suspend fun getSeasonsEpisodes(id: Int) {
-        val list = showDetailsUseCase.getSeasonEpisodes(id)
-        seasonEpisodeStatusList = list.toMutableList()
+        val list = showDetailsHandler.getSeasonEpisodes(id).map { SeasonEpisodesViewState(it) }
+        seasonEpisodesList = list.toMutableList()
         _listSeasonEpisodesState.update { list }
-        _screenState.update { ScreenState.Success }
+        _screenState.update { ScreenViewState.Success }
     }
 
     /**
      * Add show to the favorites list
      */
-    private fun switchFavoriteStatus(show: Show) {
+    private fun switchFavoriteStatus(show: ShowViewState) {
         viewModelScope.launch(exceptionHandler) {
-            showDetailsUseCase.switchFavorite(show)
+            showDetailsHandler.switchFavorite(show.toDomain())
             _favoriteState.update { !favoriteState.value }
         }
     }
@@ -104,9 +108,9 @@ class ShowDetailsViewModel @Inject constructor(
     /**
      * Check if the show is in the favorites list
      */
-    fun checkFavorite(show: Show) {
+    fun checkFavorite(show: ShowViewState) {
         viewModelScope.launch(exceptionHandler) {
-            _favoriteState.update { showDetailsUseCase.checkFavorite(show.id) }
+            _favoriteState.update { showDetailsHandler.checkFavorite(show.id) }
         }
     }
 
@@ -114,22 +118,22 @@ class ShowDetailsViewModel @Inject constructor(
      * Change the status of a season (Opened or not)
      */
     private fun onSeasonClick(id: Int) {
-        val index = seasonEpisodeStatusList.indexOfFirst { it.season.id == id }
-        seasonEpisodeStatusList[index].opened = !seasonEpisodeStatusList[index].opened
-        _listSeasonEpisodesState.update { seasonEpisodeStatusList }
+        val index = seasonEpisodesList.indexOfFirst { it.season.id == id }
+        seasonEpisodesList[index].opened = !seasonEpisodesList[index].opened
+        _listSeasonEpisodesState.update { seasonEpisodesList }
     }
 
     /**
      * Open the show details screen
      */
-    fun onFavoriteButtonClicked(show: Show) {
+    fun onFavoriteButtonClicked(show: ShowViewState) {
         switchFavoriteStatus(show)
     }
 
     /**
      * Open the show details screen
      */
-    fun onEpisodeClicked(episode: Episode) {
+    fun onEpisodeClicked(episode: EpisodeViewState) {
         viewModelScope.launch {
             _openEpisode.emit(episode)
         }
@@ -138,7 +142,7 @@ class ShowDetailsViewModel @Inject constructor(
     /**
      * Open the show details screen
      */
-    fun onPersonClicked(person: Person) {
+    fun onPersonClicked(person: PersonViewState) {
         viewModelScope.launch {
             _openPersonDetails.emit(person)
         }

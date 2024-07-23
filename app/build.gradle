@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
     id 'com.google.dagger.hilt.android'
+    id 'shot'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -10,12 +12,12 @@ android {
 
     defaultConfig {
         applicationId "com.andrefpc.tvmazeclient"
-        minSdk 23
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.andrefpc.tvmazeclient.runner.CustomTestRunner"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -54,6 +56,7 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += 'META-INF/INDEX.LIST'
             excludes += 'META-INF/licenses/ASM'
             excludes += 'META-INF/LICENSE.md'
             excludes += 'META-INF/LICENSE-notice.md'
@@ -178,4 +181,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.test:runner:1.6.1"
     androidTestImplementation "androidx.test:rules:1.6.1"
+
+    // Shot
+    androidTestImplementation 'com.karumi:shot:5.12.0'
 }

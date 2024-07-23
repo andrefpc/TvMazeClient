@@ -25,12 +25,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.andrefpc.tvmazeclient.domain.model.Episode
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
 
 @Composable
 fun ShowDetailsEpisodeView(
-    episode: Episode,
-    onEpisodeClick: (Episode) -> Unit
+    episode: EpisodeViewState,
+    onEpisodeClick: (EpisodeViewState) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -43,7 +43,7 @@ fun ShowDetailsEpisodeView(
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             Image(
-                painter = rememberAsyncImagePainter(model = episode.image?.medium),
+                painter = rememberAsyncImagePainter(model = episode.thumb),
                 contentDescription = episode.name,
                 modifier = Modifier
                     .fillMaxHeight()
@@ -59,7 +59,7 @@ fun ShowDetailsEpisodeView(
 
             ) {
                 Text(
-                    text = episode.seasonEpisodeTitle,
+                    text = episode.seasonEpisode,
                     fontSize = 16.sp,
                     lineHeight = 20.sp,
                     fontWeight = FontWeight.Bold,

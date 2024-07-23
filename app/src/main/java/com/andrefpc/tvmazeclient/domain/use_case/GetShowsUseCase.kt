@@ -1,7 +1,7 @@
 package com.andrefpc.tvmazeclient.domain.use_case
 
-import com.andrefpc.tvmazeclient.data.exception.ShowListNullException
-import com.andrefpc.tvmazeclient.data.exception.ShowListRequestException
+import com.andrefpc.tvmazeclient.domain.exception.ShowListNullException
+import com.andrefpc.tvmazeclient.domain.exception.ShowListRequestException
 import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.domain.repository.api.ShowRepository

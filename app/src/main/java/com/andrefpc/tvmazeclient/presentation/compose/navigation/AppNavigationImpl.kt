@@ -2,14 +2,14 @@ package com.andrefpc.tvmazeclient.presentation.compose.navigation
 
 import android.app.Activity
 import android.content.Intent
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.presentation.compose.screen.favorites.FavoritesActivity
 import com.andrefpc.tvmazeclient.presentation.compose.screen.main.MainActivity
 import com.andrefpc.tvmazeclient.presentation.compose.screen.people.PeopleActivity
 import com.andrefpc.tvmazeclient.presentation.compose.screen.person_details.PersonDetailsActivity
 import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsActivity
 import com.andrefpc.tvmazeclient.presentation.compose.screen.shows.ShowsActivity
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import javax.inject.Inject
 
 class AppNavigationImpl @Inject constructor() : AppNavigation {
@@ -36,12 +36,12 @@ class AppNavigationImpl @Inject constructor() : AppNavigation {
         activity.startActivity(Intent(activity, PeopleActivity::class.java))
     }
 
-    private fun openPersonDetails(activity: Activity, person: Person) {
+    private fun openPersonDetails(activity: Activity, person: PersonViewState) {
         val intent = Intent(activity, PersonDetailsActivity::class.java)
         intent.putExtra("person", person)
         activity.startActivity(intent)
     }
-    private fun openShowDetails(activity: Activity, show: Show) {
+    private fun openShowDetails(activity: Activity, show: ShowViewState) {
         val intent = Intent(activity, ShowDetailsActivity::class.java)
         intent.putExtra("show", show)
         activity.startActivity(intent)

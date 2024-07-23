@@ -30,10 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.domain.model.Show
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 
 @Composable
-fun FavoritesItemView(show: Show, onClick: (Show) -> Unit, onDelete: (Show) -> Unit) {
+fun FavoritesItemView(
+    show: ShowViewState,
+    onClick: (ShowViewState) -> Unit,
+    onDelete: (ShowViewState) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +49,7 @@ fun FavoritesItemView(show: Show, onClick: (Show) -> Unit, onDelete: (Show) -> U
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Image(
-                painter = rememberAsyncImagePainter(model = show.image?.medium),
+                painter = rememberAsyncImagePainter(model = show.thumb),
                 contentDescription = show.name,
                 modifier = Modifier
                     .fillMaxHeight()
@@ -79,14 +83,14 @@ fun FavoritesItemView(show: Show, onClick: (Show) -> Unit, onDelete: (Show) -> U
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = show.schedule.days.joinToString(),
+                        text = show.days.joinToString(),
                         fontSize = 12.sp,
                         maxLines = 1,
                         lineHeight = 16.sp,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = show.schedule.time,
+                        text = show.time,
                         fontSize = 12.sp,
                         maxLines = 1,
                         lineHeight = 16.sp,

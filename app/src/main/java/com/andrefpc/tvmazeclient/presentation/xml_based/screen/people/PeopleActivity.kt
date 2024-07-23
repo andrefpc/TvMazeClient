@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.ActivityPeopleBinding
-import com.andrefpc.tvmazeclient.domain.model.Person
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.AppNavigation
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.NavigatorScreen
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import com.andrefpc.tvmazeclient.util.extensions.ViewExtensions.hideKeyboard
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -133,7 +133,7 @@ class PeopleActivity : AppCompatActivity() {
         }
 
         viewModel.addToListPeople.observe(this) {
-            val currentList: MutableList<Person> = arrayListOf()
+            val currentList: MutableList<PersonViewState> = arrayListOf()
             currentList.addAll(adapterPerson.currentList)
             currentList.addAll(it)
             adapterPerson.submitList(currentList)

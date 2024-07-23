@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.PersonDetailsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.PersonDetailsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
  * ViewModel used by the PersonActivity
  */
 class PersonDetailsViewModel(
-    private val personDetailsUseCase: PersonDetailsUseCase
+    private val personDetailsHandler: PersonDetailsUseCaseHandler
 ) : ViewModel() {
 
-    private val _listShows = MutableLiveData<List<Show>>()
-    val listShows: LiveData<List<Show>> get() = _listShows
+    private val _listShows = MutableLiveData<List<ShowViewState>>()
+    val listShows: LiveData<List<ShowViewState>> get() = _listShows
 
     private val _error = MutableLiveData<Throwable>()
     val error: LiveData<Throwable> get() = _error
@@ -36,7 +36,7 @@ class PersonDetailsViewModel(
      */
     fun getShows(id: Int) {
         viewModelScope.launch(exceptionHandler) {
-            val list = personDetailsUseCase.getPersonShows(id)
+            val list = personDetailsHandler.getPersonShows(id).map { ShowViewState(it) }
             _listShows.postValue(list)
         }
     }

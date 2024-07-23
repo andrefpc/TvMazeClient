@@ -5,28 +5,28 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.andrefpc.tvmazeclient.domain.model.Episode
-import com.andrefpc.tvmazeclient.domain.model.Season
-import com.andrefpc.tvmazeclient.domain.model.SeasonEpisode
 import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.databinding.LayoutEpisodeBinding
 import com.andrefpc.tvmazeclient.databinding.LayoutSeasonBinding
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodeViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonViewState
 import com.andrefpc.tvmazeclient.presentation.xml_based.widget.AnimatedArrow
 
 /**
  * Adapter used to populate the episodes/seasons list
  */
 class SeasonEpisodeAdapter :
-    ListAdapter<SeasonEpisode, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+    ListAdapter<SeasonEpisodeViewState, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
-    private var episodeClickListener: (Episode) -> Unit = { }
-    private var seasonClickListener: (Season) -> Unit = { }
+    private var episodeClickListener: (EpisodeViewState) -> Unit = { }
+    private var seasonClickListener: (SeasonViewState) -> Unit = { }
 
-    fun onEpisodeClick(episodeClickListener: (Episode) -> Unit) {
+    fun onEpisodeClick(episodeClickListener: (EpisodeViewState) -> Unit) {
         this.episodeClickListener = episodeClickListener
     }
 
-    fun onSeasonCLick(seasonClickListener: (Season) -> Unit) {
+    fun onSeasonCLick(seasonClickListener: (SeasonViewState) -> Unit) {
         this.seasonClickListener = seasonClickListener
     }
 
@@ -73,7 +73,7 @@ class SeasonEpisodeAdapter :
     /**
      * Method used to set the values for the season items
      */
-    private fun bindSeasonViewHolder(binding: LayoutSeasonBinding, season: Season) {
+    private fun bindSeasonViewHolder(binding: LayoutSeasonBinding, season: SeasonViewState) {
         binding.apply {
             val seasonName = "Season ${season.number}"
             this.season.text = seasonName
@@ -93,14 +93,10 @@ class SeasonEpisodeAdapter :
     /**
      * Method used to set the values for the episodes items
      */
-    private fun bindEpisodeViewHolder(binding: LayoutEpisodeBinding, episode: Episode) {
+    private fun bindEpisodeViewHolder(binding: LayoutEpisodeBinding, episode: EpisodeViewState) {
         binding.apply {
-            val seasonName = if (episode.season > 9) "S${episode.season}" else "S0${episode.season}"
-            val episodeNumber =
-                if (episode.number > 9) "E${episode.number}" else "E0${episode.number}"
-            val episodeFinalNumber = "$seasonName | $episodeNumber"
-            this.image.loadImage(episode.image?.medium)
-            this.episode.text = episodeFinalNumber
+            this.image.loadImage(episode.thumb)
+            this.episode.text = episode.seasonEpisode
             this.name.text = episode.name
             this.root.setOnClickListener {
                 episodeClickListener(episode)
@@ -131,24 +127,27 @@ class SeasonEpisodeAdapter :
         RecyclerView.ViewHolder(binding.root)
 
     companion object {
-        private class ItemDiffCallback : DiffUtil.ItemCallback<SeasonEpisode>() {
-            override fun areItemsTheSame(oldItem: SeasonEpisode, newItem: SeasonEpisode): Boolean =
+        private class ItemDiffCallback : DiffUtil.ItemCallback<SeasonEpisodeViewState>() {
+            override fun areItemsTheSame(oldItem: SeasonEpisodeViewState, newItem: SeasonEpisodeViewState): Boolean =
                 oldItem.episode?.id == newItem.episode?.id ||
                         oldItem.season?.id == newItem.season?.id
 
             override fun areContentsTheSame(
-                oldItem: SeasonEpisode,
-                newItem: SeasonEpisode
+                oldItem: SeasonEpisodeViewState,
+                newItem: SeasonEpisodeViewState
             ): Boolean =
                 oldItem.season?.id == newItem.season?.id &&
                         oldItem.season?.number == newItem.season?.number &&
                         oldItem.season?.episodeOrder == newItem.season?.episodeOrder &&
                         oldItem.episode?.id == newItem.episode?.id &&
                         oldItem.episode?.name == newItem.episode?.name &&
-                        oldItem.episode?.number == newItem.episode?.number &&
                         oldItem.episode?.season == newItem.episode?.season &&
+                        oldItem.episode?.seasonEpisode == newItem.episode?.seasonEpisode &&
                         oldItem.episode?.summary == newItem.episode?.summary &&
-                        oldItem.episode?.image == newItem.episode?.image
+                        oldItem.episode?.thumb == newItem.episode?.thumb &&
+                        oldItem.episode?.image == newItem.episode?.image &&
+                        oldItem.episode?.airdate == newItem.episode?.airdate &&
+                        oldItem.episode?.time == newItem.episode?.time
         }
 
         const val SEASON = 1

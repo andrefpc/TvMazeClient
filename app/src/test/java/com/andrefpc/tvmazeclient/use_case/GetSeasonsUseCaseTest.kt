@@ -1,7 +1,7 @@
 package com.andrefpc.tvmazeclient.use_case
 
-import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
-import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
+import com.andrefpc.tvmazeclient.domain.exception.SeasonListNullException
+import com.andrefpc.tvmazeclient.domain.exception.SeasonListRequestException
 import com.andrefpc.tvmazeclient.domain.model.ApiError
 import com.andrefpc.tvmazeclient.domain.model.ApiResult
 import com.andrefpc.tvmazeclient.domain.model.Season

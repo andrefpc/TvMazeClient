@@ -1,7 +1,7 @@
 package com.andrefpc.tvmazeclient.view_model.show_details
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.andrefpc.tvmazeclient.domain.model.ScreenState
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.domain.use_case.CheckFavoriteUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetCastUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
@@ -9,7 +9,8 @@ import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.SwitchFavoriteUseCase
 import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsViewModel
-import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
+import com.andrefpc.tvmazeclient.util.TestCoroutineContextProvider
 import com.andrefpc.tvmazeclient.util.CastMocks
 import com.andrefpc.tvmazeclient.util.EpisodeMocks
 import com.andrefpc.tvmazeclient.util.PersonMocks
@@ -57,7 +58,7 @@ class ShowDetailsViewModelTest {
     @MockK
     lateinit var checkFavoriteUseCase: CheckFavoriteUseCase
 
-    private lateinit var showDetailsUseCase: ShowDetailsUseCase
+    private lateinit var showDetailsHandler: ShowDetailsUseCaseHandler
     private lateinit var viewModel: ShowDetailsViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -69,7 +70,7 @@ class ShowDetailsViewModelTest {
 
         Dispatchers.setMain(testDispatcher)
 
-        showDetailsUseCase = ShowDetailsUseCase(
+        showDetailsHandler = ShowDetailsUseCaseHandler(
             getCast = getCastUseCase,
             getSeasonEpisodes = getSeasonEpisodesUseCase,
             getSeasons = getSeasonsUseCase,
@@ -77,7 +78,7 @@ class ShowDetailsViewModelTest {
             switchFavorite = switchFavoriteUseCase,
             checkFavorite = checkFavoriteUseCase
         )
-        viewModel = ShowDetailsViewModel(showDetailsUseCase)
+        viewModel = ShowDetailsViewModel(showDetailsHandler, TestCoroutineContextProvider())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -91,7 +92,9 @@ class ShowDetailsViewModelTest {
     fun `getCastAndEpisodes should update listCastState and listSeasonEpisodesState correctly`() = runTest {
         // Given
         val cast = listOf(CastMocks.cast)
-        val seasonEpisodes = listOf(SeasonEpisodeMocks.seasonEpisodeStatus)
+        val seasonEpisodes = listOf(SeasonEpisodeMocks.seasonEpisodes)
+        val castViewState = listOf(CastMocks.castViewState)
+        val seasonEpisodesViewState = listOf(SeasonEpisodeMocks.seasonEpisodesViewState)
         val showId = 1
 
         coEvery { getCastUseCase(showId) } returns cast
@@ -102,9 +105,9 @@ class ShowDetailsViewModelTest {
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
-        assertEquals(cast, viewModel.listCastState.value)
-        assertEquals(seasonEpisodes, viewModel.listSeasonEpisodesState.value)
-        assertEquals(ScreenState.Success, viewModel.screenState.value)
+        assertEquals(castViewState, viewModel.listCastState.value)
+        assertEquals(seasonEpisodesViewState, viewModel.listSeasonEpisodesState.value)
+        assertEquals(ScreenViewState.Success, viewModel.screenState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -130,13 +133,14 @@ class ShowDetailsViewModelTest {
     fun `onFavoriteButtonClicked should switch favorite status correctly`() = runTest {
         // Given
         val show = ShowMocks.show
+        val showViewState = ShowMocks.showViewState
 
         // Mocking the favorite state switch
         coEvery { switchFavoriteUseCase(show) } answers { /* Do nothing */ }
         coEvery { checkFavoriteUseCase(show.id) } returns true
 
         // When
-        viewModel.onFavoriteButtonClicked(show)
+        viewModel.onFavoriteButtonClicked(showViewState)
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
@@ -149,12 +153,13 @@ class ShowDetailsViewModelTest {
     fun `checkFavorite should update favoriteState correctly`() = runTest {
         // Given
         val show = ShowMocks.show
+        val showViewState = ShowMocks.showViewState
         val isFavorite = true
 
         coEvery { checkFavoriteUseCase(show.id) } returns isFavorite
 
         // When
-        viewModel.checkFavorite(show)
+        viewModel.checkFavorite(showViewState)
         advanceUntilIdle() // Ensures all coroutines have completed
 
         // Then
@@ -165,25 +170,25 @@ class ShowDetailsViewModelTest {
     @Test
     fun `onEpisodeClicked should emit the correct episode`() = runTest {
         // Given
-        val episode = EpisodeMocks.episode
+        val episodeViewState = EpisodeMocks.episodeViewState
 
         // When
-        viewModel.onEpisodeClicked(episode)
+        viewModel.onEpisodeClicked(episodeViewState)
 
         // Then
-        assertEquals(episode, viewModel.openEpisode.first())
+        assertEquals(episodeViewState, viewModel.openEpisode.first())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onPersonClicked should emit the correct person`() = runTest {
         // Given
-        val person = PersonMocks.person
+        val personViewState = PersonMocks.personViewState
 
         // When
-        viewModel.onPersonClicked(person)
+        viewModel.onPersonClicked(personViewState)
 
         // Then
-        assertEquals(person, viewModel.openPersonDetails.first())
+        assertEquals(personViewState, viewModel.openPersonDetails.first())
     }
 }

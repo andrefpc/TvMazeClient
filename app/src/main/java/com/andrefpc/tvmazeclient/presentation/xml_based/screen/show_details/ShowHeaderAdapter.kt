@@ -6,20 +6,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
-import com.andrefpc.tvmazeclient.domain.model.Show
+import com.andrefpc.tvmazeclient.databinding.LayoutHeaderShowBinding
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.util.extensions.StringExtensions.removeHtmlTags
-import com.andrefpc.tvmazeclient.databinding.LayoutHeaderShowBinding
 
 /**
  * Adapter used to populate header of the show details screen
  */
-class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Boolean) :
+class ShowHeaderAdapter(val context: Context, val show: ShowViewState, val isFavorite: Boolean) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var favoriteClickListener: (Show) -> Unit = { }
+    private var favoriteClickListener: (ShowViewState) -> Unit = { }
 
-    fun onFavoriteClick(favoriteClickListener: (Show) -> Unit) {
+    fun onFavoriteClick(favoriteClickListener: (ShowViewState) -> Unit) {
         this.favoriteClickListener = favoriteClickListener
     }
 
@@ -41,14 +41,14 @@ class ShowHeaderAdapter(val context: Context, val show: Show, val isFavorite: Bo
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as HeaderViewHolder
         holder.binding.apply {
-            image.loadImage(show.image?.original)
+            image.loadImage(show.image)
             name.text = show.name
             premiered.text = show.premiered ?: "Not Started"
             ended.text = show.ended ?: "Running"
             summary.text = show.summary.removeHtmlTags()
             genres.text = show.genres.joinToString()
-            days.text = show.schedule.days.joinToString()
-            time.text = show.schedule.time
+            days.text = show.days.joinToString()
+            time.text = show.time
             favorite.setOnClickListener {
                 favoriteClickListener(show)
                 changeFavorite(true)

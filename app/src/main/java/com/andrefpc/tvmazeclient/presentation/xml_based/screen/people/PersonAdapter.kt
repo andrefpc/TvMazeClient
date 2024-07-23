@@ -5,18 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.andrefpc.tvmazeclient.domain.model.Person
-import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.databinding.LayoutPersonBinding
+import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
+import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 
 /**
  * Adapter used to populate the people list
  */
-class PersonAdapter : ListAdapter<Person, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+class PersonAdapter : ListAdapter<PersonViewState, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
-    private var clickListener: (Person) -> Unit = { }
+    private var clickListener: (PersonViewState) -> Unit = { }
 
-    fun onClick(clickListener: (Person) -> Unit) {
+    fun onClick(clickListener: (PersonViewState) -> Unit) {
         this.clickListener = clickListener
     }
 
@@ -37,9 +37,9 @@ class PersonAdapter : ListAdapter<Person, RecyclerView.ViewHolder>(ItemDiffCallb
      */
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as MyViewHolder
-        val person: Person = getItem(position)
+        val person: PersonViewState = getItem(position)
         holder.binding.apply {
-            image.loadImage(person.image?.medium)
+            image.loadImage(person.thumb)
             name.text = person.name
             root.setOnClickListener {
                 clickListener(person)
@@ -60,13 +60,14 @@ class PersonAdapter : ListAdapter<Person, RecyclerView.ViewHolder>(ItemDiffCallb
     class MyViewHolder(val binding: LayoutPersonBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {
-        private class ItemDiffCallback : DiffUtil.ItemCallback<Person>() {
-            override fun areItemsTheSame(oldItem: Person, newItem: Person): Boolean =
+        private class ItemDiffCallback : DiffUtil.ItemCallback<PersonViewState>() {
+            override fun areItemsTheSame(oldItem: PersonViewState, newItem: PersonViewState): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Person, newItem: Person): Boolean =
+            override fun areContentsTheSame(oldItem: PersonViewState, newItem: PersonViewState): Boolean =
                 oldItem.id == newItem.id &&
                         oldItem.name == newItem.name &&
+                        oldItem.thumb == newItem.thumb &&
                         oldItem.image == newItem.image
         }
     }

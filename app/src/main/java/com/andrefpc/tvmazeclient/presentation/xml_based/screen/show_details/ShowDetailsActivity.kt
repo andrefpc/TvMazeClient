@@ -1,5 +1,6 @@
 package com.andrefpc.tvmazeclient.presentation.xml_based.screen.show_details
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -8,9 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrefpc.tvmazeclient.R
 import com.andrefpc.tvmazeclient.databinding.ActivityShowDetailsBinding
-import com.andrefpc.tvmazeclient.domain.model.Show
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.AppNavigation
 import com.andrefpc.tvmazeclient.presentation.compose.navigation.NavigatorScreen
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import com.andrefpc.tvmazeclient.presentation.xml_based.screen.episode_details.EpisodeModal
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,7 +31,7 @@ class ShowDetailsActivity : AppCompatActivity() {
     var episodesLoaded = false
     var castLoaded = false
 
-    private lateinit var show: Show
+    private var show: ShowViewState? = null
 
     /**
      * Lifecycle method that run when the activity is created
@@ -41,9 +42,16 @@ class ShowDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         initObservers()
 
-        show = intent.getSerializableExtra("show") as Show
-        title = show.name
-        viewModel.checkFavorite(show)
+        show = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("show", ShowViewState::class.java) as ShowViewState
+        } else {
+            intent.getParcelableExtra("show")
+        }
+
+        show?.let {
+            title = it.name
+            viewModel.checkFavorite(it)
+        }
     }
 
     /**
@@ -83,8 +91,10 @@ class ShowDetailsActivity : AppCompatActivity() {
             appNavigation.navigateTo(this, NavigatorScreen.PersonDetails(it.person))
         }
 
-        viewModel.getSeasons(show.id)
-        viewModel.getCast(show.id)
+        show?.id?.let {
+            viewModel.getSeasons(it)
+            viewModel.getCast(it)
+        }
         binding.shimmerDetails.startProgress()
     }
 
@@ -105,8 +115,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         }
 
         viewModel.verifyFavorite.observe(this) {
-            val show = intent.getSerializableExtra("show") as Show
-            headerAdapter = ShowHeaderAdapter(this, show, it)
+            headerAdapter = this.show?.let { show -> ShowHeaderAdapter(this, show, it) }
             initList()
         }
 

@@ -22,11 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
-import com.andrefpc.tvmazeclient.domain.model.Episode
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
 import com.andrefpc.tvmazeclient.util.extensions.StringExtensions.removeHtmlTags
 
 @Composable
-fun EpisodeDetailsDialog(episode: Episode, onDismiss: () -> Unit) {
+fun EpisodeDetailsDialog(episode: EpisodeViewState, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -44,7 +44,7 @@ fun EpisodeDetailsDialog(episode: Episode, onDismiss: () -> Unit) {
                     contentAlignment = Alignment.BottomStart
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = episode.image?.original),
+                        painter = rememberAsyncImagePainter(model = episode.image),
                         contentDescription = episode.name,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
@@ -54,7 +54,7 @@ fun EpisodeDetailsDialog(episode: Episode, onDismiss: () -> Unit) {
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = episode.seasonEpisodeTitle,
+                            text = episode.seasonEpisode,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -81,7 +81,7 @@ fun EpisodeDetailsDialog(episode: Episode, onDismiss: () -> Unit) {
                     )
 
                     Text(
-                        text = episode.timeDurationTitle,
+                        text = episode.time,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )

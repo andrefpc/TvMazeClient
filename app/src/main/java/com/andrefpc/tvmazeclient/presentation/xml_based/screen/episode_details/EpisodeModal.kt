@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.andrefpc.tvmazeclient.domain.model.Episode
+import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
+import com.andrefpc.tvmazeclient.util.ScreenUtil
 import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.util.extensions.StringExtensions.removeHtmlTags
-import com.andrefpc.tvmazeclient.util.ScreenUtil
-import com.andrefpc.tvmazeclient.databinding.ModalEpisodeBinding
 
 /**
  * Modal for episode info
@@ -27,7 +27,7 @@ class EpisodeModal : DialogFragment() {
          * (It's recommended to prevent memory leak)
          */
         fun newInstance(
-            episode: Episode
+            episode: EpisodeViewState
         ) = EpisodeModal().apply {
             arguments = bundleOf(EPISODE to episode)
         }
@@ -70,18 +70,14 @@ class EpisodeModal : DialogFragment() {
      * Init the views
      */
     private fun initViews() {
-        val episode = arguments?.get(EPISODE) as Episode
-        val seasonName = if (episode.season > 9) "S${episode.season}" else "S0${episode.season}"
-        val episodeNumber = if (episode.number > 9) "E${episode.number}" else "E0${episode.number}"
-        val episodeFinalNumber = "$seasonName | $episodeNumber"
-        val timeValue = "${episode.airtime} (${episode.runtime} minutes)"
+        val episode = arguments?.get(EPISODE) as EpisodeViewState
 
         binding.apply {
-            this.image.loadImage(episode.image?.original)
+            this.image.loadImage(episode.image)
             this.name.text = episode.name
-            this.episode.text = episodeFinalNumber
+            this.episode.text = episode.seasonEpisode
             this.date.text = episode.airdate
-            this.time.text = timeValue
+            this.time.text = episode.time
             this.summary.text = episode.summary.removeHtmlTags()
         }
     }

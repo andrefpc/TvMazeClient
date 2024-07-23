@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.andrefpc.tvmazeclient.domain.model.Cast
 import com.andrefpc.tvmazeclient.util.extensions.ImageViewExtensions.loadImage
 import com.andrefpc.tvmazeclient.databinding.LayoutCastBinding
+import com.andrefpc.tvmazeclient.presentation.model.CastViewState
 
 /**
  * Adapter used to populate the cast list
  */
-class CastAdapter : ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback()) {
-    private var castClickListener: (Cast) -> Unit = { }
+class CastAdapter : ListAdapter<CastViewState, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+    private var castClickListener: (CastViewState) -> Unit = { }
 
-    fun onCastClick(castClickListener: (Cast) -> Unit) {
+    fun onCastClick(castClickListener: (CastViewState) -> Unit) {
         this.castClickListener = castClickListener
     }
 
@@ -45,9 +45,9 @@ class CastAdapter : ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback(
     /**
      * Method used to set the values for the adapter items widgets
      */
-    private fun bindCastViewHolder(binding: LayoutCastBinding, cast: Cast) {
+    private fun bindCastViewHolder(binding: LayoutCastBinding, cast: CastViewState) {
         binding.apply {
-            this.image.loadImage(cast.person.image?.medium)
+            this.image.loadImage(cast.person.thumb)
             this.name.text = cast.person.name
             this.root.setOnClickListener {
                 castClickListener(cast)
@@ -68,12 +68,12 @@ class CastAdapter : ListAdapter<Cast, RecyclerView.ViewHolder>(ItemDiffCallback(
     class CastViewHolder(val binding: LayoutCastBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {
-        private class ItemDiffCallback : DiffUtil.ItemCallback<Cast>() {
-            override fun areItemsTheSame(oldItem: Cast, newItem: Cast): Boolean =
+        private class ItemDiffCallback : DiffUtil.ItemCallback<CastViewState>() {
+            override fun areItemsTheSame(oldItem: CastViewState, newItem: CastViewState): Boolean =
                 oldItem.person.id == newItem.person.id ||
                         oldItem.character.id == newItem.character.id
 
-            override fun areContentsTheSame(oldItem: Cast, newItem: Cast): Boolean =
+            override fun areContentsTheSame(oldItem: CastViewState, newItem: CastViewState): Boolean =
                 oldItem.person.id == newItem.person.id &&
                         oldItem.person.name == newItem.person.name &&
                         oldItem.person.image == newItem.person.image &&

@@ -1,10 +1,10 @@
 package com.andrefpc.tvmazeclient.use_case
 
 import com.andrefpc.tvmazeclient.domain.model.ApiError
-import com.andrefpc.tvmazeclient.data.exception.EpisodesListNullException
-import com.andrefpc.tvmazeclient.data.exception.EpisodesListRequestException
-import com.andrefpc.tvmazeclient.data.exception.SeasonListNullException
-import com.andrefpc.tvmazeclient.data.exception.SeasonListRequestException
+import com.andrefpc.tvmazeclient.domain.exception.EpisodesListNullException
+import com.andrefpc.tvmazeclient.domain.exception.EpisodesListRequestException
+import com.andrefpc.tvmazeclient.domain.exception.SeasonListNullException
+import com.andrefpc.tvmazeclient.domain.exception.SeasonListRequestException
 import com.andrefpc.tvmazeclient.domain.use_case.GetEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonEpisodesUseCase
 import com.andrefpc.tvmazeclient.domain.use_case.GetSeasonsUseCase
@@ -46,7 +46,7 @@ class GetSeasonEpisodesUseCaseTest {
         val id = 1
         val seasons = listOf(SeasonMocks.season)
         val episodes = listOf(EpisodeMocks.episode)
-        val expected = listOf(SeasonEpisodeMocks.seasonEpisodeStatus)
+        val expected = listOf(SeasonEpisodeMocks.seasonEpisodes)
 
         coEvery { getSeasonsUseCase(id) } returns seasons
         coEvery { getEpisodesUseCase(id) } returns episodes

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.ShowsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
  * ViewModel used by the ShowsActivity
  */
 class ShowsViewModel(
-    private val showsUseCase: ShowsUseCase
+    private val showsHandler: ShowsUseCaseHandler
 ) : ViewModel() {
-    private val _listShows = MutableLiveData<List<Show>>()
-    val listShows: LiveData<List<Show>> get() = _listShows
+    private val _listShows = MutableLiveData<List<ShowViewState>>()
+    val listShows: LiveData<List<ShowViewState>> get() = _listShows
 
-    private val _addToListShows = MutableLiveData<List<Show>>()
-    val addToListShows: LiveData<List<Show>> get() = _addToListShows
+    private val _addToListShows = MutableLiveData<List<ShowViewState>>()
+    val addToListShows: LiveData<List<ShowViewState>> get() = _addToListShows
 
     private val _error = MutableLiveData<Throwable>()
     val error: LiveData<Throwable> get() = _error
@@ -51,7 +51,7 @@ class ShowsViewModel(
         searching = false
         if (currentPage == 0) _loading.value = true
         viewModelScope.launch(exceptionHandler) {
-            val shows = showsUseCase.getShows(currentPage)
+            val shows = showsHandler.getShows(currentPage).map { ShowViewState(it) }
             if (currentPage == 0) {
                 if (shows.isEmpty()) {
                     _showEmpty.postValue(true)
@@ -74,7 +74,7 @@ class ShowsViewModel(
         searching = true
         _loading.value = true
         viewModelScope.launch(exceptionHandler) {
-            val shows = showsUseCase.getShows(searchTerm = term)
+            val shows = showsHandler.getShows(searchTerm = term).map { ShowViewState(it) }
             if (shows.isEmpty()) {
                 _showEmpty.postValue(true)
             } else {

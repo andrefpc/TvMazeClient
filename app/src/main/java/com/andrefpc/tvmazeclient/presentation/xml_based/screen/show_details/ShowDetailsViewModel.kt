@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.domain.model.Cast
-import com.andrefpc.tvmazeclient.domain.model.Episode
-import com.andrefpc.tvmazeclient.domain.model.Season
-import com.andrefpc.tvmazeclient.domain.model.SeasonEpisode
-import com.andrefpc.tvmazeclient.domain.model.SeasonEpisodeStatus
-import com.andrefpc.tvmazeclient.domain.model.Show
-import com.andrefpc.tvmazeclient.domain.use_case.ShowDetailsUseCase
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
+import com.andrefpc.tvmazeclient.presentation.model.CastViewState
+import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodeViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodesViewState
+import com.andrefpc.tvmazeclient.presentation.model.SeasonViewState
+import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
@@ -18,14 +18,14 @@ import kotlinx.coroutines.launch
  * ViewModel used by the ShowDetailsActivity
  */
 class ShowDetailsViewModel(
-    private val showDetailsUseCase: ShowDetailsUseCase
+    private val showDetailsHandler: ShowDetailsUseCaseHandler
 ) : ViewModel() {
 
-    private val _listSeasonEpisodes = MutableLiveData<List<SeasonEpisode>>()
-    val listSeasonEpisodes: LiveData<List<SeasonEpisode>> get() = _listSeasonEpisodes
+    private val _listSeasonEpisodes = MutableLiveData<List<SeasonEpisodeViewState>>()
+    val listSeasonEpisodes: LiveData<List<SeasonEpisodeViewState>> get() = _listSeasonEpisodes
 
-    private val _listCast = MutableLiveData<List<Cast>>()
-    val listCast: LiveData<List<Cast>> get() = _listCast
+    private val _listCast = MutableLiveData<List<CastViewState>>()
+    val listCast: LiveData<List<CastViewState>> get() = _listCast
 
     private val _error = MutableLiveData<Throwable>()
     val error: LiveData<Throwable> get() = _error
@@ -33,7 +33,7 @@ class ShowDetailsViewModel(
     private val _verifyFavorite = MutableLiveData<Boolean>()
     val verifyFavorite: LiveData<Boolean> get() = _verifyFavorite
 
-    val seasonEpisodeStatusList: MutableList<SeasonEpisodeStatus> = arrayListOf()
+    val seasonEpisodesList: MutableList<SeasonEpisodesViewState> = arrayListOf()
 
     /**
      * Exception handler for the coroutines
@@ -49,7 +49,7 @@ class ShowDetailsViewModel(
      */
     fun getCast(id: Int) {
         viewModelScope.launch(exceptionHandler) {
-            val list = showDetailsUseCase.getCast(id)
+            val list = showDetailsHandler.getCast(id).map { CastViewState(it) }
             _listCast.postValue(list)
         }
     }
@@ -59,28 +59,42 @@ class ShowDetailsViewModel(
      */
     fun getSeasons(id: Int) {
         viewModelScope.launch(exceptionHandler) {
-            val seasons = showDetailsUseCase.getSeasons(id)
-            getEpisodes(seasons, id)
+            val seasons = showDetailsHandler.getSeasons(id)
+            getEpisodes(
+                seasons.map { SeasonViewState(it) },
+                id
+            )
         }
     }
 
     /**
      * Get the episodes of a show from the server
      */
-    private suspend fun getEpisodes(seasons: List<Season>, id: Int) {
-        val episodes = showDetailsUseCase.getEpisodes(id)
-        joinSeasonsAndEpisodes(seasons, episodes)
+    private suspend fun getEpisodes(seasons: List<SeasonViewState>, id: Int) {
+        val episodes = showDetailsHandler.getEpisodes(id)
+        joinSeasonsAndEpisodes(
+            seasons,
+            episodes.map { EpisodeViewState(it) }
+        )
     }
 
     /**
      * Join Seasons and episodes to be used in the list
      */
-    private fun joinSeasonsAndEpisodes(seasons: List<Season>, episodes: List<Episode>) {
-        val seasonEpisodeList: MutableList<SeasonEpisode> = arrayListOf()
+    private fun joinSeasonsAndEpisodes(
+        seasons: List<SeasonViewState>,
+        episodes: List<EpisodeViewState>
+    ) {
+        val seasonEpisodeList: MutableList<SeasonEpisodeViewState> = arrayListOf()
         for (season in seasons) {
-            seasonEpisodeList.add(SeasonEpisode(season = season))
+            seasonEpisodeList.add(SeasonEpisodeViewState(season = season))
             val episodesOfSeason = episodes.filter { it.season == season.number }
-            seasonEpisodeStatusList.add(SeasonEpisodeStatus(season, false, episodesOfSeason))
+            seasonEpisodesList.add(
+                SeasonEpisodesViewState(
+                    season = season,
+                    episodes = episodesOfSeason
+                )
+            )
         }
 
         _listSeasonEpisodes.postValue(seasonEpisodeList)
@@ -90,26 +104,26 @@ class ShowDetailsViewModel(
      * Change the status of a season (Opened or not)
      */
     fun changeSeason(id: Int) {
-        val index = seasonEpisodeStatusList.indexOfFirst { it.season.id == id }
-        seasonEpisodeStatusList[index].opened = !seasonEpisodeStatusList[index].opened
+        val index = seasonEpisodesList.indexOfFirst { it.season.id == id }
+        seasonEpisodesList[index].opened = !seasonEpisodesList[index].opened
         updateList()
     }
 
     /**
      * Add show to the favorites list
      */
-    fun addToFavorites(show: Show) {
+    fun addToFavorites(show: ShowViewState) {
         viewModelScope.launch(exceptionHandler) {
-            showDetailsUseCase.switchFavorite(show)
+            showDetailsHandler.switchFavorite(show.toDomain())
         }
     }
 
     /**
      * Check if the show is in the favorites list
      */
-    fun checkFavorite(show: Show) {
+    fun checkFavorite(show: ShowViewState) {
         viewModelScope.launch(exceptionHandler) {
-            _verifyFavorite.postValue(showDetailsUseCase.checkFavorite(show.id))
+            _verifyFavorite.postValue(showDetailsHandler.checkFavorite(show.id))
         }
     }
 
@@ -117,12 +131,12 @@ class ShowDetailsViewModel(
      * Update the list in the activity
      */
     private fun updateList() {
-        val seasonEpisodeList: MutableList<SeasonEpisode> = arrayListOf()
-        for (seasonStatus in seasonEpisodeStatusList) {
+        val seasonEpisodeList: MutableList<SeasonEpisodeViewState> = arrayListOf()
+        for (seasonStatus in seasonEpisodesList) {
             seasonStatus.season.opened = seasonStatus.opened
-            seasonEpisodeList.add(SeasonEpisode(season = seasonStatus.season))
+            seasonEpisodeList.add(SeasonEpisodeViewState(season = seasonStatus.season))
             if (seasonStatus.opened) {
-                seasonEpisodeList.addAll(seasonStatus.episodes.map { SeasonEpisode(episode = it) })
+                seasonEpisodeList.addAll(seasonStatus.episodes.map { SeasonEpisodeViewState(episode = it) })
             }
         }
 
