@@ -46,16 +46,12 @@ class MainUITest {
 
         // Click the PIN button
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pin)).performClick()
-
-        // Verify the ViewModel's method was called (this would typically be done via a mock or spy)
     }
 
     @Test
     fun testBiometricsButtonClick() {
         // Click the Biometrics button
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.phone_authentication)).performClick()
-
-        // Verify the ViewModel's method was called (this would typically be done via a mock or spy)
     }
 
     @Test
