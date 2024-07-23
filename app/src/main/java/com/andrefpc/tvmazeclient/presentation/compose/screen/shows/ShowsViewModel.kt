@@ -2,11 +2,9 @@ package com.andrefpc.tvmazeclient.presentation.compose.screen.shows
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.di.hilt.ProdCoroutineContext
 import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
-import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
 import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
-import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,13 +20,12 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ShowsViewModel @Inject constructor(
-    private val showsHandler: ShowsUseCaseHandler,
-    @ProdCoroutineContext private val defaultDispatcher: CoroutineContextProvider
+    private val showsHandler: ShowsUseCaseHandler
 ) : ViewModel() {
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
     val screenState: StateFlow<ScreenViewState> get() = _screenState
 
     private val _listShowState = MutableStateFlow<List<ShowViewState>>(emptyList())
@@ -80,7 +77,7 @@ class ShowsViewModel @Inject constructor(
         } else {
             _isLoadingMore.update { true }
         }
-        viewModelScope.launch(exceptionHandler + defaultDispatcher.IO) {
+        viewModelScope.launch(exceptionHandler) {
             val list = showsHandler.getShows(page = currentPage).map { ShowViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
@@ -104,7 +101,7 @@ class ShowsViewModel @Inject constructor(
     fun searchShows(term: String) {
         searching = true
         _screenState.update { ScreenViewState.Loading }
-        viewModelScope.launch(exceptionHandler + defaultDispatcher.IO) {
+        viewModelScope.launch(exceptionHandler) {
             val list = showsHandler.getShows(searchTerm = term).map { ShowViewState(it) }
             if (list.isEmpty()) {
                 _screenState.update { ScreenViewState.Empty }

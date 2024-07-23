@@ -25,10 +25,10 @@ class PeopleViewModel @Inject constructor(
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
     val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listPeopleState = MutableStateFlow<List<PersonViewState>>(emptyList())
+    val _listPeopleState = MutableStateFlow<List<PersonViewState>>(emptyList())
     val listPeopleState: StateFlow<List<PersonViewState>> get() = _listPeopleState
 
     private val _showError = MutableSharedFlow<Throwable>()

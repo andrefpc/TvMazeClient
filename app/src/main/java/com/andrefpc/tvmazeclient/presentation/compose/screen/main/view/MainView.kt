@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,11 +59,11 @@ fun MainView(
             LottieAnimation(
                 composition = composition,
                 progress = { progress },
-                modifier = Modifier.size(300.dp)
+                modifier = Modifier.testTag("Lottie").size(300.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.testTag("PinField").fillMaxWidth(),
                 value = pinState.value,
                 onValueChange = { pinState.value = it },
                 label = { Text(stringResource(id = R.string.pin)) }

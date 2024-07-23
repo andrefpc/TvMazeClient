@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PersonDetailsActivity : ComponentActivity() {
-    private val viewModel: PersonDetailsViewModel by viewModels()
+    val viewModel: PersonDetailsViewModel by viewModels()
 
     @Inject
     lateinit var appNavigation: AppNavigation

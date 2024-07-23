@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andrefpc.tvmazeclient.presentation.compose.screen.people.PeopleViewModel
@@ -27,7 +28,9 @@ fun PeopleSuccessView(
     val isLoadingMore by viewModel.isLoadingMore.collectAsState()
     val listState = rememberLazyGridState()
 
-    Box {
+    Box(
+        modifier = Modifier.testTag("PeopleSuccessView")
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = listState,

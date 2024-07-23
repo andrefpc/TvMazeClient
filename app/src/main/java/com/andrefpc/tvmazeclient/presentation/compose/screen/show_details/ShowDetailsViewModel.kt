@@ -2,15 +2,13 @@ package com.andrefpc.tvmazeclient.presentation.compose.screen.show_details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andrefpc.tvmazeclient.di.hilt.ProdCoroutineContext
-import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
 import com.andrefpc.tvmazeclient.presentation.model.CastViewState
 import com.andrefpc.tvmazeclient.presentation.model.EpisodeViewState
 import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodesViewState
 import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
-import com.andrefpc.tvmazeclient.util.CoroutineContextProvider
+import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,21 +24,20 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
-    private val showDetailsHandler: ShowDetailsUseCaseHandler,
-    @ProdCoroutineContext private val defaultDispatcher: CoroutineContextProvider
+    private val showDetailsHandler: ShowDetailsUseCaseHandler
 ) : ViewModel() {
 
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
     val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listSeasonEpisodesState =
+    val _listSeasonEpisodesState =
         MutableStateFlow<List<SeasonEpisodesViewState>>(emptyList())
     val listSeasonEpisodesState: StateFlow<List<SeasonEpisodesViewState>> get() = _listSeasonEpisodesState
 
-    private val _listCastState = MutableStateFlow<List<CastViewState>>(emptyList())
+    val _listCastState = MutableStateFlow<List<CastViewState>>(emptyList())
     val listCastState: StateFlow<List<CastViewState>> get() = _listCastState
 
     private val _favoriteState = MutableStateFlow(false)
@@ -70,7 +67,7 @@ class ShowDetailsViewModel @Inject constructor(
      * Get the cast and episodes of a show from the server
      */
     fun getCastAndEpisodes(id: Int) {
-        viewModelScope.launch(exceptionHandler + defaultDispatcher.IO) {
+        viewModelScope.launch(exceptionHandler) {
             getCast(id)
             getSeasonsEpisodes(id)
         }

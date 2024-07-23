@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesActivity : ComponentActivity() {
-    private val viewModel: FavoritesViewModel by viewModels()
+    val viewModel: FavoritesViewModel by viewModels()
 
     @Inject
     lateinit var appNavigation: AppNavigation

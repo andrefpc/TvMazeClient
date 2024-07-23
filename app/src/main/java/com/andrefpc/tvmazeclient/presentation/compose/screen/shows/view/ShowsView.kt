@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,7 +45,9 @@ fun ShowsView(
             }
             when (uiState) {
                 ScreenViewState.Empty -> ErrorView()
-                is ScreenViewState.Error -> ErrorView(error = (uiState as ScreenViewState.Error).error)
+                is ScreenViewState.Error -> ErrorView(
+                    error = (uiState as ScreenViewState.Error).error
+                )
                 ScreenViewState.Initial -> Unit
                 ScreenViewState.Loading -> ShimmerView()
                 ScreenViewState.Success -> ShowsSuccessView()

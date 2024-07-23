@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andrefpc.tvmazeclient.presentation.compose.screen.favorites.FavoritesViewModel
@@ -21,7 +22,9 @@ fun FavoritesSuccessView(
     val listShowState by viewModel.listShowState.collectAsState()
     val listState = rememberLazyListState()
 
-    Box {
+    Box(
+        modifier = Modifier.testTag("FavoritesSuccessView")
+    ) {
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize()

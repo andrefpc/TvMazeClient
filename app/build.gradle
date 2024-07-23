@@ -52,6 +52,11 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
     }
     packagingOptions {
         resources {

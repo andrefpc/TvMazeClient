@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChooserActivity : ComponentActivity() {
-    private val viewModel: ChooserViewModel by viewModels()
+    val viewModel: ChooserViewModel by viewModels()
 
     @Inject
     lateinit var appNavigation: AppNavigation

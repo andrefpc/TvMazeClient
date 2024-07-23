@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
-    private val viewModel: MainViewModel by viewModels()
+    val viewModel: MainViewModel by viewModels()
 
     @Inject
     lateinit var appNavigation: AppNavigation

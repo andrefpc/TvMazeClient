@@ -25,10 +25,10 @@ class FavoritesViewModel @Inject constructor(
     /**
      * State flow for the jetpack compose code
      */
-    private val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
+    val _screenState = MutableStateFlow<ScreenViewState>(ScreenViewState.Initial)
     val screenState: StateFlow<ScreenViewState> get() = _screenState
 
-    private val _listShowState = MutableStateFlow<List<ShowViewState>>(emptyList())
+    val _listShowState = MutableStateFlow<List<ShowViewState>>(emptyList())
     val listShowState: StateFlow<List<ShowViewState>> get() = _listShowState
 
     private val _showError = MutableSharedFlow<Throwable>()

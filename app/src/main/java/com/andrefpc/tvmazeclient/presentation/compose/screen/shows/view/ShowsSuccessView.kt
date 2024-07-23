@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,7 +35,9 @@ fun ShowsSuccessView(
     val isLoadingMore by viewModel.isLoadingMore.collectAsState()
     val listState = rememberLazyListState()
 
-    Box {
+    Box(
+        modifier = Modifier.testTag("ShowsSuccessView")
+    ) {
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize()

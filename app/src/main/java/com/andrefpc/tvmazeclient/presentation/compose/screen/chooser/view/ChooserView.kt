@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,7 +49,7 @@ fun ChooserView(
             LottieAnimation(
                 composition = composition,
                 progress = { progress },
-                modifier = Modifier.size(300.dp)
+                modifier = Modifier.testTag("Lottie").size(300.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(

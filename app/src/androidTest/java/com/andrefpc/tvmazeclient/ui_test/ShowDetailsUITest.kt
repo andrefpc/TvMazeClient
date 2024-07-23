@@ -1,11 +1,13 @@
 package com.andrefpc.tvmazeclient.ui_test
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import android.content.Intent
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.andrefpc.tvmazeclient.presentation.compose.screen.shows.ShowsActivity
-import com.andrefpc.tvmazeclient.presentation.compose.screen.shows.ShowsViewModel
+import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsActivity
+import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsViewModel
 import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
+import com.andrefpc.tvmazeclient.util.ShowMocks
+import com.andrefpc.tvmazeclient.util.createAndroidIntentComposeRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -15,15 +17,18 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @HiltAndroidTest
-class ShowsUITest {
-
+class ShowDetailsUITest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<ShowsActivity>()
+    val composeTestRule = createAndroidIntentComposeRule<ShowDetailsActivity> {
+        Intent(it, ShowDetailsActivity::class.java).apply {
+            putExtra("show", ShowMocks.showViewState)
+        }
+    }
 
-    lateinit var viewModel: ShowsViewModel
+    private lateinit var viewModel: ShowDetailsViewModel
 
     @Before
     fun setup() {
@@ -41,7 +46,7 @@ class ShowsUITest {
         }
 
         // Verify that the Success view is displayed
-        composeTestRule.onNodeWithTag("ShowsSuccessView").assertExists()
+        composeTestRule.onNodeWithTag("ShowDetailsSuccessView").assertExists()
     }
 
     @Test

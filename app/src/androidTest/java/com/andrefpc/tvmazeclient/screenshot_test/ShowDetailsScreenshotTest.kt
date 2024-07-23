@@ -6,12 +6,18 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsActivity
+import com.andrefpc.tvmazeclient.presentation.compose.screen.show_details.ShowDetailsViewModel
+import com.andrefpc.tvmazeclient.presentation.compose.screen.shows.ShowsViewModel
+import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
+import com.andrefpc.tvmazeclient.util.CastMocks
+import com.andrefpc.tvmazeclient.util.SeasonEpisodeMocks
 import com.andrefpc.tvmazeclient.util.ShowMocks
 import com.karumi.shot.ScreenshotTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -27,9 +33,8 @@ import org.junit.runner.RunWith
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class ShowDetailsScreenshotTest : ScreenshotTest {
+    private lateinit var viewModel: ShowDetailsViewModel
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val testDispatcher = StandardTestDispatcher()
-    private val testScope = TestScope(testDispatcher)
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
@@ -37,25 +42,25 @@ class ShowDetailsScreenshotTest : ScreenshotTest {
     @get:Rule
     val activityScenarioRule = ActivityScenarioRule<ShowDetailsActivity>(
         Intent(context, ShowDetailsActivity::class.java).apply {
-            putExtra("show", ShowMocks.show)
+            putExtra("show", ShowMocks.showViewState)
         }
     )
-
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
         hiltRule.inject()
-    }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
+        activityScenarioRule.scenario.onActivity { activity ->
+            viewModel = activity.viewModel
+            viewModel._listSeasonEpisodesState.update { listOf(SeasonEpisodeMocks.seasonEpisodesViewState) }
+            viewModel._listCastState.update { listOf(CastMocks.castViewState) }
+            viewModel._screenState.update { ScreenViewState.Success }
+        }
     }
 
     @Test
     fun testTakeScreenshot() {
+        waitForAnimationsToFinish()
         activityScenarioRule.scenario.onActivity { activity ->
-            testScope.advanceUntilIdle()
             compareScreenshot(activity, name = "ShowDetailsActivity_screenshot")
         }
     }

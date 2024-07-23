@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PeopleActivity : ComponentActivity() {
-    private val viewModel: PeopleViewModel by viewModels()
+    val viewModel: PeopleViewModel by viewModels()
 
     @Inject
     lateinit var appNavigation: AppNavigation
