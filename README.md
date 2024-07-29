@@ -110,16 +110,13 @@ The app supports Light and Dark mode.
 
 <img width="1662" alt="Screenshot 2024-07-23 at 19 33 00" src="https://github.com/user-attachments/assets/d46fbafb-0bd6-489c-885b-d1887dbe8f4d">
 
-## Assessment Requirements
+## Requirements
 
 - ✅ List all of the series contained in the API used by the paging scheme provided by the API.
 - ✅ Allow users to search series by name.
 - ✅ The listing and search views must show at least the name and poster image of the series.
 - ✅ After clicking on a series, the application should show the details of the series, showing the following information: Name, Poster, Days and time during which the series airs, Genres, Summary, List of episodes separated by season
 - ✅ After clicking on an episode, the application should show the episode’s information, including: Name, Number, Season, Summary, Image, if there is one
-      
-#### Bonus
-
 - ✅ Allow the user to set a PIN number to secure the application and prevent unauthorized users.
 - ✅ For supported phones, the user must be able to choose if they want to enable fingerprint authentication to avoid typing the PIN number while opening the app.
 - ✅ Allow the user to save a series as a favorite.
