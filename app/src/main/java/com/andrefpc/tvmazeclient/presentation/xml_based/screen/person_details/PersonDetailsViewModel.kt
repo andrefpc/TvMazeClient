@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.presentation.model.handler.PersonDetailsUseCaseHandler
 import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -35,7 +36,7 @@ class PersonDetailsViewModel(
      * Get the shows casted by a person in the server
      */
     fun getShows(id: Int) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = personDetailsHandler.getPersonShows(id).map { ShowViewState(it) }
             _listShows.postValue(list)
         }

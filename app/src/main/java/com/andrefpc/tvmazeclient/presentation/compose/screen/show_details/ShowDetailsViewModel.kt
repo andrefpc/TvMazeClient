@@ -11,6 +11,7 @@ import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import com.andrefpc.tvmazeclient.presentation.model.handler.ShowDetailsUseCaseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -67,7 +68,7 @@ class ShowDetailsViewModel @Inject constructor(
      * Get the cast and episodes of a show from the server
      */
     fun getCastAndEpisodes(id: Int) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             getCast(id)
             getSeasonsEpisodes(id)
         }
@@ -96,7 +97,7 @@ class ShowDetailsViewModel @Inject constructor(
      * Add show to the favorites list
      */
     private fun switchFavoriteStatus(show: ShowViewState) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             showDetailsHandler.switchFavorite(show.toDomain())
             _favoriteState.update { !favoriteState.value }
         }
@@ -106,7 +107,7 @@ class ShowDetailsViewModel @Inject constructor(
      * Check if the show is in the favorites list
      */
     fun checkFavorite(show: ShowViewState) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             _favoriteState.update { showDetailsHandler.checkFavorite(show.id) }
         }
     }

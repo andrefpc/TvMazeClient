@@ -7,6 +7,7 @@ import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import com.andrefpc.tvmazeclient.presentation.model.handler.FavoritesUseCaseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -49,7 +50,7 @@ class FavoritesViewModel @Inject constructor(
     /**
      * Get the favorite shows saved in the database
      */
-    fun getFavorites() = viewModelScope.launch(exceptionHandler) {
+    fun getFavorites() = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
         val list = favoritesHandler.getFavorites().map { ShowViewState(it) }
         if (list.isEmpty()) {
             showEmptyView()
@@ -61,7 +62,7 @@ class FavoritesViewModel @Inject constructor(
     /**
      * Search into the favorite shows saved in the database
      */
-    fun onSearchFavorites(term: String) = viewModelScope.launch(exceptionHandler) {
+    fun onSearchFavorites(term: String) = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
         val list = favoritesHandler.getFavorites(term).map { ShowViewState(it) }
         if (list.isEmpty()) {
             showEmptyView()
@@ -73,7 +74,7 @@ class FavoritesViewModel @Inject constructor(
     /**
      * Delete a favorite show in the database
      */
-    fun onShowDeleted(show: ShowViewState) = viewModelScope.launch(exceptionHandler) {
+    fun onShowDeleted(show: ShowViewState) = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
         val list = favoritesHandler.deleteFavorite(show.toDomain()).map { ShowViewState(it) }
         if (list.isEmpty()) {
             showEmptyView()

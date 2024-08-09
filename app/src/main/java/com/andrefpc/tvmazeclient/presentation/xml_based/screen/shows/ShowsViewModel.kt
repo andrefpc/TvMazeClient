@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
 import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,7 @@ class ShowsViewModel(
     fun getShows() {
         searching = false
         if (currentPage == 0) _loading.value = true
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val shows = showsHandler.getShows(currentPage).map { ShowViewState(it) }
             if (currentPage == 0) {
                 if (shows.isEmpty()) {
@@ -73,7 +74,7 @@ class ShowsViewModel(
     fun searchShows(term: String) {
         searching = true
         _loading.value = true
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val shows = showsHandler.getShows(searchTerm = term).map { ShowViewState(it) }
             if (shows.isEmpty()) {
                 _showEmpty.postValue(true)

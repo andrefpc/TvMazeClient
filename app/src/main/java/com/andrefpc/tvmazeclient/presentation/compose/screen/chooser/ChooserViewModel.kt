@@ -17,11 +17,11 @@ class ChooserViewModel @Inject constructor() : ViewModel() {
     private val _openMainXml = MutableSharedFlow<Unit>()
     val openMainXml: SharedFlow<Unit> = _openMainXml
 
-    fun openMain() = viewModelScope.launch(Dispatchers.Main)  {
+    fun openMain() = viewModelScope.launch {
         _openMain.emit(Unit)
     }
 
-    fun openMainXml() = viewModelScope.launch(Dispatchers.Main)  {
+    fun openMainXml() = viewModelScope.launch {
         _openMainXml.emit(Unit)
     }
 }

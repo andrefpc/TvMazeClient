@@ -7,6 +7,7 @@ import com.andrefpc.tvmazeclient.presentation.model.ScreenViewState
 import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -51,7 +52,7 @@ class PersonDetailsViewModel @Inject constructor(
      * Get the shows casted by a person in the server
      */
     fun getShows(id: Int) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = personDetailsHandler.getPersonShows(id).map { ShowViewState(it) }
             _listShowState.update { list }
             _screenState.update { ScreenViewState.Success }

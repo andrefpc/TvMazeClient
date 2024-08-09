@@ -7,6 +7,7 @@ import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import com.andrefpc.tvmazeclient.presentation.model.handler.ShowsUseCaseHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -77,7 +78,7 @@ class ShowsViewModel @Inject constructor(
         } else {
             _isLoadingMore.update { true }
         }
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = showsHandler.getShows(page = currentPage).map { ShowViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
@@ -101,7 +102,7 @@ class ShowsViewModel @Inject constructor(
     fun searchShows(term: String) {
         searching = true
         _screenState.update { ScreenViewState.Loading }
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = showsHandler.getShows(searchTerm = term).map { ShowViewState(it) }
             if (list.isEmpty()) {
                 _screenState.update { ScreenViewState.Empty }

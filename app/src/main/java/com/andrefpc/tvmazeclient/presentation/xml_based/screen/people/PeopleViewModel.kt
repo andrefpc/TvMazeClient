@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.andrefpc.tvmazeclient.presentation.model.handler.PeopleUseCaseHandler
 import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,7 @@ class PeopleViewModel(
     fun getPeople() {
         searching = false
         if (currentPage == 0) _loading.value = true
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = peopleHandler.getPeople(currentPage).map { PersonViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
@@ -73,7 +74,7 @@ class PeopleViewModel(
     fun searchPeople(term: String) {
         searching = true
         _loading.value = true
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = peopleHandler.getPeople(searchTerm = term).map { PersonViewState(it) }
             if (list.isEmpty()) {
                 _showEmpty.postValue(true)

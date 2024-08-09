@@ -7,6 +7,7 @@ import com.andrefpc.tvmazeclient.presentation.model.handler.PeopleUseCaseHandler
 import com.andrefpc.tvmazeclient.presentation.model.PersonViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -71,7 +72,7 @@ class PeopleViewModel @Inject constructor(
         } else {
             _isLoadingMore.update { true }
         }
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = peopleHandler.getPeople(currentPage).map {PersonViewState(it) }
             if (currentPage == 0) {
                 if (list.isEmpty()) {
@@ -95,7 +96,7 @@ class PeopleViewModel @Inject constructor(
     fun onSearchPeople(term: String) {
         searching = true
         showLoading()
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = peopleHandler.getPeople(searchTerm = term).map { PersonViewState(it) }
             if (list.isEmpty()) {
                 showEmptyView()

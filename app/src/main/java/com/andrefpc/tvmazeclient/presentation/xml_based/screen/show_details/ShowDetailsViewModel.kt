@@ -12,6 +12,7 @@ import com.andrefpc.tvmazeclient.presentation.model.SeasonEpisodesViewState
 import com.andrefpc.tvmazeclient.presentation.model.SeasonViewState
 import com.andrefpc.tvmazeclient.presentation.model.ShowViewState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -48,7 +49,7 @@ class ShowDetailsViewModel(
      * Get the cast of a show from the server
      */
     fun getCast(id: Int) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = showDetailsHandler.getCast(id).map { CastViewState(it) }
             _listCast.postValue(list)
         }
@@ -58,7 +59,7 @@ class ShowDetailsViewModel(
      * Get the seasons of a show from the server
      */
     fun getSeasons(id: Int) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val seasons = showDetailsHandler.getSeasons(id)
             getEpisodes(
                 seasons.map { SeasonViewState(it) },
@@ -113,7 +114,7 @@ class ShowDetailsViewModel(
      * Add show to the favorites list
      */
     fun addToFavorites(show: ShowViewState) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             showDetailsHandler.switchFavorite(show.toDomain())
         }
     }
@@ -122,7 +123,7 @@ class ShowDetailsViewModel(
      * Check if the show is in the favorites list
      */
     fun checkFavorite(show: ShowViewState) {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             _verifyFavorite.postValue(showDetailsHandler.checkFavorite(show.id))
         }
     }
